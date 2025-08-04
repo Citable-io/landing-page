@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CITABLE Design System - Dark theme with green accents */
+
+@layer base {
+  :root {
+    /* Exact CITABLE dark theme colors */
+    --background: 184 14% 7%;
+    --foreground: 0 0% 100%;
+    
+    --card: 184 14% 9%;
+    --card-foreground: 0 0% 100%;
+    
+    --popover: 184 14% 9%;
+    --popover-foreground: 0 0% 100%;
+    
+    /* CITABLE green - exact match */
+    --primary: 150 100% 42%;
+    --primary-foreground: 184 14% 7%;
+    
+    --secondary: 184 14% 12%;
+    --secondary-foreground: 0 0% 100%;
+    
+    --muted: 184 14% 12%;
+    --muted-foreground: 0 0% 65%;
+    
+    --accent: 150 100% 42%;
+    --accent-foreground: 184 14% 7%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 184 14% 20%;
+    --input: 184 14% 20%;
+    --ring: 150 100% 42%;
+    
+    --radius: 0.75rem;
+    
+    /* Green glow effects */
+    --primary-glow: 150 100% 60%;
+    --accent-glow: 150 80% 40%;
+    
+    /* Gradients */
+    --gradient-radial: radial-gradient(circle at 50% 50%, hsl(var(--accent-glow) / 0.3) 0%, transparent 60%);
+    --gradient-hero: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--accent-glow) / 0.1) 100%);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.8s ease-out forwards;
+  opacity: 0;
+}
+
+/* Staggered animation delays */
+.animate-fade-in-up:nth-child(1) { animation-delay: 0.1s; }
+.animate-fade-in-up:nth-child(2) { animation-delay: 0.2s; }
+.animate-fade-in-up:nth-child(3) { animation-delay: 0.3s; }
+.animate-fade-in-up:nth-child(4) { animation-delay: 0.4s; }
+.animate-fade-in-up:nth-child(5) { animation-delay: 0.5s; }
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Scroll offset for fixed header */
+section[id] {
+  scroll-margin-top: 4rem;
+}
