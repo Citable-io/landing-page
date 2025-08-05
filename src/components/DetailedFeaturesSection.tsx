@@ -60,8 +60,8 @@ const DetailedFeaturesSection = () => {
               <div className="w-3 h-3 bg-red-500 rounded-full"></div>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 bg-[#03624c] dark:bg-[#00DF82] rounded-full flex items-center justify-center text-xs text-white font-bold">A</div>
-              <div className="w-6 h-6 bg-[#03624c] dark:bg-[#00DF82] rounded-full flex items-center justify-center text-xs text-white font-bold">B</div>
+              <div className="w-6 h-6 bg-[#03624c] dark:bg-[#000000] rounded-full flex items-center justify-center text-xs text-white font">A</div>
+              <div className="w-6 h-6 bg-[#03624c] dark:bg-[#03624c] rounded-full flex items-center justify-center text-xs text-white font">B</div>
               <span className="text-xs text-slate-500 dark:text-slate-400">paper.tex</span>
             </div>
           </div>
