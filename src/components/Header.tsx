@@ -9,9 +9,8 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="flex items-center space-x-3">
-              <CitableIcon className="w-7 h-7" />
-              <span className="text-xl font-semibold text-foreground tracking-tight">CITABLE</span>
+            <div className="flex items-center">
+              <CitableIcon className="w-16 h-16" />
             </div>
           </div>
 

@@ -5,10 +5,7 @@ const TrustedBySection = () => {
     <section className="py-20 border-t border-border/20">
       <div className="container mx-auto px-6 lg:px-8">
         <div className="text-center">
-          {/* Logo/Icon - larger version matching the image */}
-          <div className="flex justify-center mb-8">
-            <CitableIcon className="w-16 h-16 text-primary" />
-          </div>
+          
           
           {/* Title */}
           <h2 className="text-base text-muted-foreground mb-12 font-normal">
