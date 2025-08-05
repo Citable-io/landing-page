@@ -5,7 +5,8 @@ import {
   query,
   orderBy,
   getDocs,
-  limit
+  limit,
+  where
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -68,11 +69,39 @@ export const getWaitingListEntries = async (limitCount: number = 100) => {
 // Check if email already exists in waiting list
 export const checkEmailExists = async (email: string): Promise<boolean> => {
   try {
-    // For now, we'll skip the email check to avoid permission issues
-    // In production, you should create a proper index and use where clause
-    return false;
+    // Normalize email to lowercase for consistent checking
+    const normalizedEmail = email.trim().toLowerCase();
+    console.log('Checking email existence for:', normalizedEmail);
+    
+    // Query for existing email
+    const q = query(
+      collection(db, COLLECTION_NAME),
+      where('email', '==', normalizedEmail)
+    );
+    
+    const querySnapshot = await getDocs(q);
+    console.log('Email check result:', querySnapshot.empty ? 'Email not found' : 'Email already exists');
+    
+    // If any documents are found, the email exists
+    return !querySnapshot.empty;
   } catch (error) {
     console.error('Error checking email existence:', error);
-    return false; // Default to false to allow submission
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      code: (error as any)?.code,
+      details: error
+    });
+    
+    // Check if it's a permission error
+    if ((error as any)?.code === 'permission-denied' || 
+        (error as any)?.message?.includes('permission') ||
+        (error as any)?.message?.includes('insufficient permissions')) {
+      console.warn('Permission denied for email existence check. This might be due to Firestore rules not being deployed yet.');
+      // For now, allow submission but log the issue
+      return false;
+    }
+    
+    // For other errors, allow submission but log the error for debugging
+    return false;
   }
 }; 

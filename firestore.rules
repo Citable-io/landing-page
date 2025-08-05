@@ -6,6 +6,11 @@ service cloud.firestore {
       allow read, write: if true;
     }
     
+    // Allow querying the waiting-list collection for email existence checks
+    match /waiting-list {
+      allow read: if true;
+    }
+    
     // Allow read access to all documents (for admin purposes)
     match /{document=**} {
       allow read: if true;

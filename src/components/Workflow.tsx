@@ -210,7 +210,7 @@ const Workflow = () => {
   };
 
   return (
-         <section className="py-24 bg-muted/20 dark:bg-muted/20 relative overflow-hidden">
+         <section id="workflow" className="py-24 bg-muted/20 dark:bg-muted/20 relative overflow-hidden">
        {/* Background decoration */}
        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(3,98,76,0.05),transparent_50%)] pointer-events-none"></div>
        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,223,130,0.05),transparent_50%)] pointer-events-none"></div>
