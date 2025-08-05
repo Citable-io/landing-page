@@ -187,7 +187,7 @@ const DetailedFeaturesSection = () => {
               >
                 <div className="flex items-center">
                   <div className={`w-3 h-3 rounded-full mr-3 ${citation.color === 'green' ? 'bg-[#03624c] dark:bg-[#00DF82]' :
-                      citation.color === 'blue' ? 'bg-[#03624c] dark:bg-[#00DF82]' : 'bg-yellow-500'
+                    citation.color === 'blue' ? 'bg-[#03624c] dark:bg-[#00DF82]' : 'bg-yellow-500'
                     } ${currentCitation === index ? 'animate-pulse' : ''}`}></div>
                   <span className="text-sm text-slate-700 dark:text-slate-300">{citation.author}</span>
                 </div>
@@ -357,18 +357,7 @@ const DetailedFeaturesSection = () => {
           ))}
         </div>
 
-        <div className="text-center mt-20 animate-fade-in-up" style={{ animationDelay: '1s' }}>
-          <p className="text-slate-600 dark:text-slate-400 mb-8 text-lg">
-            Ready to transform your research writing experience?
-          </p>
-          <WaitingListForm
-            trigger={
-              <Button variant="cta" size="lg" className="rounded-full px-8 py-3">
-                Join the waiting list
-              </Button>
-            }
-          />
-        </div>
+
       </div>
     </section>
   );

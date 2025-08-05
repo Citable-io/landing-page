@@ -82,3 +82,89 @@
   animation: scale-in 0.6s ease-out forwards;
   opacity: 0;
 }
+
+/* Subtle floating animations for hero background */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+  }
+}
+
+@keyframes float-medium {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-6px) scale(1.01);
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.animate-float-medium {
+  animation: float-medium 6s ease-in-out infinite;
+}
+
+/* Stepper animations */
+@keyframes progress {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+@keyframes step-number {
+  0% { 
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+  50% { 
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-progress-bar {
+  animation: progress 3s ease-in-out forwards;
+}
+
+.animate-step-number {
+  animation: step-number 0.6s ease-out forwards;
+  animation-delay: 0.5s;
+}
+
+/* Workflow component animations */
+@keyframes fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+
+@keyframes float {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}

@@ -11,18 +11,23 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center">
             <div className="flex items-center">
-              <CitableIcon className="w-16 h-16" />
+              <CitableIcon className="w-12 h-12" />
+              <span className="text-xl font-semibold text-foreground mt-2">Citable</span>
             </div>
           </div>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a href="#hero" className="text-sm text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-[#03624c]/5 dark:hover:bg-[#00DF82]/5 hover:backdrop-blur-sm px-3 py-2 rounded-lg">
+              Home
+            </a>
+            
+            <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-[#03624c]/5 dark:hover:bg-[#00DF82]/5 hover:backdrop-blur-sm px-3 py-2 rounded-lg">
               Features
             </a>
 
-            <a href="#contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Contact
+            <a href="#workflow" className="text-sm text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-[#03624c]/5 dark:hover:bg-[#00DF82]/5 hover:backdrop-blur-sm px-3 py-2 rounded-lg">
+              Workflow
             </a>
           </nav>
 
@@ -32,7 +37,7 @@ const Header = () => {
             <WaitingListForm
               trigger={
                 <Button variant="outline" size="sm" className="font-normal">
-                  Join waiting list
+                  Join the waiting list
                 </Button>
               }
             />

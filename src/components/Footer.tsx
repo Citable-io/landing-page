@@ -1,47 +1,71 @@
+import { Button } from "@/components/ui/button";
 import CitableIcon from "@/components/CitableIcon";
+import WaitingListForm from "@/components/WaitingListForm";
+import ThemeToggle from "@/components/ThemeToggle";
+import UserAgreementModal from "@/components/UserAgreementModal";
+import PrivacyPolicyModal from "@/components/PrivacyPolicyModal";
+import { useState } from "react";
 
 const Footer = () => {
+  const [isUserAgreementOpen, setIsUserAgreementOpen] = useState(false);
+  const [isPrivacyPolicyOpen, setIsPrivacyPolicyOpen] = useState(false);
+
   return (
-    <footer className="border-t border-border/20 py-16">
+    <footer className="w-full border-t border-border/30 bg-background/95 backdrop-blur-sm">
       <div className="container mx-auto px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between">
-          {/* Logo and Links */}
-          <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-12 mb-8 md:mb-0">
-            {/* Logo */}
-            <div className="flex items-center space-x-3">
-              <CitableIcon className="w-16 h-16" />
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <div className="flex items-center">
+            <div className="flex items-center">
+              <CitableIcon className="w-12 h-12" />
+              <span className="text-xl font-semibold text-foreground mt-2">Citable</span>
             </div>
-
-            {/* Links */}
-            <nav className="flex space-x-8">
-              <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Features
-              </a>
-
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Contact us
-              </a>
-            </nav>
           </div>
 
-          {/* Connect Section */}
+          {/* Navigation */}
+         
+
+          {/* Theme Toggle and Join Waiting List Button */}
           <div className="flex items-center space-x-4">
-            <span className="text-sm text-muted-foreground">Connect with us</span>
-            <div className="w-6 h-6 rounded flex items-center justify-center">
-              <div className="w-4 h-4 bg-primary rounded-sm"></div>
-            </div>
+            <WaitingListForm
+              trigger={
+                <Button variant="outline" size="sm" className="font-normal">
+                  Join the waiting list
+                </Button>
+              }
+            />
           </div>
         </div>
 
         {/* Bottom Section */}
-        <div className="border-t border-border/20 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground">
-          <p>Copyright © 2025</p>
+        <div className="border-t border-border/20 py-8 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground">
+          <p>Copyright © 2025 Citable. All rights reserved.</p>
           <div className="flex space-x-8 mt-4 md:mt-0">
-            <a href="#" className="hover:text-foreground transition-colors">User agreement</a>
-            <a href="#" className="hover:text-foreground transition-colors">Privacy Policy</a>
+            <button 
+              onClick={() => setIsUserAgreementOpen(true)}
+              className="hover:text-foreground transition-colors"
+            >
+              User agreement
+            </button>
+            <button 
+              onClick={() => setIsPrivacyPolicyOpen(true)}
+              className="hover:text-foreground transition-colors"
+            >
+              Privacy Policy
+            </button>
           </div>
         </div>
       </div>
+
+      {/* Modals */}
+      <UserAgreementModal 
+        isOpen={isUserAgreementOpen} 
+        onClose={() => setIsUserAgreementOpen(false)} 
+      />
+      <PrivacyPolicyModal 
+        isOpen={isPrivacyPolicyOpen} 
+        onClose={() => setIsPrivacyPolicyOpen(false)} 
+      />
     </footer>
   );
 };

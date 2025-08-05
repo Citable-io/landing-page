@@ -159,7 +159,7 @@ const WaitingListForm = ({ trigger }: { trigger: React.ReactNode }) => {
               className="w-full" 
               disabled={isSubmitting}
             >
-              {isSubmitting ? "Joining..." : "Join Waiting List"}
+              {isSubmitting ? "Joining..." : "Join The Waiting List"}
             </Button>
           </form>
         ) : (
