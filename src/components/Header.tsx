@@ -10,9 +10,11 @@ const Header = () => {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <div className="flex items-center">
-              <CitableIcon className="w-12 h-12" />
-              <span className="text-xl font-semibold text-foreground mt-2">Citable</span>
+            <div className="flex items-center space-x-3">
+              <CitableIcon className="w-10 h-10" />
+              <span className="text-xl font-semibold text-foreground" style={{ fontFamily: 'Goodly, Playfair Display, serif' }}>
+                Citable
+              </span>
             </div>
           </div>
 

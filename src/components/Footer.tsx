@@ -20,10 +20,7 @@ const Footer = () => {
               <CitableIcon className="w-12 h-12" />
               <span className="text-xl font-semibold text-foreground mt-2">Citable</span>
             </div>
-          </div>
-
-          {/* Navigation */}
-         
+          </div>         
 
           {/* Theme Toggle and Join Waiting List Button */}
           <div className="flex items-center space-x-4">
@@ -40,7 +37,7 @@ const Footer = () => {
         {/* Bottom Section */}
         <div className="border-t border-border/20 py-8 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground">
           <p>Copyright © 2025 Citable. All rights reserved.</p>
-          <div className="flex space-x-8 mt-4 md:mt-0">
+          {/* <div className="flex space-x-8 mt-4 md:mt-0">
             <button 
               onClick={() => setIsUserAgreementOpen(true)}
               className="hover:text-foreground transition-colors"
@@ -53,19 +50,19 @@ const Footer = () => {
             >
               Privacy Policy
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
 
       {/* Modals */}
-      <UserAgreementModal 
+      {/* <UserAgreementModal 
         isOpen={isUserAgreementOpen} 
         onClose={() => setIsUserAgreementOpen(false)} 
       />
       <PrivacyPolicyModal 
         isOpen={isPrivacyPolicyOpen} 
         onClose={() => setIsPrivacyPolicyOpen(false)} 
-      />
+      /> */}
     </footer>
   );
 };

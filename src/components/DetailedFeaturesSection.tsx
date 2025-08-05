@@ -1,306 +1,548 @@
 import { Button } from "@/components/ui/button";
-import { CheckCircle, Users, Brain, BookOpen, Search, Zap, Code, MessageSquare, FileText, Network } from "lucide-react";
+import { CheckCircle, Users, Brain, BookOpen, Search, Zap, Code, MessageSquare, FileText, Network, Eye, Plus, X, Check, Clock, GitBranch, Sparkles } from "lucide-react";
 import { useState, useEffect } from "react";
 
 const DetailedFeaturesSection = () => {
-  const [typingText, setTypingText] = useState("");
-  const [currentCitation, setCurrentCitation] = useState(0);
+  const [hoveredCitation, setHoveredCitation] = useState(false);
+  const [tikzStep, setTikzStep] = useState(0);
   const [graphNodes, setGraphNodes] = useState([]);
+  const [selectedPaper, setSelectedPaper] = useState(null);
+  const [suggestionState, setSuggestionState] = useState('pending');
+  const [collaboratorCursors, setCollaboratorCursors] = useState([]);
+  const [discoveryPhase, setDiscoveryPhase] = useState('searching');
+  const [aiThinking, setAiThinking] = useState(false);
 
-  // Typing animation for AI demo
+  // Simplified graph discovery animation
   useEffect(() => {
-    const text = "This argument needs supporting evidence.";
-    let i = 0;
+    const phases = ['searching', 'found', 'clustering'];
+    let phaseIndex = 0;
+    
     const timer = setInterval(() => {
-      if (i < text.length) {
-        setTypingText(text.slice(0, i + 1));
-        i++;
+      setDiscoveryPhase(phases[phaseIndex]);
+      phaseIndex = (phaseIndex + 1) % phases.length;
+      
+      if (phases[phaseIndex] === 'found') {
+        setGraphNodes([0, 1, 2, 3, 4]);
+      } else if (phases[phaseIndex] === 'clustering') {
+        setSelectedPaper(2);
       } else {
-        clearInterval(timer);
+        setGraphNodes([]);
+        setSelectedPaper(null);
       }
-    }, 100);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Citation cycling
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentCitation(prev => (prev + 1) % 3);
-    }, 2000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Animated graph nodes
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setGraphNodes(prev =>
-        prev.length < 8 ? [...prev, prev.length] : []
-      );
     }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Simplified TikZ generation
+  useEffect(() => {
+    const steps = [
+      { type: 'thinking', content: 'Analyzing your request...' },
+      { type: 'code', content: '\\begin{tikzpicture}' },
+      { type: 'code', content: '  \\node[draw, circle] (input) at (0,0) {Input};' },
+      { type: 'code', content: '  \\node[draw, circle] (hidden) at (3,0) {Hidden};' },
+      { type: 'code', content: '  \\node[draw, circle] (output) at (6,0) {Output};' },
+      { type: 'code', content: '  \\draw[->] (input) -- (hidden);' },
+      { type: 'code', content: '  \\draw[->] (hidden) -- (output);' },
+      { type: 'code', content: '\\end{tikzpicture}' },
+      { type: 'preview', content: 'preview' }
+    ];
+    
+    let currentStep = 0;
+    const timer = setInterval(() => {
+      if (currentStep < steps.length) {
+        setTikzStep(currentStep);
+        setAiThinking(steps[currentStep].type === 'thinking');
+        currentStep++;
+      } else {
+        setTikzStep(0);
+        currentStep = 0;
+        setAiThinking(false);
+      }
+    }, 1200);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Simplified collaboration cursors
+  useEffect(() => {
+    const updateCursors = () => {
+      setCollaboratorCursors([
+        { id: 1, x: Math.random() * 200, y: Math.random() * 60, name: 'Alex', color: '#03624c' },
+        { id: 2, x: Math.random() * 200, y: Math.random() * 60, name: 'Sarah', color: '#f59e0b' }
+      ]);
+    };
+    
+    updateCursors();
+    const timer = setInterval(updateCursors, 2000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Suggestion state cycling
+  useEffect(() => {
+    const states = ['pending', 'accepted', 'rejected'];
+    let stateIndex = 0;
+    
+    const timer = setInterval(() => {
+      setSuggestionState(states[stateIndex]);
+      stateIndex = (stateIndex + 1) % states.length;
+    }, 4000);
     return () => clearInterval(timer);
   }, []);
 
   const detailedFeatures = [
     {
-      icon: <Users className="w-7 h-7" />,
-      title: "Real-Time Collaborative LaTeX Editor",
+      icon: <Search className="w-7 h-7" />,
+      title: "Intelligent Literature Discovery",
       highlights: [
-        "Real-time cursors and edits",
-        "Version history with rollback",
-        "Comments and highlights",
-        "Auto-save functionality",
-        "GitHub-like review system"
+        "Explore research landscape with citation maps",
+        "Find thematic clusters & influential works",
+        "See papers commonly cited together",
+        "Instantly add papers to your bibliography"
       ],
       demo: (
-        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 rounded-xl p-5 border border-slate-200 dark:border-slate-700 shadow-lg">
-          <div className="flex items-center justify-between mb-4">
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+          {/* Simplified header */}
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Research Discovery</span>
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-[#03624c] dark:bg-[#00DF82] rounded-full animate-pulse"></div>
-              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-6 h-6 bg-[#03624c] dark:bg-[#000000] rounded-full flex items-center justify-center text-xs text-white font">A</div>
-              <div className="w-6 h-6 bg-[#03624c] dark:bg-[#03624c] rounded-full flex items-center justify-center text-xs text-white font">B</div>
-              <span className="text-xs text-slate-500 dark:text-slate-400">paper.tex</span>
+              {discoveryPhase === 'searching' && (
+                <span className="text-xs text-[#03624c] dark:text-[#00DF82]">Searching...</span>
+              )}
+              {discoveryPhase === 'found' && (
+                <span className="text-xs text-green-600 dark:text-green-400">Found 127 papers</span>
+              )}
+              {discoveryPhase === 'clustering' && (
+                <span className="text-xs text-purple-600 dark:text-purple-400">Clustering themes</span>
+              )}
             </div>
           </div>
 
-          <div className="space-y-1 text-sm font-mono">
-            <div className="flex items-center">
-              <span className="text-slate-400 mr-3 text-xs">1</span>
-              <span className="text-[#03624c] dark:text-[#00DF82]">\documentclass</span>
-              <span className="text-slate-700 dark:text-slate-300">{`{article}`}</span>
-            </div>
-            <div className="flex items-center">
-              <span className="text-slate-400 mr-3 text-xs">2</span>
-              <span className="text-[#03624c] dark:text-[#00DF82]">\title</span>
-              <span className="text-slate-700 dark:text-slate-300">{`{Machine Learning in`}</span>
-              <div className="w-0.5 h-4 bg-[#03624c] dark:bg-[#00DF82] ml-1 animate-pulse"></div>
-            </div>
-            <div className="flex items-center relative">
-              <span className="text-slate-400 mr-3 text-xs">3</span>
-              <span className="text-slate-700 dark:text-slate-300">Research</span>
-              <div className="absolute right-0 top-0 bg-yellow-200 dark:bg-yellow-800 px-2 py-1 rounded text-xs animate-bounce">
-                Alex is typing...
+          {/* Simplified network visualization */}
+          <div className="relative h-24 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-600 overflow-hidden">
+            <svg className="w-full h-full" viewBox="0 0 280 96">
+              {graphNodes.length > 0 && (
+                <g className="opacity-60">
+                  <line x1="60" y1="30" x2="140" y2="60" stroke="#03624c" strokeWidth="2" className="animate-pulse" />
+                  <line x1="140" y1="60" x2="220" y2="35" stroke="#03624c" strokeWidth="2" className="animate-pulse" style={{ animationDelay: '0.5s' }} />
+                  <line x1="60" y1="30" x2="80" y2="70" stroke="#03624c" strokeWidth="2" className="animate-pulse" style={{ animationDelay: '1s' }} />
+                </g>
+              )}
+
+              {graphNodes.map((node, index) => {
+                const papers = [
+                  { x: 60, y: 30, cluster: "ml" },
+                  { x: 140, y: 60, cluster: "nlp" },
+                  { x: 220, y: 35, cluster: "llm" },
+                  { x: 80, y: 70, cluster: "cv" },
+                  { x: 200, y: 70, cluster: "nlp" }
+                ];
+                
+                const paper = papers[index];
+                const isSelected = selectedPaper === index;
+                const clusterColors = {
+                  ml: '#03624c', nlp: '#8b5cf6', llm: '#f59e0b', cv: '#ef4444'
+                };
+
+                return (
+                  <g 
+                    key={node} 
+                    className="animate-fade-in cursor-pointer" 
+                    style={{ animationDelay: `${index * 0.3}s` }}
+                    onClick={() => setSelectedPaper(index)}
+                  >
+                    <circle 
+                      cx={paper.x} 
+                      cy={paper.y} 
+                      r={isSelected ? "8" : "6"} 
+                      fill={clusterColors[paper.cluster]} 
+                      className={`transition-all duration-300 ${isSelected ? 'animate-pulse' : ''}`}
+                      opacity={isSelected ? 1 : 0.8}
+                    />
+                  </g>
+                );
+              })}
+            </svg>
+
+            {/* Simple legend */}
+            <div className="absolute top-2 left-2 flex space-x-2">
+              <div className="flex items-center space-x-1">
+                <div className="w-2 h-2 bg-[#03624c] rounded-full"></div>
+                <span className="text-xs text-slate-600 dark:text-slate-400">ML</span>
+              </div>
+              <div className="flex items-center space-x-1">
+                <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                <span className="text-xs text-slate-600 dark:text-slate-400">NLP</span>
               </div>
             </div>
-            <div className="flex items-center">
-              <span className="text-slate-400 mr-3 text-xs">4</span>
-              <span className="text-[#03624c] dark:text-[#00DF82]">\begin</span>
-              <span className="text-slate-700 dark:text-slate-300">{`{document}`}</span>
-            </div>
-          </div>
 
-          <div className="mt-3 flex items-center space-x-2">
-            <div className="w-2 h-2 bg-[#03624c] dark:bg-[#00DF82] rounded-full animate-ping"></div>
-            <span className="text-xs text-slate-500 dark:text-slate-400">2 collaborators online</span>
-          </div>
-        </div>
-      )
-    },
-    {
-      icon: <Brain className="w-7 h-7" />,
-      title: "AI-Assisted Writing & Autocomplete",
-      highlights: [
-        "LaTeX-aware autocomplete",
-        "Grammar and style suggestions",
-        "AI-assisted paragraph rewriting",
-        "Citation generation",
-        "Customizable review rules"
-      ],
-      demo: (
-        <div className="bg-gradient-to-br from-[#03624c]/10 to-[#03624c]/5 dark:from-[#00DF82]/10 dark:to-[#00DF82]/5 rounded-xl p-5 border border-[#03624c]/20 dark:border-[#00DF82]/20 shadow-lg">
-          <div className="flex items-center mb-4">
-            <Brain className="w-5 h-5 text-[#03624c] dark:text-[#00DF82] mr-2 animate-pulse" />
-            <span className="text-sm font-semibold text-[#03624c] dark:text-[#00DF82]">AI Writing Assistant</span>
-            <div className="ml-auto w-2 h-2 bg-[#03624c] dark:bg-[#00DF82] rounded-full animate-pulse"></div>
-          </div>
-
-          <div className="space-y-3">
-            <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-[#03624c]/20 dark:border-[#00DF82]/20 relative overflow-hidden">
-              <div className="text-xs text-[#03624c] dark:text-[#00DF82] font-medium mb-2">✨ AI Suggestion</div>
-              <div className="text-sm text-slate-700 dark:text-slate-300">
-                {typingText}
-                <span className="inline-block w-2 h-4 bg-[#03624c] dark:bg-[#00DF82] ml-1 animate-pulse"></span>
-              </div>
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#03624c]/10 dark:via-[#00DF82]/10 to-transparent animate-shimmer"></div>
-            </div>
-
-            <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs text-slate-500 dark:text-slate-400">Quick Actions</span>
-                <div className="flex space-x-1">
-                  <div className="w-1 h-1 bg-[#03624c] dark:bg-[#00DF82] rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-                  <div className="w-1 h-1 bg-[#03624c] dark:bg-[#00DF82] rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-1 h-1 bg-[#03624c] dark:bg-[#00DF82] rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
-                </div>
-              </div>
-              <div className="flex space-x-2">
-                <button className="px-3 py-1 bg-[#03624c]/10 dark:bg-[#00DF82]/10 text-[#03624c] dark:text-[#00DF82] rounded-full text-xs hover:scale-105 transition-transform">
-                  Add Citation
-                </button>
-                <button className="px-3 py-1 bg-[#03624c]/10 dark:bg-[#00DF82]/10 text-[#03624c] dark:text-[#00DF82] rounded-full text-xs hover:scale-105 transition-transform">
-                  Rephrase
+            {/* Add to Bibliography button */}
+            {selectedPaper !== null && (
+              <div className="absolute bottom-2 right-2 animate-fade-in">
+                <button className="bg-[#03624c] dark:bg-[#00DF82] text-white px-3 py-1.5 rounded-full text-xs font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-1">
+                  <Plus className="w-3 h-3" />
+                  <span>Add to Bibliography</span>
                 </button>
               </div>
-            </div>
+            )}
           </div>
         </div>
       )
     },
     {
       icon: <BookOpen className="w-7 h-7" />,
-      title: "Integrated Bibliography Manager",
+      title: "Effortless Bibliography Management",
       highlights: [
-        "Import from BibTeX, DOI, Zotero",
-        "Smart citation insertion",
-        "Bibliography reformatting",
-        "Hover previews for formulas",
-        "Chrome extension for collection"
+        "Easily import from DOI, BibTeX, or the web",
+        "Hover over citations to preview abstracts",
+        "Get smart \\cite{} suggestions while writing",
+        "Cite papers directly from manager"
       ],
       demo: (
-        <div className="bg-gradient-to-br from-[#03624c]/10 to-[#03624c]/5 dark:from-[#00DF82]/10 dark:to-[#00DF82]/5 rounded-xl p-5 border border-[#03624c]/20 dark:border-[#00DF82]/20 shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <BookOpen className="w-5 h-5 text-[#03624c] dark:text-[#00DF82] mr-2" />
-              <span className="text-sm font-semibold text-[#03624c] dark:text-[#00DF82]">Bibliography</span>
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+          {/* Simplified header */}
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">paper.tex</span>
+            <div className="text-xs bg-[#03624c]/10 dark:bg-[#00DF82]/10 text-[#03624c] dark:text-[#00DF82] px-2 py-1 rounded-full">
+              142 citations
             </div>
-            <span className="text-xs bg-[#03624c]/10 dark:bg-[#00DF82]/10 text-[#03624c] dark:text-[#00DF82] px-2 py-1 rounded-full">
-              {3} sources
-            </span>
           </div>
 
-          <div className="space-y-2">
-            {[
-              { author: "Smith, J. (2023)", status: "cited", color: "green" },
-              { author: "Johnson, A. (2022)", status: "imported", color: "blue" },
-              { author: "Williams, B. (2021)", status: "pending", color: "yellow" }
-            ].map((citation, index) => (
-              <div
-                key={index}
-                className={`flex items-center justify-between p-3 bg-white dark:bg-slate-800 rounded-lg border transition-all duration-300 hover:scale-[1.02] ${currentCitation === index ? 'border-[#03624c] dark:border-[#00DF82] shadow-md' : 'border-slate-200 dark:border-slate-600'
-                  }`}
-                style={{
-                  transform: currentCitation === index ? 'scale(1.02)' : 'scale(1)',
-                }}
-              >
-                <div className="flex items-center">
-                  <div className={`w-3 h-3 rounded-full mr-3 ${citation.color === 'green' ? 'bg-[#03624c] dark:bg-[#00DF82]' :
-                    citation.color === 'blue' ? 'bg-[#03624c] dark:bg-[#00DF82]' : 'bg-yellow-500'
-                    } ${currentCitation === index ? 'animate-pulse' : ''}`}></div>
-                  <span className="text-sm text-slate-700 dark:text-slate-300">{citation.author}</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  {citation.status === 'cited' && <span className="text-xs text-[#03624c] dark:text-[#00DF82]">✓ Cited</span>}
-                  {citation.status === 'imported' && <span className="text-xs text-[#03624c] dark:text-[#00DF82]">📥 New</span>}
-                  {citation.status === 'pending' && <span className="text-xs text-yellow-600 dark:text-yellow-400">⏳ Review</span>}
-                </div>
+          {/* Simplified writing interface */}
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
+            <div className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed">
+              <p>
+                Recent advances in transformer architectures have revolutionized natural language processing{' '}
+                <span 
+                  className="relative inline-block group"
+                  onMouseEnter={() => setHoveredCitation(true)}
+                  onMouseLeave={() => setHoveredCitation(false)}
+                >
+                  <span className="text-[#03624c] dark:text-[#00DF82] font-medium cursor-pointer bg-[#03624c]/10 dark:bg-[#00DF82]/10 px-1.5 py-0.5 rounded-md border border-[#03624c]/20 dark:border-[#00DF82]/20 hover:border-[#03624c] dark:hover:border-[#00DF82] transition-all duration-200">
+                    [Vaswani2017]
+                  </span>
+                  
+                  {/* Enhanced hover popup with bibliography integration */}
+                  {hoveredCitation && (
+                    <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 w-80 bg-white dark:bg-slate-700 rounded-lg border border-slate-200 dark:border-slate-600 shadow-xl z-20 animate-fade-in">
+                      <div className="p-4">
+                        {/* Header with status */}
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center space-x-2">
+                            <BookOpen className="w-4 h-4 text-[#03624c] dark:text-[#00DF82]" />
+                            <span className="text-xs text-[#03624c] dark:text-[#00DF82] font-semibold">Citation Preview</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span className="text-xs text-green-600 dark:text-green-400">In Bibliography</span>
+                          </div>
+                        </div>
+                        
+                        {/* Paper details */}
+                        <h4 className="text-sm font-bold text-slate-900 dark:text-slate-100 mb-2">
+                          "Attention Is All You Need"
+                        </h4>
+                        <div className="text-xs text-slate-600 dark:text-slate-400 mb-3">
+                          Vaswani, A., Shazeer, N., Parmar, N., et al. • NIPS 2017
+                        </div>
+                        
+                        {/* Quick stats */}
+                        <div className="flex items-center space-x-4 mb-3 text-xs text-slate-500 dark:text-slate-400">
+                          <span>📊 65,127 citations</span>
+                          <span>⭐ Highly influential</span>
+                        </div>
+                        
+                        {/* Integration actions */}
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-slate-600 dark:text-slate-400">Cite as:</span>
+                            <div className="flex items-center space-x-2">
+                              <button className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded border border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">
+                                {"\\cite{Vaswani2017}"}
+                              </button>
+                              <button className="text-xs bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 px-2 py-1 rounded border border-green-200 dark:border-green-700 hover:bg-green-100 dark:hover:bg-green-900/50 transition-colors">
+                                {"\\citep{Vaswani2017}"}
+                              </button>
+                            </div>
+                          </div>
+                          
+                          <div className="flex items-center justify-between text-xs">
+                            <span className="text-slate-600 dark:text-slate-400">Quick actions:</span>
+                            <div className="flex items-center space-x-2">
+                              <button className="text-xs text-[#03624c] dark:text-[#00DF82] hover:underline flex items-center space-x-1">
+                                <Eye className="w-3 h-3" />
+                                <span>View PDF</span>
+                              </button>
+                              <button className="text-xs text-[#03624c] dark:text-[#00DF82] hover:underline flex items-center space-x-1">
+                                <Search className="w-3 h-3" />
+                                <span>Find similar</span>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        {/* Bibliography integration status */}
+                        <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-600">
+                          <div className="flex items-center justify-between text-xs">
+                            <div className="flex items-center space-x-2">
+                              <Check className="w-3 h-3 text-green-500" />
+                              <span className="text-slate-600 dark:text-slate-400">Added to bibliography</span>
+                            </div>
+                            <button className="text-xs text-[#03624c] dark:text-[#00DF82] hover:underline">
+                              Manage →
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      {/* Enhanced arrow */}
+                      <div className="absolute top-full left-1/2 transform -translate-x-1/2">
+                        <div className="w-0 h-0 border-l-6 border-r-6 border-t-6 border-transparent border-t-white dark:border-t-slate-700"></div>
+                      </div>
+                    </div>
+                  )}
+                </span>
+                . These models have achieved state-of-the-art performance.
+              </p>
+            </div>
+            
+            {/* Simplified suggestion bar */}
+            <div className="mt-3 pt-2 border-t border-slate-200 dark:border-slate-600">
+              <div className="flex items-center space-x-2">
+                <Sparkles className="w-3 h-3 text-[#03624c] dark:text-[#00DF82]" />
+                <span className="text-xs text-slate-600 dark:text-slate-400">Suggest:</span>
+                <button className="text-xs bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 px-2 py-1 rounded border border-blue-200 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/50 transition-colors">
+                  + Devlin2018 (BERT)
+                </button>
               </div>
-            ))}
-          </div>
-
-          <div className="mt-3 p-2 bg-[#03624c]/10 dark:bg-[#00DF82]/10 rounded-lg">
-            <div className="flex items-center text-xs text-[#03624c] dark:text-[#00DF82]">
-              <div className="w-2 h-2 bg-[#03624c] dark:bg-[#00DF82] rounded-full mr-2 animate-pulse"></div>
-              Auto-syncing with Zotero...
             </div>
           </div>
         </div>
       )
     },
     {
-      icon: <Search className="w-7 h-7" />,
-      title: "Smart Literature Graph",
+      icon: <Brain className="w-7 h-7" />,
+      title: "Your AI Research Assistant",
       highlights: [
-        "Influential prior works",
-        "Recent follow-ups",
-        "Thematic clusters",
-        "Papers commonly cited together",
-        "Research landscape exploration"
+        "Rewrite & improve your text with AI assistance",
+        "Generate LaTeX tables & TikZ from prompts",
+        "Set custom AI rules for paper consistency",
+        "Use smart autocomplete for LaTeX & citations"
       ],
       demo: (
-        <div className="bg-gradient-to-br from-[#03624c]/10 to-[#03624c]/5 dark:from-[#00DF82]/10 dark:to-[#00DF82]/5 rounded-xl p-5 border border-[#03624c]/20 dark:border-[#00DF82]/20 shadow-lg">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center">
-              <Search className="w-5 h-5 text-[#03624c] dark:text-[#00DF82] mr-2" />
-              <span className="text-sm font-semibold text-[#03624c] dark:text-[#00DF82]">Research Network</span>
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+          {/* Simplified header */}
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">AI Research Assistant</span>
+            {aiThinking ? (
+              <span className="text-xs text-[#03624c] dark:text-[#00DF82]">Thinking...</span>
+            ) : (
+              <span className="text-xs text-[#03624c] dark:text-[#00DF82]">Ready</span>
+            )}
+          </div>
+
+          {/* Compact AI interface */}
+          <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
+            {/* Input area */}
+            <div className="flex items-center space-x-2 mb-3">
+              <div className="w-2 h-2 bg-[#03624c] dark:bg-[#00DF82] rounded-full"></div>
+              <span className="text-xs text-slate-600 dark:text-slate-400">AI Prompt:</span>
+              <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">"Create a neural network diagram"</span>
             </div>
-            <div className="flex items-center space-x-1">
-              <div className="w-2 h-2 bg-[#03624c] dark:bg-[#00DF82] rounded-full animate-pulse"></div>
-              <span className="text-xs text-[#03624c] dark:text-[#00DF82]">Discovering...</span>
+            
+            {/* Code generation progress */}
+            <div className="space-y-1">
+              <div className="text-xs text-slate-600 dark:text-slate-400 mb-2">Generating...</div>
+              
+              <div className="bg-slate-900 rounded p-2 font-mono text-xs">
+                <div className="space-y-1">
+                  {tikzStep >= 1 && (
+                    <div className="text-purple-400 animate-fade-in">{"\\begin{tikzpicture}"}</div>
+                  )}
+                  {tikzStep >= 2 && (
+                    <div className="text-blue-400 animate-fade-in">  {"\\node[draw, circle] (input) at (0,0) {Input};"}</div>
+                  )}
+                  {tikzStep >= 3 && (
+                    <div className="text-green-400 animate-fade-in">  {"\\node[draw, circle] (hidden) at (3,0) {Hidden};"}</div>
+                  )}
+                  {tikzStep >= 4 && (
+                    <div className="text-red-400 animate-fade-in">  {"\\node[draw, circle] (output) at (6,0) {Output};"}</div>
+                  )}
+                  {tikzStep >= 5 && (
+                    <div className="text-yellow-400 animate-fade-in">  {"\\draw[->] (input) -- (hidden);"}</div>
+                  )}
+                  {tikzStep >= 6 && (
+                    <div className="text-yellow-400 animate-fade-in">  {"\\draw[->] (hidden) -- (output);"}</div>
+                  )}
+                  {tikzStep >= 7 && (
+                    <div className="text-purple-400 animate-fade-in">{"\\end{tikzpicture}"}</div>
+                  )}
+                </div>
+              </div>
+              
+              {/* Status bar */}
+              <div className="flex items-center justify-between text-xs mt-2">
+                <span className="text-slate-500 dark:text-slate-400">Syntax validated</span>
+                <button className="text-[#03624c] dark:text-[#00DF82] hover:underline">
+                  Insert into document →
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      icon: <Users className="w-7 h-7" />,
+      title: "Collaboration, Reimagined",
+      highlights: [
+        "Collaborate in real-time with live cursors",
+        "Suggest changes instead of editing directly",
+        "Accept or reject suggestions with one click",
+        "Track all versions with named checkpoints"
+      ],
+      demo: (
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700" style={{ minHeight: '220px' }}>
+          {/* Simplified header */}
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-medium text-slate-700 dark:text-slate-300">paper.tex</span>
+            <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-1">
+                <div className="w-5 h-5 bg-[#03624c] rounded-full flex items-center justify-center text-xs text-white font-bold">A</div>
+                <div className="w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center text-xs text-white font-bold">S</div>
+                <span className="text-xs text-slate-500 dark:text-slate-400">2 online</span>
+              </div>
             </div>
           </div>
 
-          <div className="relative h-32 bg-white dark:bg-slate-800 rounded-lg border border-[#03624c]/20 dark:border-[#00DF82]/20 overflow-hidden">
-            {/* Animated network visualization */}
-            <svg className="w-full h-full" viewBox="0 0 200 120">
-              {/* Connections */}
-              <g className="opacity-30">
-                <line x1="40" y1="30" x2="100" y2="60" stroke="currentColor" strokeWidth="1" className="text-[#03624c] dark:text-[#00DF82] animate-pulse" />
-                <line x1="100" y1="60" x2="160" y2="40" stroke="currentColor" strokeWidth="1" className="text-[#03624c] dark:text-[#00DF82] animate-pulse" style={{ animationDelay: '0.5s' }} />
-                <line x1="40" y1="30" x2="70" y2="80" stroke="currentColor" strokeWidth="1" className="text-[#03624c] dark:text-[#00DF82] animate-pulse" style={{ animationDelay: '1s' }} />
-                <line x1="70" y1="80" x2="130" y2="90" stroke="currentColor" strokeWidth="1" className="text-[#03624c] dark:text-[#00DF82] animate-pulse" style={{ animationDelay: '1.5s' }} />
-                <line x1="160" y1="40" x2="130" y2="90" stroke="currentColor" strokeWidth="1" className="text-[#03624c] dark:text-[#00DF82] animate-pulse" style={{ animationDelay: '2s' }} />
-              </g>
+          {/* Simplified code editor */}
+          <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-600 relative overflow-hidden">
+            <div className="p-3 font-mono text-sm relative" style={{ minHeight: '120px' }}>
+              {/* Live cursors */}
+              {collaboratorCursors.map(cursor => (
+                <div
+                  key={cursor.id}
+                  className="absolute pointer-events-none animate-pulse"
+                  style={{ 
+                    left: `${cursor.x}px`, 
+                    top: `${cursor.y}px`,
+                    transition: 'all 2s ease-in-out'
+                  }}
+                >
+                  <div className="flex items-center space-x-1">
+                    <div 
+                      className="w-0.5 h-4 animate-pulse"
+                      style={{ backgroundColor: cursor.color }}
+                    ></div>
+                    <div 
+                      className="px-2 py-0.5 rounded text-xs text-white shadow-lg"
+                      style={{ backgroundColor: cursor.color }}
+                    >
+                      {cursor.name}
+                    </div>
+                  </div>
+                </div>
+              ))}
 
-              {/* Nodes */}
-              {graphNodes.map((node, index) => {
-                const positions = [
-                  { x: 40, y: 30, color: '[#03624c]', size: 8 },
-                  { x: 100, y: 60, color: '[#03624c]', size: 6 },
-                  { x: 160, y: 40, color: '[#03624c]', size: 5 },
-                  { x: 70, y: 80, color: '[#03624c]', size: 4 },
-                  { x: 130, y: 90, color: '[#03624c]', size: 4 },
-                  { x: 180, y: 70, color: '[#03624c]', size: 3 },
-                  { x: 20, y: 60, color: '[#03624c]', size: 3 },
-                  { x: 120, y: 20, color: '[#03624c]', size: 3 }
-                ];
-
-                const pos = positions[index % positions.length];
-                return (
-                  <circle
-                    key={node}
-                    cx={pos.x}
-                    cy={pos.y}
-                    r={pos.size}
-                    className={`fill-[#03624c] dark:fill-[#00DF82] animate-scale-in`}
-                    style={{
-                      animationDelay: `${index * 0.3}s`,
-                      transformOrigin: `${pos.x}px ${pos.y}px`
-                    }}
-                  />
-                );
-              })}
-            </svg>
-
-            {/* Floating papers */}
-            <div className="absolute top-2 right-2 bg-[#03624c]/10 dark:bg-[#00DF82]/10 px-2 py-1 rounded text-xs text-[#03624c] dark:text-[#00DF82] animate-fade-in-up">
-              Deep Learning (2016)
+              <div className="space-y-1">
+                <div className="flex items-center">
+                  <span className="text-slate-400 mr-3 w-6 text-xs">1</span>
+                  <span className="text-blue-600 dark:text-blue-400">\section</span>
+                  <span className="text-slate-700 dark:text-slate-300">{`{Machine Learning Applications}`}</span>
+                </div>
+                
+                <div className="flex items-center">
+                  <span className="text-slate-400 mr-3 w-6 text-xs">2</span>
+                  <span className="text-slate-700 dark:text-slate-300">Recent developments in neural networks have</span>
+                </div>
+                
+                {/* Line with suggestion */}
+                <div className="flex items-center relative">
+                  <span className="text-slate-400 mr-3 w-6 text-xs">3</span>
+                  <span className="text-slate-700 dark:text-slate-300">
+                    {suggestionState === 'pending' && (
+                      <>
+                        demonstrated{' '}
+                        <span className="relative">
+                          <span className="bg-yellow-200 dark:bg-yellow-800/50 px-1 rounded">
+                            remarkable capabilities
+                          </span>
+                          
+                          {/* Cursor-style suggestion popup */}
+                          <div className="absolute -top-16 -left-20 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg shadow-xl z-10 w-80 animate-fade-in">
+                            <div className="p-3">
+                              <div className="flex items-center justify-between mb-2">
+                                <div className="flex items-center space-x-2">
+                                  <div className="w-5 h-5 bg-amber-500 rounded-full flex items-center justify-center text-xs text-white font-bold">S</div>
+                                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Sarah suggests:</span>
+                                </div>
+                                <div className="flex items-center space-x-1">
+                                  <Clock className="w-3 h-3 text-slate-400" />
+                                  <span className="text-xs text-slate-400">now</span>
+                                </div>
+                              </div>
+                              
+                              <div className="text-xs text-slate-600 dark:text-slate-400 mb-3 bg-slate-50 dark:bg-slate-800 p-2 rounded border">
+                                <div className="flex items-center space-x-2">
+                                  <span className="text-red-500 line-through">remarkable capabilities</span>
+                                  <span className="text-slate-400">→</span>
+                                  <span className="text-green-600 font-medium">unprecedented performance</span>
+                                </div>
+                              </div>
+                              
+                              <div className="flex items-center justify-between">
+                                <div className="flex space-x-2">
+                                  <button className="bg-green-100 dark:bg-green-800/30 text-green-700 dark:text-green-300 px-3 py-1.5 rounded text-xs font-medium hover:bg-green-200 dark:hover:bg-green-800/50 transition-colors flex items-center space-x-1">
+                                    <Check className="w-3 h-3" />
+                                    <span>Accept</span>
+                                  </button>
+                                  <button className="bg-red-100 dark:bg-red-800/30 text-red-700 dark:text-red-300 px-3 py-1.5 rounded text-xs font-medium hover:bg-red-200 dark:hover:bg-red-800/50 transition-colors flex items-center space-x-1">
+                                    <X className="w-3 h-3" />
+                                    <span>Reject</span>
+                                  </button>
+                                </div>
+                                <div className="text-xs text-slate-400">
+                                  <span className="font-mono">⌘+Enter</span> / <span className="font-mono">⌘+Esc</span>
+                                </div>
+                              </div>
+                            </div>
+                            
+                            {/* Arrow pointing to suggestion */}
+                            <div className="absolute top-full left-4">
+                              <div className="w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-white dark:border-t-slate-700"></div>
+                            </div>
+                          </div>
+                        </span>
+                      </>
+                    )}
+                    
+                    {suggestionState === 'accepted' && (
+                      <span className="bg-green-100 dark:bg-green-800/30 text-green-700 dark:text-green-300 px-1 rounded">
+                        unprecedented performance
+                      </span>
+                    )}
+                    
+                    {suggestionState === 'rejected' && (
+                      <span className="text-slate-700 dark:text-slate-300">
+                        remarkable capabilities
+                      </span>
+                    )}
+                    {' '}in various domains.
+                  </span>
+                </div>
+              </div>
             </div>
-            <div className="absolute bottom-2 left-2 bg-[#03624c]/10 dark:bg-[#00DF82]/10 px-2 py-1 rounded text-xs text-[#03624c] dark:text-[#00DF82] animate-fade-in-up" style={{ animationDelay: '1s' }}>
-              Transformers (2017)
-            </div>
-            <div className="absolute bottom-2 right-2 bg-[#03624c]/10 dark:bg-[#00DF82]/10 px-2 py-1 rounded text-xs text-[#03624c] dark:text-[#00DF82] animate-fade-in-up" style={{ animationDelay: '2s' }}>
-              GPT-3 (2020)
-            </div>
-          </div>
 
-          <div className="mt-3 flex items-center justify-between text-xs">
-            <span className="text-[#03624c] dark:text-[#00DF82]">127 related papers found</span>
-            <div className="flex space-x-2">
-              <span className="px-2 py-1 bg-[#03624c]/10 dark:bg-[#00DF82]/10 text-[#03624c] dark:text-[#00DF82] rounded">ML</span>
-              <span className="px-2 py-1 bg-[#03624c]/10 dark:bg-[#00DF82]/10 text-[#03624c] dark:text-[#00DF82] rounded">NLP</span>
+            {/* Simplified version control */}
+            <div className="px-3 py-2 bg-slate-50 dark:bg-slate-700 border-t border-slate-200 dark:border-slate-600">
+              <div className="flex items-center justify-between text-xs">
+                <span className="text-slate-600 dark:text-slate-400">3 pending suggestions</span>
+                <span className="text-slate-500 dark:text-slate-400">Last saved: 2s ago</span>
+              </div>
             </div>
           </div>
         </div>
       )
     }
   ];
-
-  const WaitingListForm = ({ trigger }) => {
-    return trigger;
-  };
 
   return (
     <section id="features" className="py-24 bg-muted/20 dark:bg-muted/20">
@@ -317,7 +559,7 @@ const DetailedFeaturesSection = () => {
           </p>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-2 max-w-7xl mx-auto">
+        <div className="grid gap-8 lg:grid-cols-2 max-w-[1400px] mx-auto">
           {detailedFeatures.map((feature, index) => (
             <div
               key={index}
@@ -333,8 +575,9 @@ const DetailedFeaturesSection = () => {
                 </h3>
               </div>
 
-              <div className="grid grid-cols-1 xl:grid-cols-5 gap-6">
-                <div className="xl:col-span-2 space-y-3">
+              <div className="space-y-8">
+                {/* Feature highlights as a clean list */}
+                <div className="space-y-3">
                   {feature.highlights.map((highlight, highlightIndex) => (
                     <div
                       key={highlightIndex}
@@ -347,7 +590,8 @@ const DetailedFeaturesSection = () => {
                   ))}
                 </div>
 
-                <div className="xl:col-span-3">
+                {/* Demo section with better separation */}
+                <div className="border-t border-slate-200 dark:border-slate-700 pt-6">
                   <div className="transform group-hover:scale-105 transition-transform duration-500">
                     {feature.demo}
                   </div>
@@ -356,8 +600,6 @@ const DetailedFeaturesSection = () => {
             </div>
           ))}
         </div>
-
-
       </div>
     </section>
   );
