@@ -1,20 +1,64 @@
 import { Button } from "@/components/ui/button";
 import WaitingListForm from "@/components/WaitingListForm";
+import { useState, useEffect } from "react";
 
 const HeroSection = () => {
+  const [currentLine, setCurrentLine] = useState(0);
+  const [isTyping, setIsTyping] = useState(false);
+
+  const latexDocument = [
+    '\\documentclass[12pt]{article}',
+    '\\usepackage{amsmath,amssymb,amsfonts}',
+    '\\usepackage{graphicx}',
+    '\\usepackage{cite}',
+    '',
+    '\\title{Research Paper Title}',
+    '\\author{Author Name}',
+    '\\date{\\today}',
+    '',
+    '\\begin{document}',
+    '\\maketitle',
+    '',
+    '\\begin{abstract}',
+    'This paper presents...',
+    '\\end{abstract}',
+    '',
+    '\\section{Introduction}',
+    'The introduction begins here...',
+    '',
+    '\\begin{equation}',
+    'E = mc^2',
+    '\\end{equation}',
+    '',
+    '\\section{Methodology}',
+    'Our approach involves...',
+    '',
+    '\\bibliography{references}',
+    '\\end{document}'
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isTyping) {
+        setIsTyping(true);
+        setTimeout(() => {
+          setCurrentLine(prev => (prev + 1) % latexDocument.length);
+          setIsTyping(false);
+        }, 2000);
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [isTyping, latexDocument.length]);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center py-20 overflow-hidden">
-      {/* Animated background elements */}
+      {/* Simple background */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-        <div className="w-[600px] h-[600px] bg-primary/30 rounded-full blur-[120px] animate-pulse"></div>
+        <div className="w-[600px] h-[600px] bg-primary/30 rounded-full blur-[120px]"></div>
       </div>
       
-      {/* Floating particles */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-primary/40 rounded-full animate-bounce" style={{ animationDelay: '0s' }}></div>
-        <div className="absolute top-1/3 right-1/4 w-1 h-1 bg-primary/60 rounded-full animate-bounce" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-1/3 left-1/3 w-1.5 h-1.5 bg-primary/50 rounded-full animate-bounce" style={{ animationDelay: '2s' }}></div>
-      </div>
+
       
       <div className="container mx-auto px-6 lg:px-8 relative z-10">
         <div className="text-center max-w-5xl mx-auto">

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import CitableIcon from "@/components/CitableIcon";
 import WaitingListForm from "@/components/WaitingListForm";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Header = () => {
   return (
@@ -27,14 +28,17 @@ const Header = () => {
             </a>
           </nav>
 
-          {/* Join Waiting List Button */}
-          <WaitingListForm 
-            trigger={
-              <Button variant="outline" size="sm" className="font-normal">
-                Join waiting list
-              </Button>
-            }
-          />
+          {/* Theme Toggle and Join Waiting List Button */}
+          <div className="flex items-center space-x-4">
+            <ThemeToggle />
+            <WaitingListForm 
+              trigger={
+                <Button variant="outline" size="sm" className="font-normal">
+                  Join waiting list
+                </Button>
+              }
+            />
+          </div>
         </div>
       </div>
     </header>

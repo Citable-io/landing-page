@@ -9,24 +9,21 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center space-y-6 md:space-y-0 md:space-x-12 mb-8 md:mb-0">
             {/* Logo */}
             <div className="flex items-center space-x-3">
-              <CitableIcon className="w-7 h-7" />
-              <span className="text-xl font-semibold text-foreground tracking-tight">CITABLE</span>
+              <CitableIcon className="w-16 h-16" />
             </div>
-            
+
             {/* Links */}
             <nav className="flex space-x-8">
               <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Features
               </a>
+
               <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Lorem Ipsum
-              </a>
-              <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Lorem Ipsum
+                Contact us
               </a>
             </nav>
           </div>
-          
+
           {/* Connect Section */}
           <div className="flex items-center space-x-4">
             <span className="text-sm text-muted-foreground">Connect with us</span>
@@ -35,7 +32,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Bottom Section */}
         <div className="border-t border-border/20 mt-12 pt-8 flex flex-col md:flex-row items-center justify-between text-xs text-muted-foreground">
           <p>Copyright © 2025</p>

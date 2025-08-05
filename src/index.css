@@ -46,6 +46,48 @@
     --gradient-radial: radial-gradient(circle at 50% 50%, hsl(var(--accent-glow) / 0.3) 0%, transparent 60%);
     --gradient-hero: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--accent-glow) / 0.1) 100%);
   }
+
+  .light {
+    /* CITABLE light theme colors */
+    --background: 0 0% 100%;
+    --foreground: 184 14% 7%;
+    
+    --card: 0 0% 98%;
+    --card-foreground: 184 14% 7%;
+    
+    --popover: 0 0% 98%;
+    --popover-foreground: 184 14% 7%;
+    
+    /* CITABLE green - #03624c shade for light mode */
+    --primary: 158 100% 19%;
+    --primary-foreground: 0 0% 100%;
+    
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 184 14% 7%;
+    
+    --muted: 0 0% 96%;
+    --muted-foreground: 184 14% 40%;
+    
+    --accent: 158 100% 19%;
+    --accent-foreground: 0 0% 100%;
+    
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 158 100% 19%;
+    
+    --radius: 0.75rem;
+    
+    /* Green glow effects - #03624c shade for light mode */
+    --primary-glow: 158 100% 30%;
+    --accent-glow: 158 80% 25%;
+    
+    /* Gradients */
+    --gradient-radial: radial-gradient(circle at 50% 50%, hsl(var(--accent-glow) / 0.2) 0%, transparent 60%);
+    --gradient-hero: linear-gradient(135deg, hsl(var(--background)) 0%, hsl(var(--accent-glow) / 0.05) 100%);
+  }
 }
 
 @layer base {
@@ -81,6 +123,22 @@
 .animate-fade-in-up:nth-child(3) { animation-delay: 0.3s; }
 .animate-fade-in-up:nth-child(4) { animation-delay: 0.4s; }
 .animate-fade-in-up:nth-child(5) { animation-delay: 0.5s; }
+
+/* Cursor particle animations */
+@keyframes fadeOutUp {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) translateY(-10px) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-30px) scale(0.95);
+  }
+}
 
 /* Smooth scrolling */
 html {
