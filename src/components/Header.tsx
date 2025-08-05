@@ -20,9 +20,7 @@ const Header = () => {
             <a href="#features" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Features
             </a>
-            <a href="#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              About
-            </a>
+
             <a href="#contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Contact
             </a>
@@ -31,7 +29,7 @@ const Header = () => {
           {/* Theme Toggle and Join Waiting List Button */}
           <div className="flex items-center space-x-4">
             <ThemeToggle />
-            <WaitingListForm 
+            <WaitingListForm
               trigger={
                 <Button variant="outline" size="sm" className="font-normal">
                   Join waiting list
