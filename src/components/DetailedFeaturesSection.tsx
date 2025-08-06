@@ -399,7 +399,7 @@ const DetailedFeaturesSection = () => {
         "Track all versions with named checkpoints"
       ],
       demo: (
-        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700 h-48">
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
           {/* Simplified header */}
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">paper.tex</span>
