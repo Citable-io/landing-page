@@ -25,8 +25,8 @@ const Header = () => {
               Features
             </a>
 
-            <a href="#workflow" className="text-sm text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-[#03624c]/5 dark:hover:bg-[#00DF82]/5 hover:backdrop-blur-sm px-3 py-2 rounded-lg">
-              Workflow
+            <a href="#integrations" className="text-sm text-muted-foreground hover:text-foreground transition-all duration-300 hover:bg-[#03624c]/5 dark:hover:bg-[#00DF82]/5 hover:backdrop-blur-sm px-3 py-2 rounded-lg">
+              Integrations
             </a>
           </nav>
 

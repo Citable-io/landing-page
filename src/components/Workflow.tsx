@@ -80,7 +80,7 @@ const Workflow = () => {
   ];
 
   return (
-    <section className="py-32 bg-muted/20 dark:bg-muted/20 relative overflow-hidden min-h-[800px]">
+    <section id="integrations" className="py-32 bg-muted/20 dark:bg-muted/20 relative overflow-hidden min-h-[800px]">
 
       {/* Floating Integration Icons - Desktop Only */}
       <div className="hidden md:block">
