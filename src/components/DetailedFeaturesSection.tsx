@@ -328,7 +328,7 @@ const DetailedFeaturesSection = () => {
         "Use smart autocomplete for LaTeX & citations"
       ],
       demo: (
-        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700">
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700 group">
           {/* Simplified header */}
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">AI Research Assistant</span>
@@ -341,38 +341,37 @@ const DetailedFeaturesSection = () => {
 
           {/* Compact AI interface */}
           <div className="bg-white dark:bg-slate-800 rounded-lg p-3 border border-slate-200 dark:border-slate-600">
-            {/* Input area */}
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="w-2 h-2 bg-[#03624c] dark:bg-[#00DF82] rounded-full"></div>
-              <span className="text-xs text-slate-600 dark:text-slate-400">AI Prompt:</span>
-              <span className="text-xs text-slate-700 dark:text-slate-300 font-medium">"Create a neural network diagram"</span>
+                          <div className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2 mb-3">
+              <div className="flex items-center space-x-2">
+                <div className="w-2 h-2 bg-[#03624c] dark:bg-[#00DF82] rounded-full flex-shrink-0"></div>
+                <span className="text-xs text-slate-600 dark:text-slate-400 flex-shrink-0">AI Prompt:</span>
+              </div>
+              <div className="overflow-x-auto">
+                <span className="text-xs text-slate-700 dark:text-slate-300 font-medium break-words">"Create a neural network diagram"</span>
+              </div>
             </div>
             
             {/* Code generation progress */}
             <div className="space-y-1">
               <div className="text-xs text-slate-600 dark:text-slate-400 mb-2">Generating...</div>
               
-              <div className="bg-slate-900 rounded p-2 font-mono text-xs">
-                <div className="space-y-1">
+              <div className="bg-slate-900 rounded p-2 font-mono text-xs overflow-x-auto overflow-y-auto">
+                <div className="space-y-1 min-w-fit">
                   {tikzStep >= 1 && (
                     <div className="text-purple-400 animate-fade-in">{"\\begin{tikzpicture}"}</div>
                   )}
                   {tikzStep >= 2 && (
                     <div className="text-blue-400 animate-fade-in">  {"\\node[draw, circle] (input) at (0,0) {Input};"}</div>
                   )}
+              
+                 {tikzStep >= 2 && (
+                    <div className="text-blue-400 animate-fade-in">  {"\\node[draw, circle] (input) at (0,0) {Input};"}</div>
+                  )}
                   {tikzStep >= 3 && (
-                    <div className="text-green-400 animate-fade-in">  {"\\node[draw, circle] (hidden) at (3,0) {Hidden};"}</div>
-                  )}
-                  {tikzStep >= 4 && (
-                    <div className="text-red-400 animate-fade-in">  {"\\node[draw, circle] (output) at (6,0) {Output};"}</div>
-                  )}
-                  {tikzStep >= 5 && (
                     <div className="text-yellow-400 animate-fade-in">  {"\\draw[->] (input) -- (hidden);"}</div>
                   )}
-                  {tikzStep >= 6 && (
-                    <div className="text-yellow-400 animate-fade-in">  {"\\draw[->] (hidden) -- (output);"}</div>
-                  )}
-                  {tikzStep >= 7 && (
+                  
+                  {tikzStep >= 4 && (
                     <div className="text-purple-400 animate-fade-in">{"\\end{tikzpicture}"}</div>
                   )}
                 </div>
@@ -400,7 +399,7 @@ const DetailedFeaturesSection = () => {
         "Track all versions with named checkpoints"
       ],
       demo: (
-        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700" style={{ minHeight: '220px' }}>
+        <div className="bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-800 dark:to-slate-900 rounded-xl p-4 border border-slate-200 dark:border-slate-700 h-48">
           {/* Simplified header */}
           <div className="flex items-center justify-between mb-3">
             <span className="text-sm font-medium text-slate-700 dark:text-slate-300">paper.tex</span>
@@ -545,7 +544,7 @@ const DetailedFeaturesSection = () => {
   ];
 
   return (
-    <section id="features" className="py-24 bg-muted/20 dark:bg-muted/20">
+    <section id="features" className="py-28 bg-muted/20 dark:bg-muted/20 max-h-[3000px]">
       <div className="container mx-auto px-6 lg:px-8">
         <div className="text-center mb-16">
           <p className="text-sm text-muted-foreground mb-4 font-normal animate-fade-in-up">Our features</p>
@@ -563,7 +562,7 @@ const DetailedFeaturesSection = () => {
           {detailedFeatures.map((feature, index) => (
             <div
               key={index}
-              className="group bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-3xl p-8 hover:border-[#03624c] dark:hover:border-[#00DF82] hover:shadow-2xl hover:shadow-[#03624c]/10 dark:hover:shadow-[#00DF82]/10 transition-all duration-500 animate-fade-in-up hover:-translate-y-2"
+              className="group bg-white dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200 dark:border-slate-700 rounded-3xl p-4 hover:border-[#03624c] dark:hover:border-[#00DF82] hover:shadow-2xl hover:shadow-[#03624c]/10 dark:hover:shadow-[#00DF82]/10 transition-all duration-500 animate-fade-in-up hover:-translate-y-2"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
               <div className="flex items-center mb-6">

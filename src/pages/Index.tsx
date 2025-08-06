@@ -11,7 +11,9 @@ const Index = () => {
       <Header />
       <HeroSection />
       {/* <TrustedBySection /> */}
-      <DetailedFeaturesSection />
+      <div className="max-h-[3000px]">
+        <DetailedFeaturesSection />
+      </div>
       <Workflow />
       <Footer />
     </div>

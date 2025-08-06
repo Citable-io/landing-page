@@ -18,13 +18,10 @@ const Footer = () => {
           <div className="flex flex-col md:flex-row items-center justify-between space-y-6 md:space-y-0">
             {/* Logo */}
             <div className="flex items-center">
-              <div className="flex items-center space-x-3">
-                <CitableIcon className="w-10 h-10 md:w-12 md:h-12" />
-                <span className="text-lg md:text-xl font-semibold text-foreground" style={{ fontFamily: 'Goodly, Playfair Display, serif' }}>
-                  Citable
-                </span>
-              </div>
-            </div>         
+            <div className="flex items-center space-x-3">
+              <CitableIcon className="w-32 w-32" />
+            </div>
+          </div>
 
             {/* Theme Toggle and Join Waiting List Button */}
             <div className="flex items-center space-x-4">

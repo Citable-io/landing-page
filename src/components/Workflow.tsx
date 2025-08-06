@@ -1,380 +1,196 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import WaitingListForm from "@/components/WaitingListForm";
+import {
+  Github,
+  Gitlab,
+  Database,
+  FileText,
+  Cloud,
+  Zap,
+  CheckCircle,
+  ExternalLink,
+  ArrowRight
+} from "lucide-react";
 
 const Workflow = () => {
-  const [activeStep, setActiveStep] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
-  const intervalRef = useRef(null);
+  const [hoveredIntegration, setHoveredIntegration] = useState<string | null>(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 100);
-
-    if (isPlaying) {
-      intervalRef.current = setInterval(() => {
-        setActiveStep((prev) => (prev + 1) % 4);
-      }, 4500);
-    }
-
-    return () => {
-      clearTimeout(timer);
-      if (intervalRef.current) clearInterval(intervalRef.current);
-    };
-  }, [isPlaying]);
-
-  const handleStepClick = (index) => {
-    setActiveStep(index);
-    setIsPlaying(false);
-    if (intervalRef.current) clearInterval(intervalRef.current);
-
-    // Resume auto-play after 10 seconds
-    setTimeout(() => {
-      setIsPlaying(true);
-    }, 10000);
-  };
-
-  const steps = [
+  const integrations = [
     {
-      title: "Smart Research",
-      description: "AI-powered literature search with intelligent recommendations and citation networks",
-      icon: "🔍",
-      details: "Discover relevant papers 10x faster with our AI research assistant",
-      metrics: "98% accuracy • 50k+ papers indexed"
+      name: "Zotero",
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+          <polygon style={{ fill: "#CC0000" }} points="13.863 2.73 13.027 1 2.137 1 2.137 3.8 2.137 3.921 8.822 3.921 1.289 13.233 2.137 15 13.863 15 13.863 12.142 13.863 12.021 6.448 12.021 13.863 2.73" />
+        </svg>
+
+      ),
+      color: "bg-gradient-to-br from-[#f1f1f1] to-[#f1f1f1]",
+      position: { top: "15%", left: "5%" }
     },
     {
-      title: "Collaborative Writing",
-      description: "Real-time LaTeX editing with AI assistance and seamless team collaboration",
-      icon: "✍️",
-      details: "Write together in real-time with intelligent formatting suggestions",
-      metrics: "Real-time sync • Multi-user editing"
+      name: "GitHub",
+      icon: (
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+        </svg>
+      ),
+      color: "bg-gradient-to-br from-slate-700 to-slate-900",
+      position: { top: "25%", left: "85%" }
     },
     {
-      title: "Version Control",
-      description: "Advanced version management with intelligent change tracking and rollback",
-      icon: "📊",
-      details: "Never lose work with automated versioning and smart conflict resolution",
-      metrics: "Unlimited versions • Smart merging"
+      name: "Notion",
+      icon: (
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.84-.047.933-.56.933-1.167V6.354c0-.606-.28-.933-.747-.887l-15.176.887c-.56.047-.747.327-.747.933zm14.337-.373c.093.42 0 .84-.42.887l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933z" />
+        </svg>
+      ),
+      color: "bg-gradient-to-br from-slate-800 to-black",
+      position: { top: "10%", right: "8%" }
     },
     {
-      title: "Publication Ready",
-      description: "One-click export to multiple journal formats with automated compliance checking",
-      icon: "🚀",
-      details: "Export to 500+ journal formats with automatic compliance validation",
-      metrics: "500+ formats • Auto-validation"
-    }
+      name: "Mendeley",
+      icon: (
+        <svg fill="#000000" className='w-8 h-8' viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15.964 12.255h0.025c2.928 0 4.251 3.667 2 5.543-0.317 0.296-0.713 0.505-1.14 0.599-0.281 0.083-0.568 0.125-0.86 0.125h-0.025c-0.303 0-0.589-0.048-0.865-0.125-0.427-0.093-0.817-0.303-1.135-0.599-0.719-0.595-1.136-1.48-1.136-2.412 0.005-1.729 1.407-3.131 3.136-3.131zM2.697 24.855c1.683 0.213 3.177-1.011 3.339-2.735 0.047-0.563-0.052-1.131-0.287-1.647-2.353-5.171 9.277-5.291 7.308-0.405l-0.011 0.020c-0.932 1.485-0.427 3.417 1.115 4.308 0.573 0.333 1.199 0.468 1.812 0.443 0.615 0.025 1.245-0.109 1.813-0.443 1.547-0.891 2.052-2.823 1.12-4.308l-0.011-0.020c-1.969-4.885 9.667-4.765 7.301 0.405-0.233 0.516-0.333 1.084-0.28 1.647 0.161 1.724 1.651 2.948 3.337 2.735 0.724-0.095 1.396-0.443 1.891-0.98 0 0 0.787-0.651 0.772-2.307-0.011-1.349-0.772-2.099-0.772-2.099-0.629-0.636-1.515-0.953-2.411-0.855-2.156-0.052-2.48-1.74-1.871-4.927 0.224-0.568 0.324-1.172 0.303-1.776 0.073-1.912-1.063-3.667-2.833-4.385-0.052-0.021-0.104-0.037-0.156-0.057-0.057-0.027-0.12-0.048-0.183-0.063-2.005-0.677-4.213 0.124-5.323 1.932-1.088 1.192-1.579 1.916-2.699 1.916-1.061 0-1.609-0.724-2.692-1.916-1.141-1.869-3.459-2.661-5.505-1.875-0.052 0.020-0.104 0.041-0.156 0.063-1.776 0.719-2.907 2.473-2.833 4.385-0.021 0.604 0.077 1.208 0.301 1.776 0.609 3.187 0.287 4.875-1.869 4.921-1.057-0.115-1.849 0.323-2.645 1.125-0.797 0.796-0.729 2.932 0 3.864 0.531 0.677 1.255 1.147 2.124 1.256z" />
+        </svg>
+      ),
+      color: "bg-gradient-to-br from-[#fff] to-[#fff]",
+      position: { top: "45%", left: "2%" }
+    },
+    {
+      name: "Google Scholar",
+      icon: (
+        <svg className="w-8 h-8" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5s-5.548 1.749-6.758 4.269zM12 10a7 7 0 100 14 7 7 0 000-14z" />
+        </svg>
+      ),
+      color: "bg-gradient-to-br from-blue-600 to-blue-700",
+      position: { bottom: "25%", left: "8%" }
+    },
+    {
+      name: "arXiv",
+      icon: (
+        <svg fill="#000000" className='w-8 h-8' viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <path d="M27.599 20.536l-2.525-6.619h1.885l1.848 4.776 1.839-4.776h1.281l-2.557 6.619zM21.729 12.803v-1.496h1.787v1.496zM21.729 20.541v-6.624h1.787v6.619zM12.443 20.541l2.864-4.401-2.733-4.531h2.172l1.817 3.005 1.968-3.005h1.496l-2.729 4.208 2.839 4.713h-2.167l-1.933-3.197-2.072 3.197h-1.521zM7.984 20.541v-6.624h1.781v1.249c0.459-0.932 1.167-1.401 2.115-1.401 0.109 0 0.224 0.011 0.328 0.032v1.593c-0.224-0.084-0.463-0.131-0.703-0.136-0.719 0-1.292 0.355-1.74 1.068v4.219zM3.948 19.823c-0.593 0.579-1.229 0.871-1.917 0.871-0.525 0.015-1.031-0.172-1.416-0.532-0.364-0.359-0.557-0.859-0.541-1.375-0.027-0.677 0.307-1.323 0.88-1.693 0.583-0.396 1.421-0.599 2.511-0.599h0.473v-0.604c0-0.683-0.391-1.027-1.172-1.027-0.744 0.016-1.473 0.219-2.115 0.589v-1.229c0.765-0.303 1.584-0.459 2.412-0.459 1.735 0 2.599 0.688 2.599 2.063v2.943c0 0.521 0.161 0.776 0.5 0.776 0.079 0 0.156-0.011 0.235-0.025l0.041 1c-0.323 0.104-0.661 0.161-1 0.172-0.74 0-1.203-0.287-1.416-0.865h-0.068zM3.948 18.864v-1.343h-0.427c-1.157 0-1.729 0.364-1.729 1.083-0.011 0.479 0.375 0.865 0.848 0.865 0.443 0.004 0.865-0.199 1.308-0.605z" />
+        </svg>
+      ),
+      color: "bg-gradient-to-br from-[#fff] to-[#fff]",
+      position: { bottom: "35%", right: "5%" }
+    },
   ];
 
-  const Demo = ({ step, isActive }) => {
-    const demos = {
-      0: (
-        <div className={`bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 transition-all duration-500 ${isActive ? 'shadow-lg scale-105' : ''}`}>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-2">
-              <div className={`w-3 h-3 bg-blue-500 rounded-full ${isActive ? 'animate-pulse' : ''}`}></div>
-              <span className="text-sm text-slate-600 dark:text-slate-400">AI Research Assistant</span>
-            </div>
-            <div className="text-xs text-slate-500 dark:text-slate-400">124 papers found</div>
-          </div>
-          <div className="space-y-2">
-            {[
-              { width: '85%', relevance: '95%' },
-              { width: '78%', relevance: '87%' },
-              { width: '82%', relevance: '92%' }
-            ].map((item, i) => (
-              <div key={i} className="space-y-1">
-                <div className={`h-3 bg-gradient-to-r from-blue-100 to-blue-200 dark:from-blue-900/50 dark:to-blue-800/50 rounded transition-all duration-1000 ${isActive ? 'animate-pulse' : ''}`}
-                  style={{ width: item.width, animationDelay: `${i * 200}ms` }}></div>
-                <div className="text-xs text-slate-400 dark:text-slate-500">{item.relevance} relevance</div>
-              </div>
-            ))}
-          </div>
-          {isActive && (
-            <div className="mt-3 flex items-center space-x-2 text-xs text-blue-600 dark:text-blue-400">
-              <div className="w-2 h-2 bg-blue-500 rounded-full animate-ping"></div>
-              <span>Analyzing citations...</span>
-            </div>
-          )}
-        </div>
-      ),
-      1: (
-        <div className={`bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 transition-all duration-500 ${isActive ? 'shadow-lg scale-105' : ''}`}>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-2">
-              <span className="text-xs text-slate-500 dark:text-slate-400">manuscript.tex</span>
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            </div>
-            <div className="flex items-center space-x-1">
-              <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded-full text-white text-xs flex items-center justify-center">A</div>
-              <div className="w-6 h-6 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-full text-white text-xs flex items-center justify-center">B</div>
-            </div>
-          </div>
-          <div className="font-mono text-xs text-slate-700 dark:text-slate-300 space-y-1">
-            <div className="text-blue-600 dark:text-blue-400">\section&#123;Results&#125;</div>
-            <div className="flex items-center">
-              <span>Our findings demonstrate</span>
-              {isActive && <div className="inline-block w-2 h-4 bg-emerald-500 animate-pulse ml-1"></div>}
-            </div>
-            <div className="text-slate-500 dark:text-slate-400 italic text-[10px]">
-              {isActive && <span className="animate-fade-in">✨ AI suggestion: Consider adding statistical significance</span>}
-            </div>
-          </div>
-          {isActive && (
-            <div className="mt-3 flex items-center space-x-2 text-xs text-emerald-600 dark:text-emerald-400">
-              <div className="w-2 h-2 bg-emerald-500 rounded-full animate-ping"></div>
-              <span>2 collaborators online</span>
-            </div>
-          )}
-        </div>
-      ),
-      2: (
-        <div className={`bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 transition-all duration-500 ${isActive ? 'shadow-lg scale-105' : ''}`}>
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-xs text-slate-500 dark:text-slate-400">Version History</span>
-            <div className="flex items-center space-x-1 text-xs text-slate-400">
-              <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-              </svg>
-              <span>Auto-saved</span>
-            </div>
-          </div>
-          <div className="space-y-2">
-            {[
-              { version: 'v2.3', change: 'Added statistical analysis', time: '2 min ago', active: true },
-              { version: 'v2.2', change: 'Updated methodology', time: '1 hour ago', active: false },
-              { version: 'v2.1', change: 'Refined conclusions', time: '3 hours ago', active: false }
-            ].map((commit, i) => (
-              <div key={i} className={`flex items-center space-x-3 p-2 rounded-lg transition-all duration-300 ${commit.active
-                ? 'bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800'
-                : 'bg-slate-50 dark:bg-slate-700/50 hover:bg-slate-100 dark:hover:bg-slate-700'
-                }`}>
-                <div className={`w-3 h-3 rounded-full ${commit.active ? 'bg-orange-500 animate-pulse' : 'bg-slate-400'}`}></div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{commit.version}</span>
-                    <span className="text-xs text-slate-500 dark:text-slate-400">{commit.time}</span>
-                  </div>
-                  <div className="text-xs text-slate-600 dark:text-slate-400 truncate">{commit.change}</div>
-                </div>
-                {commit.active && (
-                  <div className="w-2 h-2 bg-orange-500 rounded-full animate-ping"></div>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      ),
-      3: (
-        <div className={`bg-white dark:bg-slate-800 rounded-xl p-4 border border-slate-200 dark:border-slate-700 transition-all duration-500 ${isActive ? 'shadow-lg scale-105' : ''}`}>
-          <div className="text-center mb-3">
-            <span className="text-xs text-slate-500 dark:text-slate-400">Export Formats</span>
-          </div>
-          <div className="grid grid-cols-3 gap-2 mb-3">
-            {[
-              { name: 'Nature', selected: isActive },
-              { name: 'IEEE', selected: false },
-              { name: 'ACM', selected: false }
-            ].map((journal, i) => (
-              <div key={journal.name} className={`relative h-12 bg-slate-100 dark:bg-slate-700 rounded-lg border-2 transition-all duration-500 ${journal.selected ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20' : 'border-slate-200 dark:border-slate-600'
-                }`}>
-                <div className="text-xs text-center pt-2 text-slate-600 dark:text-slate-400">{journal.name}</div>
-                {journal.selected && (
-                  <div className="absolute -top-1 -right-1 w-4 h-4 bg-purple-500 rounded-full flex items-center justify-center">
-                    <svg className="w-2 h-2 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-            ))}
-          </div>
-          {isActive && (
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs">
-                <span className="text-purple-600 dark:text-purple-400">✓ Format validation</span>
-                <span className="text-green-600 dark:text-green-400">✓ Citation check</span>
-              </div>
-              <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1">
-                <div className="bg-gradient-to-r from-purple-500 to-green-500 h-1 rounded-full animate-pulse" style={{ width: '100%' }}></div>
-              </div>
-              <div className="text-center text-xs text-purple-600 dark:text-purple-400 font-medium">
-                Ready for submission!
-              </div>
-            </div>
-          )}
-        </div>
-      )
-    };
-
-    return demos[step] || demos[0];
-  };
-
   return (
-         <section id="workflow" className="py-24 bg-muted/20 dark:bg-muted/20 relative overflow-hidden">
-       {/* Background decoration */}
-       <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(3,98,76,0.05),transparent_50%)] pointer-events-none"></div>
-       <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(0,223,130,0.05),transparent_50%)] pointer-events-none"></div>
+    <section className="py-32 bg-muted/20 dark:bg-muted/20 relative overflow-hidden min-h-[800px]">
 
-      <div className="container mx-auto px-6 max-w-7xl relative">
-                 {/* Header */}
-         <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-12 opacity-0'}`}>
-           <p className="text-sm text-muted-foreground mb-4 font-normal animate-fade-in-up">Research workflow</p>
-           <h2 className="text-4xl lg:text-5xl font-light text-foreground leading-tight mb-4 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-             Everything you need to
-             <br />
-             <span className="text-primary font-light">streamline your research</span>
-           </h2>
-           <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
-             From initial research to final publication, Citable streamlines every step with AI-powered intelligence.
-           </p>
-         </div>
-
-        {/* Enhanced Progress Section */}
-        <div className="max-w-2xl mx-auto mb-16">
-          <div className="relative">
-            <div className="bg-slate-200 dark:bg-slate-700 rounded-full h-3 shadow-inner">
-              <div
-                className="h-full bg-gradient-to-r from-[#03624c] via-[#03624c]/80 to-[#00DF82] rounded-full transition-all duration-1000 shadow-lg relative overflow-hidden"
-                style={{ width: `${((activeStep + 1) / 4) * 100}%` }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 animate-pulse"></div>
-              </div>
+      {/* Floating Integration Icons - Desktop Only */}
+      <div className="hidden md:block">
+        {integrations.map((integration, index) => (
+          <div
+            key={integration.name}
+            className={`absolute w-16 h-16 rounded-2xl flex items-center justify-center text-white cursor-pointer transition-transform duration-300 hover:scale-110 z-20 ${integration.color} shadow-2xl`}
+            style={{
+              ...integration.position,
+              animation: `gentle-float ${3 + (index * 0.3)}s ease-in-out infinite`,
+              animationDelay: `${index * 0.2}s`,
+            }}
+          >
+            <div className="transform">
+              {integration.icon}
             </div>
-            <div className="flex justify-between mt-4">
-              {['Research', 'Write', 'Track', 'Publish'].map((label, index) => (
-                <div key={label} className={`text-center transition-all duration-500 ${activeStep >= index ? 'text-[#03624c] dark:text-[#00DF82] font-semibold' : 'text-slate-500 dark:text-slate-400'}`}>
-                  <div className={`w-3 h-3 rounded-full mx-auto mb-2 transition-all duration-500 ${activeStep >= index
-                    ? 'bg-gradient-to-r from-[#03624c] to-[#00DF82] scale-125 shadow-lg'
-                    : 'bg-slate-300 dark:bg-slate-600'
-                    }`}></div>
-                  <span className="text-sm font-medium">{label}</span>
+          </div>
+        ))}
+      </div>
+
+      {/* Main Content Container */}
+      <div className="container mx-auto px-6 max-w-6xl relative z-10">
+                <div className="text-center">
+          <p className="text-sm text-muted-foreground mb-4 font-normal animate-fade-in-up">Our integrations</p>
+          <h1 className="text-4xl lg:text-5xl font-light text-foreground leading-tight mb-4 animate-fade-in-up bg-gradient-to-r from-foreground via-primary to-primary bg-clip-text text-transparent" style={{ animationDelay: '0.2s' }}>
+            POWERFUL INTEGRATIONS<br />
+            FOR MODERN RESEARCH
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto animate-fade-in-up mb-8" style={{ animationDelay: '0.4s' }}>
+            Citable isn't just another research tool - it's a hub that connects seamlessly with your entire research ecosystem.
+          </p>
+
+          <div className="max-w-4xl mx-auto space-y-4 md:space-y-6 text-base md:text-lg leading-relaxed">
+            <p className="text-muted-foreground">
+              From reference management in Zotero to version 
+              control in GitHub, and collaborative writing in Notion, our{' '}
+              <span className="font-semibold text-primary">
+                AI-powered research assistant
+              </span>{' '}
+              works harmoniously with the tools researchers already love.
+            </p>
+
+            <p className="text-muted-foreground">
+              Import citations directly from your preferred platforms, organize your research 
+              notes and findings, and maintain perfect synchronization across your 
+              research workflow. From paper discovery on arXiv to data analysis in Jupyter, 
+              Citable adapts to your research stack, making{' '}
+              <span className="font-semibold text-primary">
+                citation management
+              </span>{' '}
+              a natural extension of your research process.
+            </p>
+          </div>
+
+          {/* Mobile Integration Icons - Grid Layout */}
+          <div className="md:hidden mt-8 w-full">
+            <div className="flex justify-center items-center gap-4">
+              {integrations.map((integration, index) => (
+                <div
+                  key={integration.name}
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center text-white cursor-pointer transition-all duration-300 hover:scale-105 ${integration.color} shadow-lg`}
+                >
+                  <div className="transform scale-75">
+                    {integration.icon}
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         </div>
-
-        {/* Enhanced Steps Grid */}
-        <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8 mb-20">
-          {steps.map((step, index) => {
-            const isActive = activeStep === index;
-
-            return (
-              <div
-                key={index}
-                                 className={`group relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-3xl p-8 border transition-all duration-700 cursor-pointer hover:shadow-2xl ${isActive
-                   ? 'border-[#03624c] dark:border-[#00DF82] shadow-2xl scale-105 bg-gradient-to-br from-white to-[#03624c]/5 dark:from-slate-800 dark:to-[#00DF82]/5'
-                   : 'border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 hover:scale-102'
-                   }`}
-                onClick={() => handleStepClick(index)}
-              >
-                                 {/* Background glow effect */}
-                 {isActive && (
-                   <div className="absolute inset-0 bg-gradient-to-br from-[#03624c]/10 to-[#00DF82]/10 rounded-3xl blur-xl scale-110 opacity-40"></div>
-                 )}
-
-                {/* Step Icon */}
-                                 <div className={`relative w-16 h-16 rounded-2xl flex items-center justify-center mb-6 mx-auto transition-all duration-500 ${isActive
-                   ? 'bg-gradient-to-br from-[#03624c] to-[#00DF82] scale-110 shadow-xl'
-                   : 'bg-slate-100 dark:bg-slate-700 group-hover:scale-105'
-                   }`}>
-                   <span className={`text-xl ${isActive ? 'text-white' : 'text-slate-600 dark:text-slate-400'}`}>
-                    {step.icon}
-                  </span>
-                  {isActive && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-transparent rounded-2xl"></div>
-                  )}
-                </div>
-
-                {/* Enhanced Demo */}
-                <div className="mb-6 transform transition-all duration-500">
-                  <Demo step={index} isActive={isActive} />
-                </div>
-
-                {/* Content */}
-                <div className="text-center relative z-10">
-                                     <div className={`inline-flex items-center space-x-2 px-4 py-2 rounded-full text-xs font-semibold mb-4 transition-all duration-300 ${isActive
-                     ? 'bg-[#03624c]/10 dark:bg-[#00DF82]/10 text-[#03624c] dark:text-[#00DF82] shadow-lg'
-                     : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400'
-                     }`}>
-                    <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-[#03624c] dark:bg-[#00DF82] animate-pulse' : 'bg-slate-400'}`}></span>
-                    <span>STEP {index + 1}</span>
-                  </div>
-
-                                     <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100 mb-3">
-                     {step.title}
-                   </h3>
-                   <p className="text-sm text-slate-600 dark:text-slate-400 mb-4 leading-relaxed">
-                     {step.description}
-                   </p>
-
-                  {isActive && (
-                    <div className="space-y-2 animate-fade-in">
-                      <p className="text-xs font-medium text-[#03624c] dark:text-[#00DF82]">
-                        {step.details}
-                      </p>
-                      <div className="text-xs text-slate-500 dark:text-slate-400">
-                        {step.metrics}
-                      </div>
-                    </div>
-                  )}
-                </div>
-
-                {/* Active indicator */}
-                {isActive && (
-                  <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-[#03624c] to-[#00DF82] rounded-full flex items-center justify-center shadow-lg animate-bounce">
-                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-
-
-
-                 {/* Enhanced CTA Section */}
-         <div className="relative bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl rounded-[2rem] p-12 lg:p-16 border border-slate-200 dark:border-slate-700 shadow-2xl overflow-hidden">
-           {/* Animated background elements */}
-           <div className="absolute inset-0 bg-gradient-to-br from-[#03624c]/15 via-transparent to-[#00DF82]/15 pointer-events-none"></div>
-           <div className="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-[#03624c]/25 to-[#00DF82]/25 rounded-full blur-3xl transform translate-x-20 -translate-y-20 animate-pulse"></div>
-           <div className="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#00DF82]/25 to-[#03624c]/25 rounded-full blur-2xl transform -translate-x-16 translate-y-16 animate-pulse" style={{ animationDelay: '1s' }}></div>
-           <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-gradient-to-br from-[#03624c]/15 to-[#00DF82]/15 rounded-full blur-xl transform -translate-x-12 -translate-y-12 animate-pulse" style={{ animationDelay: '2s' }}></div>
-
-          <div className="relative z-10 text-center">
-                         <h3 className="text-4xl lg:text-5xl font-light text-foreground leading-tight mb-4">
-               Ready to transform your
-               <br />
-               <span className="text-primary font-light">research workflow?</span>
-             </h3>
-             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-               Join the waiting list to get early access to the product.
-             </p>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <WaitingListForm
-                trigger={
-                  <Button
-                    size="lg"
-                    className="bg-gradient-to-r from-[#03624c] to-[#00DF82] hover:from-[#03624c]/90 hover:to-[#00DF82]/90 text-white rounded-full px-10 py-4 font-bold text-lg transform hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl"
-                  >
-                    Start Your Research Journey
-                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5-5 5M6 12h12" />
-                    </svg>
-                  </Button>
-                }
-              />
-
-
-            </div>
-          </div>
-        </div>
       </div>
+
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          @keyframes gentle-float {
+            0%, 100% {
+              transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+              transform: translateY(-15px) rotate(2deg);
+            }
+          }
+          
+          @keyframes fade-in {
+            from {
+              opacity: 0;
+              transform: translateY(-10px) scale(0.9);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0) scale(1);
+            }
+          }
+          
+          .animate-fade-in {
+            animation: fade-in 0.2s ease-out;
+          }
+          
+          .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+          }
+          
+          .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+          }
+        `
+      }} />
     </section>
   );
-};
+}
 
-export default Workflow;
+export default Workflow;  
