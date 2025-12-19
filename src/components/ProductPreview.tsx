@@ -26,7 +26,7 @@ export function ProductPreview() {
           Ready to simplify your research?
         </h2>
         <p className="text-muted-foreground mb-8 max-w-lg mx-auto">
-          Join our private beta and be among the first to experience a better way to manage your bibliography.
+          Be among the first to experience a better way to do research.
         </p>
 
         {/* Waitlist form */}
