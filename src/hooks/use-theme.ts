@@ -13,8 +13,12 @@ export const useTheme = () => {
 
   useEffect(() => {
     const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
-    root.classList.add(theme);
+    // Remove old classes
+    root.classList.remove("light", "dark", "dark-theme");
+    // Add new class - use dark-theme for Radix compatibility
+    if (theme === "dark") {
+      root.classList.add("dark-theme");
+    }
     localStorage.setItem("theme", theme);
   }, [theme]);
 
@@ -23,4 +27,4 @@ export const useTheme = () => {
   };
 
   return { theme, setTheme };
-}; 
+};

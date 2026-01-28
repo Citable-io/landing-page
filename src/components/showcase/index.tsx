@@ -1,63 +1,96 @@
 /**
  * TabbedProductShowcase - Main orchestrator for product demo
  *
- * Auto-rotating tabbed interface showing:
- * - Organize: Bibliography management with PDF import/annotation
- * - Write: LaTeX editor with live preview
- * - Cite: Citation insertion workflow
- *
- * Features:
- * - Dynamic duration per tab based on animation length
- * - Pauses on user interaction
- * - Smooth transitions between views
+ * Vibrant tabbed interface with module-specific colors,
+ * smooth transitions, and playful interactions.
  */
 
 import { useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { OrganizeView, ORGANIZE_DURATION } from "./OrganizeView";
 import { WriteView, WRITE_DURATION } from "./WriteView";
 import { LibraryIcon, EditIcon, LinkIcon } from "./shared/Icons";
 import type { TabId, Tab } from "./types";
 
-const tabs: Tab[] = [
+interface TabConfig extends Tab {
+  module: "bibliography" | "manuscripts" | "discover";
+  gradient: string;
+}
+
+const tabs: TabConfig[] = [
   {
     id: "organize",
     label: "Organize",
-    description: "Your library, your way",
+    description: "Import PDFs, extract metadata, and organize your library",
     duration: ORGANIZE_DURATION,
     icon: <LibraryIcon className="w-5 h-5" strokeWidth={1.5} />,
+    module: "bibliography",
+    gradient: "linear-gradient(135deg, var(--indigo-9) 0%, var(--indigo-10) 100%)",
   },
   {
     id: "write",
     label: "Write",
-    description: "LaTeX editor built-in",
+    description: "LaTeX editor with live preview and real-time collaboration",
     duration: WRITE_DURATION,
     icon: <EditIcon />,
+    module: "manuscripts",
+    gradient: "linear-gradient(135deg, var(--teal-9) 0%, var(--teal-10) 100%)",
   },
   {
     id: "cite",
     label: "Cite",
-    description: "Cite as you write",
-    duration: WRITE_DURATION, // Same as write for now
+    description: "Insert citations seamlessly while you write",
+    duration: WRITE_DURATION,
     icon: <LinkIcon className="w-5 h-5" strokeWidth={1.5} />,
+    module: "discover",
+    gradient: "linear-gradient(135deg, var(--purple-9) 0%, var(--purple-10) 100%)",
   },
 ];
+
+const moduleStyles = {
+  bibliography: {
+    accent: "var(--indigo-9)",
+    accentHover: "var(--indigo-10)",
+    tint: "var(--indigo-a3)",
+    light: "var(--indigo-4)",
+    text: "var(--indigo-11)",
+    border: "var(--indigo-a5)",
+    glow: "var(--indigo-a5)",
+  },
+  manuscripts: {
+    accent: "var(--teal-9)",
+    accentHover: "var(--teal-10)",
+    tint: "var(--teal-a3)",
+    light: "var(--teal-4)",
+    text: "var(--teal-11)",
+    border: "var(--teal-a5)",
+    glow: "var(--teal-a5)",
+  },
+  discover: {
+    accent: "var(--purple-9)",
+    accentHover: "var(--purple-10)",
+    tint: "var(--purple-a3)",
+    light: "var(--purple-4)",
+    text: "var(--purple-11)",
+    border: "var(--purple-a5)",
+    glow: "var(--purple-a5)",
+  },
+};
 
 export function TabbedProductShowcase() {
   const [activeTab, setActiveTab] = useState<TabId>("organize");
   const [isPaused, setIsPaused] = useState(false);
   const [progressKey, setProgressKey] = useState(0);
 
-  // Get current tab config
   const currentTab = tabs.find((t) => t.id === activeTab) || tabs[0];
+  const currentStyles = moduleStyles[currentTab.module];
 
-  // Get next tab in rotation
   const getNextTab = useCallback((current: TabId): TabId => {
     const currentIndex = tabs.findIndex((t) => t.id === current);
     const nextIndex = (currentIndex + 1) % tabs.length;
     return tabs[nextIndex].id;
   }, []);
 
-  // Handle animation complete - move to next tab
   const handleAnimationComplete = useCallback(() => {
     if (!isPaused) {
       setActiveTab((prev) => getNextTab(prev));
@@ -65,19 +98,17 @@ export function TabbedProductShowcase() {
     }
   }, [isPaused, getNextTab]);
 
-  // Auto-rotation fallback (in case animation doesn't call onComplete)
   useEffect(() => {
     if (isPaused) return;
 
     const timeout = setTimeout(() => {
       setActiveTab((prev) => getNextTab(prev));
       setProgressKey((k) => k + 1);
-    }, currentTab.duration + 500); // Add buffer
+    }, currentTab.duration + 500);
 
     return () => clearTimeout(timeout);
   }, [isPaused, activeTab, currentTab.duration, getNextTab]);
 
-  // Handle user click - switch immediately and pause
   const handleTabClick = (tabId: TabId) => {
     if (tabId === activeTab) return;
 
@@ -85,75 +116,138 @@ export function TabbedProductShowcase() {
     setProgressKey((k) => k + 1);
     setIsPaused(true);
 
-    // Resume auto-rotation after 15 seconds of inactivity
     setTimeout(() => setIsPaused(false), 15000);
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Tab buttons */}
       <div className="flex justify-center">
-        <div className="inline-flex gap-2 p-1.5 rounded-xl bg-secondary/50 border border-border/30">
-          {tabs.map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => handleTabClick(tab.id)}
-              className={`
-                relative flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-300
-                ${
-                  activeTab === tab.id
-                    ? "bg-card text-foreground shadow-sm"
-                    : "text-muted-foreground hover:text-foreground hover:bg-card/50"
-                }
-              `}
-            >
-              <span
-                className={`transition-colors duration-300 ${
-                  activeTab === tab.id ? "text-primary" : ""
-                }`}
-              >
-                {tab.icon}
-              </span>
-              <span className="hidden sm:inline">{tab.label}</span>
+        <div
+          className="inline-flex gap-2 p-2 rounded-2xl"
+          style={{
+            background: "color-mix(in srgb, var(--bg-tertiary) 80%, transparent)",
+            backdropFilter: "blur(8px)",
+            border: "1px solid var(--border-subtle)",
+          }}
+        >
+          {tabs.map((tab) => {
+            const isActive = activeTab === tab.id;
+            const styles = moduleStyles[tab.module];
 
-              {/* Progress indicator for active tab */}
-              {activeTab === tab.id && !isPaused && (
-                <div className="absolute bottom-0 left-2 right-2 h-0.5 bg-primary/20 rounded-full overflow-hidden">
-                  <div
-                    key={progressKey}
-                    className="h-full bg-primary rounded-full animate-progress"
-                    style={{ animationDuration: `${tab.duration}ms` }}
-                  />
-                </div>
-              )}
-            </button>
-          ))}
+            return (
+              <motion.button
+                key={tab.id}
+                onClick={() => handleTabClick(tab.id)}
+                className="relative flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-medium transition-colors"
+                style={{
+                  background: isActive ? tab.gradient : "transparent",
+                  color: isActive ? "white" : "var(--text-secondary)",
+                  boxShadow: isActive ? `0 4px 15px ${styles.glow}` : "none",
+                }}
+                whileHover={!isActive ? { background: "var(--bg-hover)" } : {}}
+                whileTap={{ scale: 0.98 }}
+              >
+                <span className="transition-transform duration-300">
+                  {tab.icon}
+                </span>
+                <span className="hidden sm:inline">{tab.label}</span>
+
+                {/* Progress indicator */}
+                {isActive && !isPaused && (
+                  <motion.div
+                    className="absolute bottom-1 left-3 right-3 h-0.5 rounded-full overflow-hidden"
+                    style={{ background: "rgba(255,255,255,0.3)" }}
+                  >
+                    <motion.div
+                      key={progressKey}
+                      className="h-full rounded-full bg-white"
+                      initial={{ width: "0%" }}
+                      animate={{ width: "100%" }}
+                      transition={{
+                        duration: tab.duration / 1000,
+                        ease: "linear",
+                      }}
+                    />
+                  </motion.div>
+                )}
+              </motion.button>
+            );
+          })}
         </div>
       </div>
 
       {/* Mockup container */}
-      <div className="relative rounded-xl overflow-hidden border border-border/20 bg-card shadow-xl">
-        {activeTab === "organize" && (
-          <OrganizeView
-            isActive={activeTab === "organize"}
-            onComplete={handleAnimationComplete}
-          />
-        )}
-        {activeTab === "write" && (
-          <WriteView isActive={activeTab === "write"} />
-        )}
-        {activeTab === "cite" && (
-          <WriteView showCitation isActive={activeTab === "cite"} />
-        )}
-      </div>
+      <motion.div
+        className="relative rounded-2xl overflow-hidden"
+        style={{
+          background: "var(--card-bg)",
+          border: `1px solid ${currentStyles.border}`,
+          boxShadow: `0 25px 50px -12px var(--mauve-a5), 0 0 0 1px ${currentStyles.border}`,
+        }}
+        layout
+      >
+        {/* Top gradient accent */}
+        <motion.div
+          className="absolute top-0 left-0 right-0 h-1"
+          style={{ background: currentTab.gradient }}
+          layoutId="tab-accent"
+        />
 
-      {/* Tab descriptions */}
-      <div className="text-center">
-        <p className="text-muted-foreground">{currentTab.description}</p>
-      </div>
+        <AnimatePresence mode="wait">
+          {activeTab === "organize" && (
+            <motion.div
+              key="organize"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <OrganizeView
+                isActive={activeTab === "organize"}
+                onComplete={handleAnimationComplete}
+              />
+            </motion.div>
+          )}
+          {activeTab === "write" && (
+            <motion.div
+              key="write"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <WriteView isActive={activeTab === "write"} />
+            </motion.div>
+          )}
+          {activeTab === "cite" && (
+            <motion.div
+              key="cite"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+            >
+              <WriteView showCitation isActive={activeTab === "cite"} />
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Tab description */}
+      <motion.div className="text-center" key={activeTab} layout>
+        <motion.p
+          className="text-lg"
+          style={{ color: "var(--text-secondary)" }}
+          initial={{ opacity: 0, y: 5 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {currentTab.description}
+        </motion.p>
+      </motion.div>
     </div>
   );
 }
 
-// Re-export for backwards compatibility
 export default TabbedProductShowcase;

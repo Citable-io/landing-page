@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-	darkMode: ["class"],
+	darkMode: ["class", ".dark-theme"],
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
@@ -22,6 +22,7 @@ export default {
 				sans: ['Inter', 'system-ui', 'sans-serif'],
 			},
 			colors: {
+				// Shadcn compatibility
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -30,7 +31,6 @@ export default {
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))',
-					glow: 'hsl(var(--primary-glow))'
 				},
 				secondary: {
 					DEFAULT: 'hsl(var(--secondary))',
@@ -47,7 +47,6 @@ export default {
 				accent: {
 					DEFAULT: 'hsl(var(--accent))',
 					foreground: 'hsl(var(--accent-foreground))',
-					glow: 'hsl(var(--accent-glow))'
 				},
 				popover: {
 					DEFAULT: 'hsl(var(--popover))',
@@ -57,14 +56,75 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Aurora colors
-				violet: 'hsl(var(--violet))',
-				emerald: 'hsl(var(--emerald))',
+				// Module colors (Radix tokens)
+				biblio: {
+					DEFAULT: 'var(--biblio)',
+					hover: 'var(--biblio-hover)',
+					strong: 'var(--biblio-strong)',
+					text: 'var(--biblio-text)',
+					tint: 'var(--biblio-tint)',
+					light: 'var(--biblio-light)',
+					border: 'var(--biblio-border)',
+					foreground: 'var(--biblio-foreground)',
+				},
+				manu: {
+					DEFAULT: 'var(--manu)',
+					hover: 'var(--manu-hover)',
+					strong: 'var(--manu-strong)',
+					text: 'var(--manu-text)',
+					tint: 'var(--manu-tint)',
+					light: 'var(--manu-light)',
+					border: 'var(--manu-border)',
+					foreground: 'var(--manu-foreground)',
+				},
+				discover: {
+					DEFAULT: 'var(--discover)',
+					hover: 'var(--discover-hover)',
+					strong: 'var(--discover-strong)',
+					text: 'var(--discover-text)',
+					tint: 'var(--discover-tint)',
+					light: 'var(--discover-light)',
+					border: 'var(--discover-border)',
+					foreground: 'var(--discover-foreground)',
+				},
+				// Semantic colors
+				success: {
+					DEFAULT: 'var(--success)',
+					text: 'var(--success-text)',
+					tint: 'var(--success-tint)',
+				},
+				warning: {
+					DEFAULT: 'var(--warning)',
+					text: 'var(--warning-text)',
+					tint: 'var(--warning-tint)',
+				},
+				error: {
+					DEFAULT: 'var(--error)',
+					text: 'var(--error-text)',
+					tint: 'var(--error-tint)',
+				},
+			},
+			backgroundColor: {
+				'bg-primary': 'var(--bg-primary)',
+				'bg-secondary': 'var(--bg-secondary)',
+				'bg-tertiary': 'var(--bg-tertiary)',
+				'bg-hover': 'var(--bg-hover)',
+				'bg-active': 'var(--bg-active)',
+			},
+			textColor: {
+				'text-primary': 'var(--text-primary)',
+				'text-secondary': 'var(--text-secondary)',
+				'text-muted': 'var(--text-muted)',
+			},
+			borderColor: {
+				'border-subtle': 'var(--border-subtle)',
+				'border-default': 'var(--border-default)',
+				'border-strong': 'var(--border-strong)',
 			},
 			boxShadow: {
-				'glow': '0 0 20px hsl(var(--primary) / 0.5)',
-				'glow-lg': '0 0 40px hsl(var(--primary) / 0.3)',
-				'glow-sm': '0 0 10px hsl(var(--primary) / 0.3)',
+				'soft': 'var(--shadow-soft)',
+				'medium': 'var(--shadow-medium)',
+				'strong': 'var(--shadow-strong)',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

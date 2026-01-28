@@ -1,109 +1,234 @@
+/* ============================================
+   RADIX COLORS CDN IMPORTS
+   Must be first before @tailwind directives
+   ============================================ */
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sand.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sand-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sand-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/sand-dark-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mauve.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mauve-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mauve-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/mauve-dark-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/indigo.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/indigo-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/indigo-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/indigo-dark-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/teal.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/teal-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/teal-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/teal-dark-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/purple.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/purple-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/purple-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/purple-dark-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/green.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/green-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/green-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/green-dark-alpha.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/amber.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/amber-dark.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/tomato.css");
+@import url("https://cdn.jsdelivr.net/npm/@radix-ui/colors@3.0.0/tomato-dark.css");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* CITABLE Design System - New palette from docs/design.md */
+/* ============================================
+   SEMANTIC TOKENS - Design System
+   Maps Radix color steps to semantic tokens
+   ============================================ */
 
 @layer base {
   :root {
-    /* Dark Mode (Default) - Deep blue-gray palette */
-    --background: 220 33% 5%;        /* #080a10 - bg-primary */
-    --foreground: 220 50% 93%;       /* #e6ecf6 - text-primary */
-
-    --card: 215 27% 7%;              /* #0e1218 - bg-secondary */
-    --card-foreground: 220 50% 93%;  /* #e6ecf6 */
-
-    --popover: 215 27% 7%;           /* #0e1218 */
-    --popover-foreground: 220 50% 93%;
-
-    /* Sky Blue accent - #0ea5e9 */
-    --primary: 199 89% 48%;
-    --primary-foreground: 220 33% 5%;
-
-    --secondary: 215 22% 12%;        /* #161c24 - bg-tertiary */
-    --secondary-foreground: 220 50% 93%;
-
-    --muted: 215 22% 12%;            /* #161c24 */
-    --muted-foreground: 215 14% 49%; /* #6d7a8c - text-muted */
-
-    --accent: 199 89% 48%;           /* #0ea5e9 */
-    --accent-foreground: 220 33% 5%;
-
-    /* Violet accent for aurora */
-    --violet: 271 91% 65%;           /* #a855f7 */
-
-    /* Emerald accent for aurora */
-    --emerald: 142 71% 45%;          /* #22c55e */
-
-    --destructive: 330 81% 60%;      /* #f472b6 - accent-error */
-    --destructive-foreground: 220 33% 5%;
-
-    --border: 215 24% 19%;           /* #242e3c - border-default */
-    --input: 215 22% 12%;            /* #161c24 - bg-tertiary */
-    --ring: 199 89% 48%;             /* #0ea5e9 */
-
+    /* Radius */
+    --radius-sm: 0.5rem;
+    --radius-md: 0.75rem;
+    --radius-lg: 1.25rem;
     --radius: 0.5rem;
 
-    /* Glow effects */
-    --primary-glow: 199 95% 60%;     /* #38bdf8 - accent-secondary */
-    --accent-glow: 199 89% 48%;
+    /* Backgrounds - Sand scale (light mode: 1=lightest) */
+    --bg-primary: var(--sand-2);
+    --bg-secondary: var(--sand-1);
+    --bg-tertiary: var(--sand-3);
+    --bg-hover-subtle: var(--sand-3);
+    --bg-hover: var(--sand-4);
+    --bg-active: var(--sand-5);
+    --bg-canvas: var(--sand-1);
 
-    /* Aurora colors */
-    --aurora-cyan: 199 89% 48%;      /* #0ea5e9 */
-    --aurora-violet: 271 91% 65%;    /* #a855f7 */
-    --aurora-emerald: 142 71% 45%;   /* #22c55e */
+    /* Text - Sand scale (steps 11-12) */
+    --text-primary: var(--sand-12);
+    --text-secondary: var(--sand-11);
+    --text-muted: var(--sand-a11);
+    --text-on-accent: var(--sand-1);
 
-    /* Selection */
-    --selection: 199 89% 48%;
+    /* Borders - Sand scale (steps 6-8) */
+    --border-subtle: var(--sand-6);
+    --border-default: var(--sand-7);
+    --border-strong: var(--sand-8);
+
+    /* Module: Bibliography (Indigo) */
+    --biblio: var(--indigo-9);
+    --biblio-hover: var(--indigo-10);
+    --biblio-strong: var(--indigo-11);
+    --biblio-text: var(--indigo-11);
+    --biblio-tint: var(--indigo-3);
+    --biblio-light: var(--indigo-4);
+    --biblio-border: var(--indigo-7);
+    --biblio-foreground: var(--sand-12);
+
+    /* Module: Manuscripts (Teal) */
+    --manu: var(--teal-9);
+    --manu-hover: var(--teal-10);
+    --manu-strong: var(--teal-11);
+    --manu-text: var(--teal-11);
+    --manu-tint: var(--teal-3);
+    --manu-light: var(--teal-4);
+    --manu-border: var(--teal-7);
+    --manu-foreground: var(--sand-1);
+
+    /* Module: Discover (Purple) */
+    --discover: var(--purple-9);
+    --discover-hover: var(--purple-10);
+    --discover-strong: var(--purple-11);
+    --discover-text: var(--purple-11);
+    --discover-tint: var(--purple-3);
+    --discover-light: var(--purple-4);
+    --discover-border: var(--purple-7);
+    --discover-foreground: var(--sand-1);
+
+    /* Semantic: Success */
+    --success: var(--green-9);
+    --success-text: var(--green-11);
+    --success-tint: var(--green-a3);
+
+    /* Semantic: Warning */
+    --warning: var(--amber-9);
+    --warning-text: var(--amber-11);
+    --warning-tint: var(--amber-a3);
+
+    /* Semantic: Error */
+    --error: var(--tomato-9);
+    --error-text: var(--tomato-11);
+    --error-tint: var(--tomato-a3);
+
+    /* Card surface */
+    --card-bg: var(--bg-secondary);
+
+    /* Shadows */
+    --shadow-soft: 0 2px 8px var(--mauve-a6);
+    --shadow-medium: 0 6px 16px var(--mauve-a7);
+    --shadow-strong: 0 10px 24px var(--mauve-a8);
+
+    /* Overlay */
+    --overlay: var(--mauve-a8);
+
+    /* ============================================
+       SHADCN COMPATIBILITY TOKENS (HSL-based)
+       Maps to Radix colors for shadcn components
+       ============================================ */
+    --background: 50 20% 98%;
+    --foreground: 40 6% 10%;
+    --card: 0 0% 100%;
+    --card-foreground: 40 6% 10%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 40 6% 10%;
+    --primary: 226 70% 55%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 50 15% 93%;
+    --secondary-foreground: 40 6% 10%;
+    --muted: 50 15% 93%;
+    --muted-foreground: 40 6% 50%;
+    --accent: 226 70% 55%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 10 78% 54%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 40 10% 85%;
+    --input: 40 10% 85%;
+    --ring: 226 70% 55%;
   }
 
-  .light {
-    /* Light Mode - Clean light palette */
-    --background: 220 50% 98%;       /* #f6f8fc - bg-primary */
-    --foreground: 220 29% 10%;       /* #121620 - text-primary */
+  /* ============================================
+     DARK THEME - Radix auto-switches colors
+     ============================================ */
+  .dark-theme {
+    /* Backgrounds - inverted for dark mode */
+    --bg-primary: var(--sand-1);
+    --bg-secondary: var(--sand-2);
+    --bg-tertiary: var(--sand-3);
+    --bg-hover-subtle: var(--bg-tertiary);
+    --bg-hover: var(--sand-4);
+    --bg-active: var(--sand-5);
+    --bg-canvas: var(--sand-1);
 
-    --card: 0 0% 100%;               /* #ffffff - bg-secondary */
-    --card-foreground: 220 29% 10%;
+    /* Text - warm off-white */
+    --text-primary: var(--sand-12);
+    --text-secondary: var(--sand-11);
+    --text-muted: var(--sand-a11);
+    --text-on-accent: var(--sand-12);
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 29% 10%;
+    /* Borders */
+    --border-subtle: var(--sand-6);
+    --border-default: var(--sand-7);
+    --border-strong: var(--sand-8);
 
-    /* Darker sky blue for light mode - #0178b5 */
-    --primary: 199 99% 36%;
-    --primary-foreground: 0 0% 100%;
+    /* Module colors - adjusted for dark mode */
+    --biblio: var(--indigo-9);
+    --biblio-hover: var(--indigo-10);
+    --biblio-strong: var(--indigo-11);
+    --biblio-text: var(--indigo-11);
+    --biblio-tint: var(--indigo-a3);
+    --biblio-light: var(--indigo-a4);
+    --biblio-border: var(--indigo-7);
+    --biblio-foreground: var(--sand-12);
 
-    --secondary: 215 42% 90%;        /* #dce5f0 - bg-tertiary */
-    --secondary-foreground: 220 29% 10%;
+    --manu: var(--teal-9);
+    --manu-hover: var(--teal-10);
+    --manu-strong: var(--teal-11);
+    --manu-text: var(--teal-11);
+    --manu-tint: var(--teal-a3);
+    --manu-light: var(--teal-a4);
+    --manu-border: var(--teal-7);
+    --manu-foreground: var(--sand-1);
 
-    --muted: 215 42% 90%;
-    --muted-foreground: 215 11% 46%; /* #677383 - text-muted */
+    --discover: var(--purple-9);
+    --discover-hover: var(--purple-10);
+    --discover-strong: var(--purple-11);
+    --discover-text: var(--purple-11);
+    --discover-tint: var(--purple-a3);
+    --discover-light: var(--purple-a4);
+    --discover-border: var(--purple-7);
+    --discover-foreground: var(--sand-1);
 
-    --accent: 199 99% 36%;           /* #0178b5 */
-    --accent-foreground: 0 0% 100%;
+    /* Shadows - stronger in dark mode */
+    --shadow-soft: 0 2px 8px var(--mauve-a8);
+    --shadow-medium: 0 6px 16px var(--mauve-a9);
+    --shadow-strong: 0 10px 24px var(--mauve-a10);
 
-    /* Violet - darker for light mode */
-    --violet: 271 81% 56%;           /* #9333ea */
+    /* Card surface */
+    --card-bg: var(--sand-2);
 
-    /* Emerald - darker for light mode */
-    --emerald: 142 76% 36%;          /* #16a34a */
-
-    --destructive: 330 81% 50%;      /* #db2777 */
+    /* SHADCN compatibility - dark mode values */
+    --background: 40 6% 7%;
+    --foreground: 50 20% 93%;
+    --card: 40 6% 10%;
+    --card-foreground: 50 20% 93%;
+    --popover: 40 6% 10%;
+    --popover-foreground: 50 20% 93%;
+    --primary: 226 70% 60%;
+    --primary-foreground: 40 6% 7%;
+    --secondary: 40 6% 15%;
+    --secondary-foreground: 50 20% 93%;
+    --muted: 40 6% 15%;
+    --muted-foreground: 40 10% 60%;
+    --accent: 226 70% 60%;
+    --accent-foreground: 40 6% 7%;
+    --destructive: 10 78% 54%;
     --destructive-foreground: 0 0% 100%;
-
-    --border: 215 48% 89%;           /* #d8e2f0 - border-default */
-    --input: 215 42% 90%;            /* #dce5f0 */
-    --ring: 199 99% 36%;
-
-    /* Aurora colors for light mode */
-    --aurora-cyan: 199 99% 36%;
-    --aurora-violet: 271 81% 56%;
-    --aurora-emerald: 142 76% 36%;
-
-    /* Glow effects */
-    --primary-glow: 199 89% 48%;
-    --accent-glow: 199 99% 36%;
-
-    --selection: 199 89% 48%;
+    --border: 40 6% 20%;
+    --input: 40 6% 20%;
+    --ring: 226 70% 60%;
   }
 }
 
@@ -113,124 +238,17 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    background: var(--bg-primary);
+    color: var(--text-primary);
     font-family: 'Inter', system-ui, sans-serif;
   }
 
   ::selection {
-    background: hsl(var(--selection) / 0.22);
+    background: var(--indigo-a4);
   }
-}
 
-/* ============================================
-   AURORA ANIMATIONS
-   ============================================ */
-
-@keyframes aurora-drift-1 {
-  0%, 100% {
-    transform: translate(0%, 0%) scale(1);
-    opacity: 0.12;
-  }
-  25% {
-    transform: translate(5%, -10%) scale(1.1);
-    opacity: 0.18;
-  }
-  50% {
-    transform: translate(-5%, -5%) scale(0.95);
-    opacity: 0.10;
-  }
-  75% {
-    transform: translate(3%, 5%) scale(1.05);
-    opacity: 0.15;
-  }
-}
-
-@keyframes aurora-drift-2 {
-  0%, 100% {
-    transform: translate(0%, 0%) scale(1);
-    opacity: 0.08;
-  }
-  33% {
-    transform: translate(-8%, 5%) scale(1.15);
-    opacity: 0.14;
-  }
-  66% {
-    transform: translate(5%, -8%) scale(0.9);
-    opacity: 0.06;
-  }
-}
-
-@keyframes aurora-drift-3 {
-  0%, 100% {
-    transform: translate(0%, 0%) scale(1);
-    opacity: 0.05;
-  }
-  50% {
-    transform: translate(10%, 10%) scale(1.2);
-    opacity: 0.10;
-  }
-}
-
-.aurora-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  will-change: transform, opacity;
-  pointer-events: none;
-}
-
-.aurora-orb-1 {
-  width: 600px;
-  height: 600px;
-  background: hsl(var(--aurora-cyan) / 0.15);
-  top: -10%;
-  left: 20%;
-  animation: aurora-drift-1 25s ease-in-out infinite;
-}
-
-.aurora-orb-2 {
-  width: 500px;
-  height: 500px;
-  background: hsl(var(--aurora-violet) / 0.12);
-  top: 30%;
-  right: 10%;
-  animation: aurora-drift-2 30s ease-in-out infinite;
-  animation-delay: -10s;
-}
-
-.aurora-orb-3 {
-  width: 400px;
-  height: 400px;
-  background: hsl(var(--aurora-emerald) / 0.08);
-  bottom: 10%;
-  left: 10%;
-  animation: aurora-drift-3 20s ease-in-out infinite;
-  animation-delay: -5s;
-}
-
-/* Mobile: Smaller, fewer orbs */
-@media (max-width: 768px) {
-  .aurora-orb-1 {
-    width: 300px;
-    height: 300px;
-    top: -5%;
-    left: 10%;
-  }
-  .aurora-orb-2 {
-    width: 250px;
-    height: 250px;
-    top: 40%;
-    right: -10%;
-  }
-  .aurora-orb-3 {
-    display: none;
-  }
-}
-
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .aurora-orb {
-    animation: none;
+  .dark-theme ::selection {
+    background: var(--indigo-a5);
   }
 }
 
@@ -255,12 +273,12 @@
 
 @keyframes highlight-pulse {
   0%, 100% {
-    box-shadow: 0 0 0 0 hsl(var(--aurora-cyan) / 0);
-    background: hsl(var(--aurora-cyan) / 0.1);
+    box-shadow: 0 0 0 0 var(--biblio-tint);
+    background: var(--biblio-tint);
   }
   50% {
-    box-shadow: 0 0 20px 5px hsl(var(--aurora-cyan) / 0.3);
-    background: hsl(var(--aurora-cyan) / 0.2);
+    box-shadow: 0 0 20px 5px var(--biblio-light);
+    background: var(--biblio-light);
   }
 }
 
@@ -347,9 +365,9 @@ section[id] {
 
 /* Glass effect for cards */
 .glass {
-  background: hsl(var(--card) / 0.8);
+  background: color-mix(in srgb, var(--card-bg) 80%, transparent);
   backdrop-filter: blur(10px);
-  border: 1px solid hsl(var(--border) / 0.5);
+  border: 1px solid color-mix(in srgb, var(--border-default) 50%, transparent);
 }
 
 /* Glow on hover */
@@ -357,7 +375,7 @@ section[id] {
   transition: box-shadow 0.3s ease;
 }
 .hover-glow:hover {
-  box-shadow: 0 0 30px hsl(var(--primary) / 0.2);
+  box-shadow: 0 0 30px var(--biblio-light);
 }
 
 /* ============================================
@@ -418,20 +436,6 @@ section[id] {
   animation: fade-in-row 0.4s ease-out forwards;
 }
 
-/* Simple fade in */
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.3s ease-out forwards;
-}
-
 /* Fade out */
 @keyframes fade-out {
   from {
@@ -463,20 +467,6 @@ section[id] {
   animation: typing-note 2s steps(30, end) forwards;
 }
 
-/* Cursor blink */
-@keyframes blink {
-  0%, 50% {
-    opacity: 1;
-  }
-  51%, 100% {
-    opacity: 0;
-  }
-}
-
-.animate-blink {
-  animation: blink 1s step-end infinite;
-}
-
 /* Layout slide transitions */
 @keyframes slide-out-left {
   from {
@@ -506,4 +496,18 @@ section[id] {
 
 .animate-slide-in-right {
   animation: slide-in-right 0.3s ease-out forwards;
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
