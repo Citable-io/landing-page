@@ -376,3 +376,134 @@ section[id] {
 .animate-progress {
   animation: progress linear forwards;
 }
+
+/* ============================================
+   ORGANIZE VIEW ANIMATIONS
+   ============================================ */
+
+/* PDF dropping onto table */
+@keyframes pdf-drop {
+  0% {
+    opacity: 0;
+    transform: translateY(-40px) rotate(-5deg);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(5px) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.animate-pdf-drop {
+  animation: pdf-drop 0.6s ease-out forwards;
+}
+
+/* Row fade in with metadata */
+@keyframes fade-in-row {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-row {
+  opacity: 0;
+  animation: fade-in-row 0.4s ease-out forwards;
+}
+
+/* Simple fade in */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Fade out */
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.animate-fade-out {
+  animation: fade-out 0.3s ease-out forwards;
+}
+
+/* Typing animation for note popup */
+@keyframes typing-note {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.animate-typing-note {
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing-note 2s steps(30, end) forwards;
+}
+
+/* Cursor blink */
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Layout slide transitions */
+@keyframes slide-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-out-left {
+  animation: slide-out-left 0.3s ease-out forwards;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out forwards;
+}

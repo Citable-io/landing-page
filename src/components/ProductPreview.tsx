@@ -6,7 +6,7 @@
  * 2. CTA section with waitlist form (after demo)
  */
 
-import { TabbedProductShowcase } from "./TabbedProductShowcase";
+import { TabbedProductShowcase } from "./showcase";
 import { WaitlistForm } from "./WaitlistForm";
 
 export function ProductPreview() {
