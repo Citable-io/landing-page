@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { staggerContainer, staggerItem } from "@/lib/animations";
 import { ArrowRight, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Hero3DAnimation } from "@/components/Hero3DAnimation";
 
 const institutions = [
   "Stanford",
@@ -41,6 +42,9 @@ export function HeroSection() {
             `,
           }}
         />
+
+        {/* 3D Animation */}
+        <Hero3DAnimation />
 
         {/* Grain */}
         <div
