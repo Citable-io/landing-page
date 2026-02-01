@@ -68,34 +68,34 @@
     --border-default: var(--sand-7);
     --border-strong: var(--sand-8);
 
-    /* Module: Bibliography (Indigo) */
-    --biblio: var(--indigo-9);
-    --biblio-hover: var(--indigo-10);
-    --biblio-strong: var(--indigo-11);
-    --biblio-text: var(--indigo-11);
-    --biblio-tint: var(--indigo-3);
-    --biblio-light: var(--indigo-4);
-    --biblio-border: var(--indigo-7);
+    /* Module: Bibliography (Green - Citable Brand) */
+    --biblio: var(--green-9);
+    --biblio-hover: var(--green-10);
+    --biblio-strong: var(--green-11);
+    --biblio-text: var(--green-11);
+    --biblio-tint: var(--green-3);
+    --biblio-light: var(--green-4);
+    --biblio-border: var(--green-7);
     --biblio-foreground: var(--sand-12);
 
-    /* Module: Manuscripts (Teal) */
-    --manu: var(--teal-9);
-    --manu-hover: var(--teal-10);
-    --manu-strong: var(--teal-11);
-    --manu-text: var(--teal-11);
-    --manu-tint: var(--teal-3);
-    --manu-light: var(--teal-4);
-    --manu-border: var(--teal-7);
+    /* Module: Manuscripts (Green - Citable Brand) */
+    --manu: var(--green-9);
+    --manu-hover: var(--green-10);
+    --manu-strong: var(--green-11);
+    --manu-text: var(--green-11);
+    --manu-tint: var(--green-3);
+    --manu-light: var(--green-4);
+    --manu-border: var(--green-7);
     --manu-foreground: var(--sand-1);
 
-    /* Module: Discover (Purple) */
-    --discover: var(--purple-9);
-    --discover-hover: var(--purple-10);
-    --discover-strong: var(--purple-11);
-    --discover-text: var(--purple-11);
-    --discover-tint: var(--purple-3);
-    --discover-light: var(--purple-4);
-    --discover-border: var(--purple-7);
+    /* Module: Discover (Green - Citable Brand) */
+    --discover: var(--green-9);
+    --discover-hover: var(--green-10);
+    --discover-strong: var(--green-11);
+    --discover-text: var(--green-11);
+    --discover-tint: var(--green-3);
+    --discover-light: var(--green-4);
+    --discover-border: var(--green-7);
     --discover-foreground: var(--sand-1);
 
     /* Semantic: Success */
@@ -127,6 +127,7 @@
     /* ============================================
        SHADCN COMPATIBILITY TOKENS (HSL-based)
        Maps to Radix colors for shadcn components
+       Now using Citable Green Brand Color
        ============================================ */
     --background: 50 20% 98%;
     --foreground: 40 6% 10%;
@@ -134,19 +135,19 @@
     --card-foreground: 40 6% 10%;
     --popover: 0 0% 100%;
     --popover-foreground: 40 6% 10%;
-    --primary: 226 70% 55%;
+    --primary: 144 67% 45%;
     --primary-foreground: 0 0% 100%;
     --secondary: 50 15% 93%;
     --secondary-foreground: 40 6% 10%;
     --muted: 50 15% 93%;
     --muted-foreground: 40 6% 50%;
-    --accent: 226 70% 55%;
+    --accent: 144 67% 45%;
     --accent-foreground: 0 0% 100%;
     --destructive: 10 78% 54%;
     --destructive-foreground: 0 0% 100%;
     --border: 40 10% 85%;
     --input: 40 10% 85%;
-    --ring: 226 70% 55%;
+    --ring: 144 67% 45%;
   }
 
   /* ============================================
@@ -173,32 +174,32 @@
     --border-default: var(--sand-7);
     --border-strong: var(--sand-8);
 
-    /* Module colors - adjusted for dark mode */
-    --biblio: var(--indigo-9);
-    --biblio-hover: var(--indigo-10);
-    --biblio-strong: var(--indigo-11);
-    --biblio-text: var(--indigo-11);
-    --biblio-tint: var(--indigo-a3);
-    --biblio-light: var(--indigo-a4);
-    --biblio-border: var(--indigo-7);
+    /* Module colors - adjusted for dark mode (Citable Green) */
+    --biblio: var(--green-9);
+    --biblio-hover: var(--green-10);
+    --biblio-strong: var(--green-11);
+    --biblio-text: var(--green-11);
+    --biblio-tint: var(--green-a3);
+    --biblio-light: var(--green-a4);
+    --biblio-border: var(--green-7);
     --biblio-foreground: var(--sand-12);
 
-    --manu: var(--teal-9);
-    --manu-hover: var(--teal-10);
-    --manu-strong: var(--teal-11);
-    --manu-text: var(--teal-11);
-    --manu-tint: var(--teal-a3);
-    --manu-light: var(--teal-a4);
-    --manu-border: var(--teal-7);
+    --manu: var(--green-9);
+    --manu-hover: var(--green-10);
+    --manu-strong: var(--green-11);
+    --manu-text: var(--green-11);
+    --manu-tint: var(--green-a3);
+    --manu-light: var(--green-a4);
+    --manu-border: var(--green-7);
     --manu-foreground: var(--sand-1);
 
-    --discover: var(--purple-9);
-    --discover-hover: var(--purple-10);
-    --discover-strong: var(--purple-11);
-    --discover-text: var(--purple-11);
-    --discover-tint: var(--purple-a3);
-    --discover-light: var(--purple-a4);
-    --discover-border: var(--purple-7);
+    --discover: var(--green-9);
+    --discover-hover: var(--green-10);
+    --discover-strong: var(--green-11);
+    --discover-text: var(--green-11);
+    --discover-tint: var(--green-a3);
+    --discover-light: var(--green-a4);
+    --discover-border: var(--green-7);
     --discover-foreground: var(--sand-1);
 
     /* Shadows - stronger in dark mode */
@@ -216,19 +217,19 @@
     --card-foreground: 50 20% 93%;
     --popover: 40 6% 10%;
     --popover-foreground: 50 20% 93%;
-    --primary: 226 70% 60%;
+    --primary: 164 41% 50%;
     --primary-foreground: 40 6% 7%;
     --secondary: 40 6% 15%;
     --secondary-foreground: 50 20% 93%;
     --muted: 40 6% 15%;
     --muted-foreground: 40 10% 60%;
-    --accent: 226 70% 60%;
+    --accent: 164 41% 50%;
     --accent-foreground: 40 6% 7%;
     --destructive: 10 78% 54%;
     --destructive-foreground: 0 0% 100%;
     --border: 40 6% 20%;
     --input: 40 6% 20%;
-    --ring: 226 70% 60%;
+    --ring: 164 41% 50%;
   }
 }
 
@@ -244,11 +245,11 @@
   }
 
   ::selection {
-    background: var(--indigo-a4);
+    background: var(--green-a4);
   }
 
   .dark-theme ::selection {
-    background: var(--indigo-a5);
+    background: var(--green-a5);
   }
 }
 

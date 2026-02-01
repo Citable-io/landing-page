@@ -21,7 +21,7 @@ const Footer = () => {
       <div
         className="absolute top-0 left-0 right-0 h-px"
         style={{
-          background: "linear-gradient(90deg, transparent, var(--indigo-7), var(--purple-7), var(--teal-7), transparent)",
+          background: "linear-gradient(90deg, transparent, var(--green-7), var(--green-7), var(--green-7), transparent)",
         }}
       />
 
@@ -53,8 +53,8 @@ const Footer = () => {
                     color: "var(--text-secondary)",
                   }}
                   whileHover={{
-                    background: "var(--indigo-a3)",
-                    color: "var(--indigo-11)",
+                    background: "var(--green-a3)",
+                    color: "var(--green-11)",
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -70,8 +70,8 @@ const Footer = () => {
                     color: "var(--text-secondary)",
                   }}
                   whileHover={{
-                    background: "var(--purple-a3)",
-                    color: "var(--purple-11)",
+                    background: "var(--green-a3)",
+                    color: "var(--green-11)",
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -85,8 +85,8 @@ const Footer = () => {
                     color: "var(--text-secondary)",
                   }}
                   whileHover={{
-                    background: "var(--teal-a3)",
-                    color: "var(--teal-11)",
+                    background: "var(--green-a3)",
+                    color: "var(--green-11)",
                   }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -131,8 +131,8 @@ const Footer = () => {
                     <span
                       className="text-xs px-1.5 py-0.5 rounded"
                       style={{
-                        background: "var(--indigo-a3)",
-                        color: "var(--indigo-11)",
+                        background: "var(--green-a3)",
+                        color: "var(--green-11)",
                       }}
                     >
                       Soon

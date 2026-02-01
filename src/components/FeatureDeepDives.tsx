@@ -39,7 +39,7 @@ const features: Feature[] = [
       "Full-text search across everything",
     ],
     module: "bibliography",
-    gradient: "linear-gradient(135deg, var(--indigo-9) 0%, var(--indigo-10) 100%)",
+    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
     accentIcon: <Sparkles className="w-4 h-4" />,
   },
   {
@@ -55,7 +55,7 @@ const features: Feature[] = [
       "Export to PDF, Word, or share via link",
     ],
     module: "manuscripts",
-    gradient: "linear-gradient(135deg, var(--teal-9) 0%, var(--teal-10) 100%)",
+    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
     accentIcon: <Zap className="w-4 h-4" />,
   },
   {
@@ -71,7 +71,7 @@ const features: Feature[] = [
       "Track citation counts and trends",
     ],
     module: "discover",
-    gradient: "linear-gradient(135deg, var(--purple-9) 0%, var(--purple-10) 100%)",
+    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
     accentIcon: <Shield className="w-4 h-4" />,
   },
 ];
@@ -79,27 +79,27 @@ const features: Feature[] = [
 const moduleStyles = {
   bibliography: {
     accent: "var(--biblio)",
-    tint: "var(--indigo-a3)",
-    light: "var(--indigo-4)",
-    text: "var(--indigo-11)",
-    border: "var(--indigo-a5)",
-    glow: "var(--indigo-a4)",
+    tint: "var(--green-a3)",
+    light: "var(--green-4)",
+    text: "var(--green-11)",
+    border: "var(--green-a5)",
+    glow: "var(--green-a4)",
   },
   manuscripts: {
     accent: "var(--manu)",
-    tint: "var(--teal-a3)",
-    light: "var(--teal-4)",
-    text: "var(--teal-11)",
-    border: "var(--teal-a5)",
-    glow: "var(--teal-a4)",
+    tint: "var(--green-a3)",
+    light: "var(--green-4)",
+    text: "var(--green-11)",
+    border: "var(--green-a5)",
+    glow: "var(--green-a4)",
   },
   discover: {
     accent: "var(--discover)",
-    tint: "var(--purple-a3)",
-    light: "var(--purple-4)",
-    text: "var(--purple-11)",
-    border: "var(--purple-a5)",
-    glow: "var(--purple-a4)",
+    tint: "var(--green-a3)",
+    light: "var(--green-4)",
+    text: "var(--green-11)",
+    border: "var(--green-a5)",
+    glow: "var(--green-a4)",
   },
 };
 
@@ -111,8 +111,8 @@ export function FeatureDeepDives() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 50% 50% at 0% 50%, var(--indigo-a2) 0%, transparent 50%),
-            radial-gradient(ellipse 50% 50% at 100% 50%, var(--purple-a2) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 50% at 0% 50%, var(--green-a2) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 50% at 100% 50%, var(--green-a2) 0%, transparent 50%),
             var(--bg-primary)
           `,
         }}
@@ -130,9 +130,9 @@ export function FeatureDeepDives() {
           <motion.span
             className="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-6"
             style={{
-              background: "var(--indigo-a3)",
-              color: "var(--indigo-11)",
-              border: "1px solid var(--indigo-a5)",
+              background: "var(--green-a3)",
+              color: "var(--green-11)",
+              border: "1px solid var(--green-a5)",
             }}
           >
             Everything in one place
@@ -145,7 +145,7 @@ export function FeatureDeepDives() {
             <span
               className="bg-clip-text text-transparent"
               style={{
-                backgroundImage: "linear-gradient(90deg, var(--indigo-11), var(--teal-11), var(--purple-11))",
+                backgroundImage: "linear-gradient(90deg, var(--green-9), var(--green-11))",
               }}
             >
               One workflow.

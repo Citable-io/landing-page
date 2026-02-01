@@ -112,7 +112,7 @@ export function SocialProof() {
             >
               <div
                 className="text-4xl sm:text-5xl font-bold mb-2"
-                style={{ color: "var(--indigo-11)" }}
+                style={{ color: "var(--green-11)" }}
               >
                 <AnimatedCounter value={stat.value} suffix={stat.suffix} />
               </div>
@@ -171,7 +171,7 @@ export function SocialProof() {
                 <div
                   className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-semibold"
                   style={{
-                    background: "var(--indigo-9)",
+                    background: "var(--green-9)",
                     color: "white",
                   }}
                 >

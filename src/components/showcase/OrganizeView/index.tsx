@@ -1,22 +1,23 @@
 /**
  * OrganizeView - Animated bibliography management showcase
  *
- * Animation sequence (~15s):
- * 1. pdf-drop (2s) - PDFs drop onto table
- * 2. metadata-fill (3s) - Rows appear with metadata
- * 3. row-click (1s) - First row gets selected
- * 4. layout-shift (2s) - Sidebar changes, PDF opens
- * 5. text-select (1.5s) - Text selection appears
- * 6. color-pick (2s) - Tooltip shows, yellow selected
- * 7. note-popup (3s) - Popup with typing note
+ * Video-like walkthrough showing the full organize workflow:
+ * 1. empty-state (2s) - Clean library ready for papers
+ * 2. import-action (1.5s) - User clicks Import button
+ * 3. pdf-drop (2.5s) - PDFs being imported with animations
+ * 4. metadata-extraction (3s) - Metadata auto-extracting (title, authors, year)
+ * 5. organizing (2s) - Papers being organized into collections
+ * 6. paper-select (1.5s) - Click on a paper to see details
+ * 7. detail-view (2s) - Paper metadata displayed on right panel
+ * 8. filtering (2s) - Show search/filter in action
+ * 9. organized (1.5s) - Final organized library state
  */
 
 import { useState, useEffect, useCallback } from "react";
 import { ActivityBar } from "../shared/ActivityBar";
 import { CollectionsSidebar } from "./CollectionsSidebar";
-import { OutlineSidebar } from "./OutlineSidebar";
 import { ReferenceTable } from "./ReferenceTable";
-import { PDFViewer } from "./PDFViewer";
+import { CursorGuide } from "./CursorGuide";
 import type { OrganizeStep } from "../types";
 
 interface OrganizeViewProps {
@@ -24,31 +25,33 @@ interface OrganizeViewProps {
   onComplete?: () => void;
 }
 
-// Step timing in milliseconds
+// Step timing in milliseconds - tells the story of importing and organizing
 const stepTimings: Record<OrganizeStep, number> = {
-  idle: 500,
-  "pdf-drop": 2000,
-  "metadata-fill": 3000,
-  "row-click": 1000,
-  "layout-shift": 2000,
-  "text-select": 1500,
-  "color-pick": 2000,
-  "note-popup": 3000,
+  "empty-state": 1500,
+  "import-action": 1000,
+  "pdf-drop": 2500,
+  "metadata-extraction": 3000,
+  "organizing": 2000,
+  "paper-select": 1500,
+  "detail-view": 2000,
+  "filtering": 2000,
+  "organized": 1500,
 };
 
 const stepOrder: OrganizeStep[] = [
-  "idle",
+  "empty-state",
+  "import-action",
   "pdf-drop",
-  "metadata-fill",
-  "row-click",
-  "layout-shift",
-  "text-select",
-  "color-pick",
-  "note-popup",
+  "metadata-extraction",
+  "organizing",
+  "paper-select",
+  "detail-view",
+  "filtering",
+  "organized",
 ];
 
 export function OrganizeView({ isActive, onComplete }: OrganizeViewProps) {
-  const [step, setStep] = useState<OrganizeStep>("idle");
+  const [step, setStep] = useState<OrganizeStep>("empty-state");
 
   // Get next step
   const getNextStep = useCallback((current: OrganizeStep): OrganizeStep | null => {
@@ -62,7 +65,7 @@ export function OrganizeView({ isActive, onComplete }: OrganizeViewProps) {
   // Reset when becoming active
   useEffect(() => {
     if (isActive) {
-      setStep("idle");
+      setStep("empty-state");
     }
   }, [isActive]);
 
@@ -75,33 +78,20 @@ export function OrganizeView({ isActive, onComplete }: OrganizeViewProps) {
       if (nextStep) {
         setStep(nextStep);
       } else {
-        // Animation complete
-        onComplete?.();
+        // Animation complete - loop back to start
+        setStep("empty-state");
       }
     }, stepTimings[step]);
 
     return () => clearTimeout(timeout);
-  }, [isActive, step, getNextStep, onComplete]);
-
-  // Determine which layout to show
-  const showPdfView = ["layout-shift", "text-select", "color-pick", "note-popup"].includes(step);
-  const activityBarVariant = showPdfView ? "pdf-reader" : "library";
+  }, [isActive, step, getNextStep]);
 
   return (
-    <div className="flex h-[420px]">
-      <ActivityBar variant={activityBarVariant} />
-
-      {showPdfView ? (
-        <>
-          <OutlineSidebar />
-          <PDFViewer step={step} />
-        </>
-      ) : (
-        <>
-          <CollectionsSidebar />
-          <ReferenceTable step={step} />
-        </>
-      )}
+    <div className="relative flex h-[420px] overflow-hidden">
+      <ActivityBar variant="library" />
+      <CollectionsSidebar step={step} />
+      <ReferenceTable step={step} />
+      <CursorGuide step={step} />
     </div>
   );
 }

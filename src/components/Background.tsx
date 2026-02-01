@@ -13,13 +13,13 @@ interface BackgroundProps {
 export function Background({ variant = "default", className = "" }: BackgroundProps) {
   const gradients = {
     default: `
-      radial-gradient(ellipse 80% 50% at 50% -20%, var(--indigo-a3) 0%, transparent 50%),
-      radial-gradient(ellipse 60% 40% at 100% 50%, var(--purple-a2) 0%, transparent 40%),
-      radial-gradient(ellipse 60% 40% at 0% 50%, var(--teal-a2) 0%, transparent 40%),
+      radial-gradient(ellipse 80% 50% at 50% -20%, var(--green-a3) 0%, transparent 50%),
+      radial-gradient(ellipse 60% 40% at 100% 50%, var(--green-a2) 0%, transparent 40%),
+      radial-gradient(ellipse 60% 40% at 0% 50%, var(--green-a2) 0%, transparent 40%),
       linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 100%)
     `,
     warm: `
-      radial-gradient(ellipse 100% 60% at 50% 0%, var(--indigo-a2) 0%, transparent 60%),
+      radial-gradient(ellipse 100% 60% at 50% 0%, var(--green-a2) 0%, transparent 60%),
       linear-gradient(180deg, var(--bg-secondary) 0%, var(--bg-primary) 50%, var(--bg-secondary) 100%)
     `,
     subtle: `

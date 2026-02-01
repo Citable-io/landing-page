@@ -32,8 +32,8 @@ export function HeroSection() {
           className="absolute inset-0"
           style={{
             background: `
-              radial-gradient(circle at 50% -20%, var(--indigo-3) 0%, transparent 60%),
-              radial-gradient(circle at 100% 40%, var(--purple-2) 0%, transparent 50%),
+              radial-gradient(circle at 50% -20%, var(--green-3) 0%, transparent 60%),
+              radial-gradient(circle at 100% 40%, var(--green-2) 0%, transparent 50%),
               var(--bg-primary)
             `,
           }}
@@ -66,7 +66,7 @@ export function HeroSection() {
             <span
               className="bg-clip-text text-transparent"
               style={{
-                backgroundImage: "linear-gradient(to right, var(--indigo-11), var(--purple-11))",
+                backgroundImage: "linear-gradient(to right, var(--green-9), var(--green-11))",
               }}
             >
               untangled
@@ -95,8 +95,8 @@ export function HeroSection() {
               variant="cta"
               className="rounded-full shadow-xl"
               style={{
-                background: "var(--indigo-9)",
-                boxShadow: "0 10px 40px -10px var(--indigo-a8)",
+                background: "var(--green-9)",
+                boxShadow: "0 10px 40px -10px var(--green-a8)",
               }}
             >
               Start for free

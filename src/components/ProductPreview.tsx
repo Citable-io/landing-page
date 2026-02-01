@@ -16,7 +16,7 @@ export function ProductPreview() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 60% 40% at 50% 0%, var(--indigo-a2) 0%, transparent 50%),
+            radial-gradient(ellipse 60% 40% at 50% 0%, var(--green-a2) 0%, transparent 50%),
             var(--bg-primary)
           `,
         }}
@@ -34,9 +34,9 @@ export function ProductPreview() {
           <motion.span
             className="inline-block px-4 py-1.5 rounded-full text-sm font-medium mb-6"
             style={{
-              background: "var(--teal-a3)",
-              color: "var(--teal-11)",
-              border: "1px solid var(--teal-a5)",
+              background: "var(--green-a3)",
+              color: "var(--green-11)",
+              border: "1px solid var(--green-a5)",
             }}
           >
             See it in action
@@ -49,7 +49,7 @@ export function ProductPreview() {
             <span
               className="bg-clip-text text-transparent"
               style={{
-                backgroundImage: "linear-gradient(90deg, var(--teal-11), var(--indigo-11))",
+                backgroundImage: "linear-gradient(90deg, var(--green-9), var(--green-11))",
               }}
             >
               actually work

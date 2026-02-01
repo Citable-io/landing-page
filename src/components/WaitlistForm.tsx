@@ -147,7 +147,7 @@ export function WaitlistForm() {
         size="lg"
         className="h-12 rounded-xl font-semibold"
         style={{
-          background: "var(--indigo-9)",
+          background: "var(--green-9)",
           color: "white",
         }}
       >
