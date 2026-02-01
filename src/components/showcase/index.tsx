@@ -217,7 +217,7 @@ export function TabbedProductShowcase() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
-              <WriteView isActive={activeTab === "write"} />
+              <WriteView isActive={activeTab === "write"} onComplete={handleAnimationComplete} />
             </motion.div>
           )}
           {activeTab === "cite" && (
@@ -228,7 +228,7 @@ export function TabbedProductShowcase() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
-              <WriteView showCitation isActive={activeTab === "cite"} />
+              <WriteView showCitation isActive={activeTab === "cite"} onComplete={handleAnimationComplete} />
             </motion.div>
           )}
         </AnimatePresence>

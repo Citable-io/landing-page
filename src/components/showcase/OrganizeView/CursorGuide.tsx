@@ -12,126 +12,136 @@ interface CursorGuideProps {
 
 // Define cursor positions and actions for each step
 // Positions are relative to the OrganizeView container (56px activity bar + layout)
-const cursorStates: Record<OrganizeStep, { x: number; y: number; show: boolean; clicking?: boolean }> = {
-  "empty-state": { x: 0, y: 0, show: false }, // Hidden during empty state
-  "import-action": { x: 390, y: 75, show: true, clicking: false }, // Point at Import button (in toolbar)
-  "pdf-drop": { x: 0, y: 0, show: false }, // Hidden during PDF drop animation
-  "metadata-extraction": { x: 0, y: 0, show: false }, // Hidden while table rows fade in
-  "organizing": { x: 120, y: 280, show: true, clicking: false }, // Point at collections sidebar
-  "paper-select": { x: 420, y: 180, show: true, clicking: true }, // Click on first paper row
-  "detail-view": { x: 0, y: 0, show: false }, // Hidden during detail view
-  "filtering": { x: 660, y: 75, show: true, clicking: false }, // Point at search box
-  "organized": { x: 0, y: 0, show: false }, // Hidden at end
+const cursorStates: Record<OrganizeStep, { x: number; y: number; show: boolean; clicking?: boolean; tooltipPos?: "right" | "bottom" | "left" }> = {
+  "empty-state": { x: 0, y: 0, show: false },
+  "import-action": { x: 380, y: 75, show: true, clicking: false, tooltipPos: "bottom" },
+  "pdf-drop": { x: 0, y: 0, show: false },
+  "metadata-extraction": { x: 0, y: 0, show: false },
+  "organizing": { x: 120, y: 280, show: true, clicking: false, tooltipPos: "right" },
+  "paper-select": { x: 380, y: 180, show: true, clicking: true, tooltipPos: "right" },
+  "detail-view": { x: 0, y: 0, show: false },
+  "filtering": { x: 600, y: 75, show: true, clicking: false, tooltipPos: "bottom" },
+  "organized": { x: 0, y: 0, show: false },
 };
 
 export function CursorGuide({ step }: CursorGuideProps) {
   const state = cursorStates[step];
-  const { x, y, show, clicking } = state;
+  const { x, y, show, clicking, tooltipPos = "right" } = state;
 
   if (!show) return null;
 
+  // Tooltip position based on cursor location
+  const getTooltipClass = () => {
+    switch (tooltipPos) {
+      case "bottom":
+        return "top-12 left-1/2 -translate-x-1/2";
+      case "left":
+        return "top-1/2 -translate-y-1/2 -left-32";
+      case "right":
+      default:
+        return "top-1/2 -translate-y-1/2 left-12";
+    }
+  };
+
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="absolute inset-0 pointer-events-none overflow-visible">
       <motion.div
-        className="fixed z-50"
+        className="absolute z-50"
         animate={{
           x: show ? x : -100,
           y: show ? y : -100,
         }}
         transition={{
           type: "spring",
-          stiffness: 150,
-          damping: 20,
-          mass: 0.6,
+          stiffness: 140,
+          damping: 22,
+          mass: 0.5,
         }}
       >
-        {/* Glow effect around cursor */}
+        {/* Enhanced glow effect - smaller and cleaner */}
         <motion.div
-          className="absolute top-0 left-0 w-12 h-12 bg-green-400/20 rounded-full -translate-x-1/2 -translate-y-1/2 blur-xl"
+          className="absolute top-2 left-2 w-6 h-6 bg-green-400/40 rounded-full blur-md"
           animate={{
-            scale: clicking ? [1, 1.3, 1] : [1, 1.2, 1],
+            scale: clicking ? [1, 1.4, 1] : [1, 1.2, 1],
           }}
           transition={{
-            duration: clicking ? 0.3 : 2,
+            duration: clicking ? 0.3 : 2.5,
             repeat: Infinity,
-            repeatDelay: clicking ? 0.4 : 0.5,
+            repeatDelay: clicking ? 0.4 : 0.8,
           }}
         />
 
-        {/* Main cursor arrow */}
+        {/* Main cursor arrow - clean design */}
         <div className="relative w-6 h-6">
           <svg
-            width="28"
-            height="28"
+            width="24"
+            height="24"
             viewBox="0 0 24 24"
             fill="white"
-            stroke="white"
-            strokeWidth="1"
-            className="drop-shadow-2xl"
+            xmlns="http://www.w3.org/2000/svg"
+            className="drop-shadow-lg"
             style={{
-              filter: "drop-shadow(0 0 10px rgba(255,255,255,0.9)) drop-shadow(0 0 6px rgba(31,208,104,0.8))",
+              filter: "drop-shadow(0 0 8px rgba(255,255,255,0.85)) drop-shadow(0 0 4px rgba(31,208,104,0.7))",
             }}
           >
-            <path d="M3 3l7.07 18.97L12.58 13.4 19 20.97z" />
+            {/* Clean arrow cursor */}
+            <path
+              d="M3 2L3 22L11 13.5L19 21L20.5 19.5L12 12.5L21 11L3 2Z"
+              fill="white"
+            />
           </svg>
 
-          {/* Click pulse animation */}
+          {/* Click pulse - subtle */}
           {clicking && (
             <motion.div
               className="absolute top-0.5 left-0.5 w-5 h-5 border-2 border-white rounded-full"
               animate={{
-                scale: [1, 2.5],
+                scale: [1, 2.2],
                 opacity: [1, 0],
               }}
               transition={{
-                duration: 0.5,
+                duration: 0.6,
                 repeat: Infinity,
-                repeatDelay: 0.5,
+                repeatDelay: 0.6,
               }}
             />
           )}
         </div>
 
-        {/* Helpful tooltip text with arrow */}
+        {/* Smart tooltip with dynamic positioning */}
         <motion.div
-          className="absolute top-8 left-8 bg-white text-gray-900 px-4 py-2 rounded-lg shadow-xl text-sm font-semibold pointer-events-auto z-50 border-2 border-green-400"
+          className={`absolute bg-white text-gray-900 px-3 py-1.5 rounded-md shadow-lg text-xs font-medium pointer-events-auto z-50 border border-green-400 flex items-center gap-1.5 ${getTooltipClass()}`}
           animate={{
             opacity: show ? 1 : 0,
             scale: show ? 1 : 0.8,
-            y: show ? 0 : -10,
           }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: 0.25 }}
         >
-          {/* Arrow pointer */}
-          <div className="absolute -top-2 -left-2 w-3 h-3 bg-white border-2 border-green-400 transform rotate-45" />
-
           {/* Step-specific instructions */}
-          <div className="flex items-center gap-2">
-            {step === "import-action" && (
-              <>
-                <span>👆</span>
-                <span>Click "Import Papers"</span>
-              </>
-            )}
-            {step === "organizing" && (
-              <>
-                <span>📁</span>
-                <span>Auto-organizing into collections</span>
-              </>
-            )}
-            {step === "paper-select" && (
-              <>
-                <span>👇</span>
-                <span>Click a paper to see details</span>
-              </>
-            )}
-            {step === "filtering" && (
-              <>
-                <span>🔍</span>
-                <span>Search to find papers</span>
-              </>
-            )}
-          </div>
+          {step === "import-action" && (
+            <>
+              <span>👆</span>
+              <span>Import Papers</span>
+            </>
+          )}
+          {step === "organizing" && (
+            <>
+              <span>📁</span>
+              <span>Organizing</span>
+            </>
+          )}
+          {step === "paper-select" && (
+            <>
+              <span>👇</span>
+              <span>Select paper</span>
+            </>
+          )}
+          {step === "filtering" && (
+            <>
+              <span>🔍</span>
+              <span>Search</span>
+            </>
+          )}
         </motion.div>
       </motion.div>
     </div>

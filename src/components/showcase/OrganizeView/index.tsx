@@ -17,7 +17,7 @@ import { useState, useEffect, useCallback } from "react";
 import { ActivityBar } from "../shared/ActivityBar";
 import { CollectionsSidebar } from "./CollectionsSidebar";
 import { ReferenceTable } from "./ReferenceTable";
-import { CursorGuide } from "./CursorGuide";
+import { CursorLight } from "./CursorLight";
 import type { OrganizeStep } from "../types";
 
 interface OrganizeViewProps {
@@ -88,10 +88,12 @@ export function OrganizeView({ isActive, onComplete }: OrganizeViewProps) {
 
   return (
     <div className="relative flex h-[420px] overflow-hidden">
+      {/* Green light glow effect following real user cursor */}
+      <CursorLight />
+
       <ActivityBar variant="library" />
       <CollectionsSidebar step={step} />
       <ReferenceTable step={step} />
-      <CursorGuide step={step} />
     </div>
   );
 }

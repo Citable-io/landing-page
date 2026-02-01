@@ -19,6 +19,9 @@ const institutions = [
   "ETH Zürich",
 ];
 
+// Triple institutions for seamless infinite carousel loop
+const carouselInstitutions = [...institutions, ...institutions, ...institutions];
+
 export function HeroSection() {
   const scrollToWaitlist = () => {
     document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" });
@@ -120,28 +123,44 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      {/* Trust Strip - Pinned to bottom */}
-      <div className="relative z-10 py-8 mt-auto">
-        <div className="container max-w-6xl mx-auto">
+      {/* Trust Strip - Slow Carousel - Pinned to bottom */}
+      <div className="relative z-10 py-8 mt-auto w-full">
+        <div className="flex flex-col items-center">
           <p
-            className="text-center text-xs font-semibold mb-6 uppercase tracking-widest"
+            className="text-center text-xs font-semibold mb-8 uppercase tracking-widest"
             style={{ color: "var(--text-secondary)", opacity: 0.5 }}
           >
             Trusted by researchers at
           </p>
-          <div
-            className="flex flex-wrap justify-center items-center gap-x-10 gap-y-4 transition-opacity duration-500 hover:opacity-100"
-            style={{ opacity: 0.4 }}
-          >
-            {institutions.map((name, index) => (
-              <span
-                key={index}
-                className="text-lg sm:text-xl font-medium"
-                style={{ color: "var(--text-secondary)" }}
-              >
-                {name}
-              </span>
-            ))}
+
+          {/* Carousel Container - Centered */}
+          <div className="relative w-full max-w-4xl overflow-hidden px-4 sm:px-8">
+            <motion.div
+              className="flex items-center gap-x-8 sm:gap-x-12 whitespace-nowrap"
+              animate={{
+                x: [0, -2400], // Animate through 2 sets of institutions, then loop back seamlessly
+              }}
+              transition={{
+                duration: 60, // 60 seconds for smooth infinite loop
+                repeat: Infinity,
+                ease: "linear",
+                repeatType: "loop", // Loop back to start seamlessly
+              }}
+            >
+              {carouselInstitutions.map((name, index) => (
+                <span
+                  key={index}
+                  className="text-base sm:text-lg font-medium flex-shrink-0 transition-opacity duration-300 hover:opacity-100"
+                  style={{ color: "var(--text-secondary)", opacity: 0.5 }}
+                >
+                  {name}
+                </span>
+              ))}
+            </motion.div>
+
+            {/* Fade effect on edges for smooth visual */}
+            <div className="absolute inset-y-0 left-0 w-8 sm:w-16 bg-gradient-to-r from-background via-transparent to-transparent pointer-events-none" />
+            <div className="absolute inset-y-0 right-0 w-8 sm:w-16 bg-gradient-to-l from-background via-transparent to-transparent pointer-events-none" />
           </div>
         </div>
       </div>
