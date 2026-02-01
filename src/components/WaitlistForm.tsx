@@ -1,13 +1,15 @@
 /**
  * WaitlistForm Component
  *
- * Clean inline waitlist form with solid CTA button.
+ * Clean inline waitlist form using shadcn Input and Button.
  */
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Loader2, ArrowRight } from "lucide-react";
 import { addToWaitingList, checkEmailExists } from "@/lib/firestore";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 type FormState = "idle" | "submitting" | "success" | "error";
 
@@ -72,8 +74,8 @@ export function WaitlistForm() {
       <motion.div
         className="flex items-center justify-center gap-3 px-6 py-4 rounded-xl"
         style={{
-          background: "var(--success-tint)",
-          border: "1px solid var(--success)",
+          background: "var(--green-a3)",
+          border: "1px solid var(--green-7)",
         }}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -81,12 +83,12 @@ export function WaitlistForm() {
       >
         <div
           className="w-8 h-8 rounded-full flex items-center justify-center"
-          style={{ background: "var(--success)", color: "white" }}
+          style={{ background: "var(--green-9)", color: "white" }}
         >
           <Check className="w-5 h-5" />
         </div>
         <div>
-          <span className="font-semibold" style={{ color: "var(--success-text)" }}>
+          <span className="font-semibold" style={{ color: "var(--green-11)" }}>
             You're on the list!
           </span>
           <span className="ml-2 text-sm" style={{ color: "var(--text-secondary)" }}>
@@ -103,7 +105,7 @@ export function WaitlistForm() {
       className="flex flex-col sm:flex-row gap-3 w-full max-w-md"
     >
       <div className="flex-1 relative">
-        <input
+        <Input
           type="email"
           value={email}
           onChange={(e) => {
@@ -114,10 +116,10 @@ export function WaitlistForm() {
             }
           }}
           placeholder="Enter your email"
-          className="w-full h-12 px-4 rounded-xl text-base transition-all focus:outline-none focus:ring-2"
+          className="h-12 rounded-xl text-base"
           style={{
             background: "var(--bg-tertiary)",
-            border: `1px solid ${state === "error" ? "var(--error)" : "var(--border-default)"}`,
+            borderColor: state === "error" ? "var(--red-9)" : "var(--border-default)",
             color: "var(--text-primary)",
           }}
           disabled={state === "submitting"}
@@ -128,7 +130,7 @@ export function WaitlistForm() {
           {state === "error" && errorMessage && (
             <motion.p
               className="mt-2 text-sm"
-              style={{ color: "var(--error-text)" }}
+              style={{ color: "var(--red-11)" }}
               initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
@@ -139,18 +141,15 @@ export function WaitlistForm() {
         </AnimatePresence>
       </div>
 
-      <motion.button
+      <Button
         type="submit"
         disabled={state === "submitting"}
-        className="h-12 px-6 rounded-xl font-semibold text-base transition-all disabled:opacity-70 disabled:cursor-not-allowed whitespace-nowrap flex items-center justify-center gap-2"
+        size="lg"
+        className="h-12 rounded-xl font-semibold"
         style={{
           background: "var(--indigo-9)",
           color: "white",
         }}
-        whileHover={{
-          background: "var(--indigo-10)",
-        }}
-        whileTap={{ scale: 0.98 }}
       >
         {state === "submitting" ? (
           <>
@@ -163,7 +162,7 @@ export function WaitlistForm() {
             <ArrowRight className="w-4 h-4" />
           </>
         )}
-      </motion.button>
+      </Button>
     </form>
   );
 }
