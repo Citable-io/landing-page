@@ -2,12 +2,13 @@
  * FeatureShowcase Component
  *
  * Alternating feature sections for Organize, Write, and Discover.
- * Modern styling with prominent module colors and glows.
+ * Uses shadcn Badge for labels. Proper Radix tokens throughout.
  */
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { Library, Edit3, Search } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { OrganizeView } from "./showcase/OrganizeView";
 import { WriteView } from "./showcase/WriteView";
 
@@ -76,29 +77,26 @@ const features: Feature[] = [
 const moduleStyles = {
   biblio: {
     accent: "var(--indigo-9)",
-    accentLight: "var(--indigo-5)",
     tint: "var(--indigo-a3)",
     text: "var(--indigo-11)",
-    border: "var(--indigo-7)",
-    glow: "var(--indigo-a5)",
+    border: "var(--indigo-6)",
+    glow: "var(--indigo-a4)",
     gradient: "linear-gradient(135deg, var(--indigo-9) 0%, var(--indigo-10) 100%)",
   },
   manuscripts: {
     accent: "var(--teal-9)",
-    accentLight: "var(--teal-5)",
     tint: "var(--teal-a3)",
     text: "var(--teal-11)",
-    border: "var(--teal-7)",
-    glow: "var(--teal-a5)",
+    border: "var(--teal-6)",
+    glow: "var(--teal-a4)",
     gradient: "linear-gradient(135deg, var(--teal-9) 0%, var(--teal-10) 100%)",
   },
   discover: {
     accent: "var(--purple-9)",
-    accentLight: "var(--purple-5)",
     tint: "var(--purple-a3)",
     text: "var(--purple-11)",
-    border: "var(--purple-7)",
-    glow: "var(--purple-a5)",
+    border: "var(--purple-6)",
+    glow: "var(--purple-a4)",
     gradient: "linear-gradient(135deg, var(--purple-9) 0%, var(--purple-10) 100%)",
   },
 };
@@ -157,24 +155,24 @@ function FeatureSection({ feature, index }: { feature: Feature; index: number })
   return (
     <section
       ref={sectionRef}
-      className="py-20 md:py-28 px-4 relative overflow-hidden"
+      className="py-24 md:py-32 px-4 relative overflow-hidden"
       style={{
         background: index % 2 === 0 ? "var(--bg-primary)" : "var(--bg-secondary)",
       }}
     >
-      {/* Colored background glow */}
+      {/* Ambient background glow */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           background: feature.reversed
-            ? `radial-gradient(ellipse 40% 60% at 20% 50%, ${styles.glow} 0%, transparent 70%)`
-            : `radial-gradient(ellipse 40% 60% at 80% 50%, ${styles.glow} 0%, transparent 70%)`,
-          opacity: 0.5,
+            ? `radial-gradient(ellipse 50% 50% at 10% 50%, ${styles.glow} 0%, transparent 60%)`
+            : `radial-gradient(ellipse 50% 50% at 90% 50%, ${styles.glow} 0%, transparent 60%)`,
+          opacity: 0.3,
         }}
       />
 
       <div className="container max-w-7xl mx-auto relative z-10">
-        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center ${
+        <div className={`grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center ${
           feature.reversed ? "lg:grid-flow-dense" : ""
         }`}>
           {/* Text side */}
@@ -184,26 +182,25 @@ function FeatureSection({ feature, index }: { feature: Feature; index: number })
             initial="hidden"
             animate={isInView ? "visible" : "hidden"}
           >
-            {/* Label pill with icon */}
-            <div
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full mb-5 w-fit"
+            {/* Label pill using shadcn Badge */}
+            <Badge
+              variant="outline"
+              className="w-fit mb-6 gap-2 px-3 py-1.5"
               style={{
                 background: styles.tint,
-                border: `1px solid ${styles.border}`,
+                borderColor: styles.border,
+                color: styles.text,
               }}
             >
               <span style={{ color: styles.accent }}>{feature.icon}</span>
-              <span
-                className="text-xs font-semibold tracking-wider"
-                style={{ color: styles.text }}
-              >
+              <span className="text-xs font-semibold tracking-wider">
                 {feature.label}
               </span>
-            </div>
+            </Badge>
 
-            {/* Title with accent underline */}
+            {/* Title */}
             <h2
-              className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-4 tracking-tight"
+              className="text-3xl sm:text-4xl lg:text-5xl font-semibold mb-6 tracking-tight leading-tight"
               style={{ color: "var(--text-primary)" }}
             >
               {feature.title}
@@ -211,14 +208,14 @@ function FeatureSection({ feature, index }: { feature: Feature; index: number })
 
             {/* Description */}
             <p
-              className="text-lg mb-8 leading-relaxed"
+              className="text-lg md:text-xl mb-8 leading-relaxed"
               style={{ color: "var(--text-secondary)" }}
             >
               {feature.description}
             </p>
 
             {/* Bullets */}
-            <ul className="space-y-3">
+            <ul className="space-y-4">
               {feature.bullets.map((bullet, bulletIndex) => (
                 <motion.li
                   key={bulletIndex}
@@ -271,26 +268,43 @@ function FeatureSection({ feature, index }: { feature: Feature; index: number })
           >
             {/* Glow behind demo */}
             <div
-              className="absolute -inset-4 rounded-3xl blur-2xl opacity-40"
+              className="absolute -inset-8 rounded-3xl blur-3xl"
               style={{
                 background: styles.gradient,
+                opacity: 0.15,
               }}
             />
 
-            {/* Demo container with colored border */}
+            {/* Demo container */}
             <div
-              className="relative rounded-2xl overflow-hidden"
+              className="relative rounded-xl overflow-hidden shadow-2xl"
               style={{
                 background: "var(--card-bg)",
-                border: `2px solid ${styles.border}`,
-                boxShadow: `0 25px 50px -12px ${styles.glow}, 0 0 0 1px ${styles.border}`,
+                border: `1px solid var(--mauve-a4)`,
               }}
             >
-              {/* Top accent bar */}
+              {/* macOS-style Window Header */}
               <div
-                className="h-1"
-                style={{ background: styles.gradient }}
-              />
+                className="h-8 flex items-center px-4 gap-2"
+                style={{
+                  background: "var(--mauve-a2)",
+                  borderBottom: "1px solid var(--mauve-a3)",
+                }}
+              >
+                <div
+                  className="w-2.5 h-2.5 rounded-full"
+                  style={{ background: "var(--red-a6)" }}
+                />
+                <div
+                  className="w-2.5 h-2.5 rounded-full"
+                  style={{ background: "var(--amber-a6)" }}
+                />
+                <div
+                  className="w-2.5 h-2.5 rounded-full"
+                  style={{ background: "var(--green-a6)" }}
+                />
+              </div>
+
               {renderDemo()}
             </div>
           </motion.div>
