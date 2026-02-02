@@ -39,7 +39,7 @@ const features: Feature[] = [
       "Full-text search across everything",
     ],
     module: "bibliography",
-    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
+    gradient: "linear-gradient(135deg, #C3E9D7 0%, #A8DCC0 100%)",
     accentIcon: <Sparkles className="w-4 h-4" />,
   },
   {
@@ -55,7 +55,7 @@ const features: Feature[] = [
       "Export to PDF, Word, or share via link",
     ],
     module: "manuscripts",
-    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
+    gradient: "linear-gradient(135deg, #C2E5FF 0%, #8FD3FF 100%)",
     accentIcon: <Zap className="w-4 h-4" />,
   },
   {
@@ -71,35 +71,46 @@ const features: Feature[] = [
       "Track citation counts and trends",
     ],
     module: "discover",
-    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
+    gradient: "linear-gradient(135deg, #DADcff 0%, #BFBEF0 100%)",
     accentIcon: <Shield className="w-4 h-4" />,
   },
 ];
 
+// Helper to convert hex to rgba
+function hexToRgba(hex: string, opacity: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+
 const moduleStyles = {
   bibliography: {
-    accent: "var(--biblio)",
-    tint: "var(--green-a3)",
-    light: "var(--green-4)",
-    text: "var(--green-11)",
-    border: "var(--green-a5)",
-    glow: "var(--green-a4)",
+    accent: "#C3E9D7",
+    accentDark: "#1B3A32",
+    tint: hexToRgba("#C3E9D7", 0.15),
+    light: "#D8F0EB",
+    text: "#1B3A32",
+    border: "#C3E9D7",
+    glow: hexToRgba("#C3E9D7", 0.25),
   },
   manuscripts: {
-    accent: "var(--manu)",
-    tint: "var(--green-a3)",
-    light: "var(--green-4)",
-    text: "var(--green-11)",
-    border: "var(--green-a5)",
-    glow: "var(--green-a4)",
+    accent: "#C2E5FF",
+    accentDark: "#0E3264",
+    tint: hexToRgba("#C2E5FF", 0.15),
+    light: "#D5EBFF",
+    text: "#0E3264",
+    border: "#C2E5FF",
+    glow: hexToRgba("#C2E5FF", 0.25),
   },
   discover: {
-    accent: "var(--discover)",
-    tint: "var(--green-a3)",
-    light: "var(--green-4)",
-    text: "var(--green-11)",
-    border: "var(--green-a5)",
-    glow: "var(--green-a4)",
+    accent: "#DADcff",
+    accentDark: "#2A2E66",
+    tint: hexToRgba("#DADcff", 0.15),
+    light: "#E5E5FF",
+    text: "#2A2E66",
+    border: "#DADcff",
+    glow: hexToRgba("#DADcff", 0.25),
   },
 };
 
@@ -111,8 +122,8 @@ export function FeatureDeepDives() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 50% 50% at 0% 50%, var(--green-a2) 0%, transparent 50%),
-            radial-gradient(ellipse 50% 50% at 100% 50%, var(--green-a2) 0%, transparent 50%),
+            radial-gradient(ellipse 50% 50% at 0% 50%, ${hexToRgba("#C3E9D7", 0.08)} 0%, transparent 50%),
+            radial-gradient(ellipse 50% 50% at 100% 50%, ${hexToRgba("#DADcff", 0.08)} 0%, transparent 50%),
             var(--bg-primary)
           `,
         }}

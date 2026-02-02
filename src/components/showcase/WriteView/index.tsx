@@ -6,8 +6,15 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { ActivityBar } from "../shared/ActivityBar";
 import { CursorLight } from "../OrganizeView/CursorLight";
+
+// Helper to convert hex to rgba
+function hexToRgba(hex: string, opacity: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
 import { TypingAnimation } from "./TypingAnimation";
 import {
   DocumentIcon,
@@ -35,6 +42,7 @@ interface WriteViewProps {
   showCitation?: boolean;
   isActive?: boolean;
   onComplete?: () => void;
+  color?: string;
 }
 
 const writeSteps: WriteStep[] = ["idle", "typing", "compile", "preview"];
@@ -51,7 +59,7 @@ const stepTimings: Record<Step, number> = {
   "cite-insert": 1500,
 };
 
-export function WriteView({ showCitation = false, isActive = true, onComplete }: WriteViewProps) {
+export function WriteView({ showCitation = false, isActive = true, onComplete, color = "#C2E5FF" }: WriteViewProps) {
   const [step, setStep] = useState<Step>("idle");
   const steps = showCitation ? citeSteps : writeSteps;
 
@@ -129,9 +137,7 @@ export function WriteView({ showCitation = false, isActive = true, onComplete }:
 
       {/* Demo content */}
       <div className="relative flex flex-1 overflow-hidden">
-        <CursorLight />
-
-        <ActivityBar variant="editor" />
+        <CursorLight color={color} />
 
         {/* Step 1: Show ONLY file browser */}
         {step === "idle" && (
@@ -168,7 +174,7 @@ export function WriteView({ showCitation = false, isActive = true, onComplete }:
 
             {/* Editor with compile overlay */}
             <div className="flex-1 flex min-h-0 relative">
-              <EditorPane step={step} showCitation={showCitation} />
+              <EditorPane step={step} showCitation={showCitation} color={color} />
 
               {/* Compile animation overlay */}
               {step === "compile" && (
@@ -186,11 +192,15 @@ export function WriteView({ showCitation = false, isActive = true, onComplete }:
                     transition={{ type: "spring", stiffness: 200 }}
                   >
                     <motion.div
-                      className="w-12 h-12 rounded-full border-2 border-primary/30 border-t-primary flex items-center justify-center"
+                      className="w-12 h-12 rounded-full border-2 flex items-center justify-center"
+                      style={{
+                        borderColor: hexToRgba(color, 0.3),
+                        borderTopColor: color,
+                      }}
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                     >
-                      <PlayIcon className="w-6 h-6 text-primary" />
+                      <PlayIcon className="w-6 h-6" style={{ color: color }} />
                     </motion.div>
                     <span className="text-sm font-medium text-foreground">Compiling PDF...</span>
                   </motion.div>
@@ -246,7 +256,7 @@ export function WriteView({ showCitation = false, isActive = true, onComplete }:
             </div>
 
             <div className="flex-1 flex min-h-0">
-              <EditorPane step={step} showCitation={showCitation} />
+              <EditorPane step={step} showCitation={showCitation} color={color} />
             </div>
           </motion.div>
         )}
@@ -301,7 +311,7 @@ function FileItem({
     <div
       className={`flex items-center gap-2 px-2 py-1.5 rounded text-sm transition-colors ${
         selected
-          ? "bg-primary/10 text-primary"
+          ? "bg-secondary/50 text-foreground"
           : "text-muted-foreground hover:bg-secondary/50"
       }`}
     >
@@ -323,7 +333,7 @@ function OutlineItem({ label }: { label: string }) {
   );
 }
 
-function EditorPane({ step, showCitation }: { step: Step; showCitation: boolean }) {
+function EditorPane({ step, showCitation, color = "#C2E5FF" }: { step: Step; showCitation: boolean; color?: string }) {
   const isTyping = step === "typing";
   const showContent = step !== "idle";
   const showCiteDropdown = step === "cite-select" || step === "cite-insert";
@@ -353,12 +363,12 @@ function EditorPane({ step, showCitation }: { step: Step; showCitation: boolean 
       <div className="flex-1 p-4 font-mono text-xs sm:text-sm overflow-auto">
         <div className="space-y-1">
           {/* Static header lines */}
-          <EditorLine num={1} content={<><span className="text-primary">\documentclass</span><span className="text-amber-500">{`{`}</span>article<span className="text-amber-500">{`}`}</span></>} />
+          <EditorLine num={1} content={<><span style={{color}}>\documentclass</span><span className="text-amber-500">{`{`}</span>article<span className="text-amber-500">{`}`}</span></>} />
           <EditorLine num={2} />
-          <EditorLine num={3} content={<><span className="text-primary">\usepackage</span><span className="text-amber-500">{`{`}</span>graphicx<span className="text-amber-500">{`}`}</span></>} />
-          <EditorLine num={4} content={<><span className="text-primary">\usepackage</span><span className="text-amber-500">{`{`}</span>biblatex<span className="text-amber-500">{`}`}</span></>} />
+          <EditorLine num={3} content={<><span style={{color}}>\usepackage</span><span className="text-amber-500">{`{`}</span>graphicx<span className="text-amber-500">{`}`}</span></>} />
+          <EditorLine num={4} content={<><span style={{color}}>\usepackage</span><span className="text-amber-500">{`{`}</span>biblatex<span className="text-amber-500">{`}`}</span></>} />
           <EditorLine num={5} />
-          <EditorLine num={6} content={<><span className="text-primary">\begin</span><span className="text-amber-500">{`{`}</span>document<span className="text-amber-500">{`}`}</span></>} />
+          <EditorLine num={6} content={<><span style={{color}}>\begin</span><span className="text-amber-500">{`{`}</span>document<span className="text-amber-500">{`}`}</span></>} />
           <EditorLine num={7} />
 
           {/* Animated content that appears during typing */}
@@ -367,7 +377,7 @@ function EditorPane({ step, showCitation }: { step: Step; showCitation: boolean 
               <div className="flex gap-4">
                 <span className="w-6 text-right text-muted-foreground/50 select-none">8</span>
                 <span className="font-mono text-xs sm:text-sm">
-                  <span className="text-primary">\section</span>
+                  <span style={{color}}>\section</span>
                   <span className="text-amber-500">{`{`}</span>
                   <TypingAnimation
                     text="Introduction"
@@ -574,7 +584,7 @@ function ToolbarButton({ icon, active = false }: { icon: React.ReactNode; active
     <button
       className={`w-8 h-8 flex items-center justify-center rounded transition-colors ${
         active
-          ? "text-primary bg-primary/10"
+          ? "text-foreground bg-secondary/50"
           : "text-muted-foreground hover:bg-secondary/50"
       }`}
     >
@@ -687,7 +697,7 @@ function LinkedBibliographyPanel() {
           Collections
         </div>
         <div className="space-y-2">
-          <div className="flex items-center gap-2 px-2 py-1.5 rounded bg-primary/10 text-primary text-sm">
+          <div className="flex items-center gap-2 px-2 py-1.5 rounded bg-secondary/50 text-foreground text-sm">
             <ChevronRightIcon className="w-4 h-4" />
             <FolderIcon className="w-4 h-4" />
             <span>Environmental Science</span>
@@ -719,7 +729,7 @@ function LinkedBibliographyPanel() {
               key={citation.id}
               className={`p-2.5 rounded border transition-all ${
                 citation.cited
-                  ? "border-primary/50 bg-primary/5"
+                  ? "border-secondary/50 bg-secondary/50"
                   : "border-border/20 bg-secondary/50"
               }`}
               initial={{ opacity: 0, x: -10 }}
@@ -727,7 +737,7 @@ function LinkedBibliographyPanel() {
               transition={{ duration: 0.3 }}
             >
               <div className="flex items-start gap-2">
-                <DocumentIcon className="w-4 h-4 flex-shrink-0 mt-0.5 text-primary" />
+                <DocumentIcon className="w-4 h-4 flex-shrink-0 mt-0.5 text-foreground/50" />
                 <div className="flex-1 min-w-0">
                   <div className="text-sm font-medium text-foreground truncate">
                     {citation.name}
@@ -738,13 +748,13 @@ function LinkedBibliographyPanel() {
                 </div>
                 {citation.cited && (
                   <motion.div
-                    className="flex items-center gap-1 px-2 py-1 rounded bg-primary/20 flex-shrink-0"
+                    className="flex items-center gap-1 px-2 py-1 rounded bg-secondary/50 flex-shrink-0"
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200 }}
                   >
-                    <CheckIcon className="w-3.5 h-3.5 text-primary" />
-                    <span className="text-xs font-medium text-primary">Cited</span>
+                    <CheckIcon className="w-3.5 h-3.5 text-foreground/70" />
+                    <span className="text-xs font-medium text-foreground/70">Cited</span>
                   </motion.div>
                 )}
               </div>

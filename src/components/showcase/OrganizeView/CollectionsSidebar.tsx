@@ -6,9 +6,18 @@
 import { FolderIcon, PlusIcon, ChevronRightIcon } from "../shared/Icons";
 import type { OrganizeStep } from "../types";
 
+// Helper to convert hex to rgba
+function hexToRgba(hex: string, opacity: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+
 interface CollectionsSidebarProps {
   step: OrganizeStep;
   className?: string;
+  accentColor?: string;
 }
 
 const collections = [
@@ -17,7 +26,7 @@ const collections = [
   { id: "toread", name: "To Read", count: 0, indent: 1 },
 ];
 
-export function CollectionsSidebar({ step, className = "" }: CollectionsSidebarProps) {
+export function CollectionsSidebar({ step, className = "", accentColor = "#C3E9D7" }: CollectionsSidebarProps) {
   // Update counts based on workflow step
   const getCounts = () => {
     if (["organizing", "paper-select", "detail-view", "filtering", "organized"].includes(step)) {
@@ -64,18 +73,21 @@ export function CollectionsSidebar({ step, className = "" }: CollectionsSidebarP
               count={counts.transformers}
               selected={step === "paper-select"}
               isAnimating={isOrganizing}
+              accentColor={accentColor}
             />
             <CollectionItem
               name="Natural Language"
               count={counts.nlp}
               selected={false}
               isAnimating={isOrganizing}
+              accentColor={accentColor}
             />
             <CollectionItem
               name="To Read"
               count={counts.toread}
               selected={false}
               isAnimating={isOrganizing}
+              accentColor={accentColor}
             />
           </>
         )}
@@ -89,19 +101,30 @@ interface CollectionItemProps {
   count?: number;
   selected?: boolean;
   isAnimating?: boolean;
+  accentColor?: string;
 }
 
-function CollectionItem({ name, count = 0, selected = false, isAnimating = false }: CollectionItemProps) {
+function CollectionItem({ name, count = 0, selected = false, isAnimating = false, accentColor = "#C3E9D7" }: CollectionItemProps) {
   return (
     <div
       className={`flex items-center gap-2 py-1.5 px-4 rounded text-sm transition-all cursor-pointer ${
-        selected ? "bg-primary/15 text-primary" : "text-muted-foreground hover:bg-secondary/50"
-      } ${isAnimating ? "animate-pulse" : ""}`}
+        isAnimating ? "animate-pulse" : ""
+      }`}
+      style={{
+        backgroundColor: selected ? hexToRgba(accentColor, 0.15) : undefined,
+        color: selected ? accentColor : undefined,
+      }}
     >
       <FolderIcon className="w-4 h-4 flex-shrink-0" />
       <span className="truncate flex-1">{name}</span>
       {count > 0 && (
-        <span className="text-xs bg-green-500/20 text-green-300 px-2 py-0.5 rounded">
+        <span
+          className="text-xs px-2 py-0.5 rounded"
+          style={{
+            backgroundColor: hexToRgba(accentColor, 0.2),
+            color: accentColor,
+          }}
+        >
           {count}
         </span>
       )}

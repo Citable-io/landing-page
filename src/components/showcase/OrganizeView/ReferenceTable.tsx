@@ -9,6 +9,7 @@ import type { OrganizeStep } from "../types";
 interface ReferenceTableProps {
   step: OrganizeStep;
   className?: string;
+  accentColor?: string;
 }
 
 // References that appear during the workflow
@@ -39,7 +40,15 @@ const workflowReferences = [
   },
 ];
 
-export function ReferenceTable({ step, className = "" }: ReferenceTableProps) {
+// Helper to convert hex to rgba
+function hexToRgba(hex: string, opacity: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+
+export function ReferenceTable({ step, className = "", accentColor = "#C3E9D7" }: ReferenceTableProps) {
   // Show references based on workflow step
   const showEmptyState = step === "empty-state" || step === "import-action";
   const showImportAnimation = step === "pdf-drop";
@@ -52,7 +61,10 @@ export function ReferenceTable({ step, className = "" }: ReferenceTableProps) {
     <div className={`flex-1 flex flex-col min-w-0 bg-background ${className}`}>
       {/* Tab Bar - Shows active collection */}
       <div className="h-11 flex items-center gap-1 px-2 bg-card border-b border-border/20">
-        <div className="flex items-center gap-2 px-3 py-1.5 transition-colors text-primary border-b-2 border-primary">
+        <div
+          className="flex items-center gap-2 px-3 py-1.5 transition-colors border-b-2"
+          style={{ color: accentColor, borderColor: accentColor }}
+        >
           <DocumentIcon />
           <span className="text-xs font-medium">All Papers</span>
         </div>
@@ -62,22 +74,27 @@ export function ReferenceTable({ step, className = "" }: ReferenceTableProps) {
       <div className="h-11 flex items-center justify-between px-4 border-b border-border/20">
         <div className="flex items-center gap-2">
           <button
-            className={`h-8 px-3 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 ${
-              step === "import-action"
-                ? "bg-green-600 text-white shadow-lg scale-105"
-                : "bg-primary text-white hover:bg-primary/90"
+            className={`h-8 px-3 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 text-white shadow-lg ${
+              step === "import-action" ? "scale-105" : ""
             }`}
+            style={{
+              backgroundColor: step === "import-action" ? accentColor : hexToRgba(accentColor, 0.8),
+            }}
           >
             <PlusIcon />
             Import Papers
           </button>
         </div>
-        <div className={`relative transition-all ${showFilterActive ? "ring-2 ring-green-500/50" : ""}`}>
+        <div
+          className="relative transition-all"
+          style={showFilterActive ? { boxShadow: `0 0 0 2px ${hexToRgba(accentColor, 0.5)}` } : undefined}
+        >
           <SearchIcon className="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
             placeholder={showFilterActive ? "Searching..." : "Search papers..."}
-            className="h-8 w-32 sm:w-40 pl-8 pr-3 text-xs bg-secondary/50 border-0 rounded-md text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/50"
+            className="h-8 w-32 sm:w-40 pl-8 pr-3 text-xs bg-secondary/50 border-0 rounded-md text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1"
+            style={{ focusRing: hexToRgba(accentColor, 0.5) }}
             readOnly
           />
         </div>
@@ -103,17 +120,26 @@ export function ReferenceTable({ step, className = "" }: ReferenceTableProps) {
         {showImportAnimation && (
           <div className="h-full flex items-center justify-center">
             <div className="flex gap-6">
-              {[0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="animate-pdf-drop opacity-0"
-                  style={{ animationDelay: `${i * 0.3}s` }}
-                >
-                  <div className="w-16 h-20 bg-gradient-to-b from-green-400 to-green-600 rounded-lg shadow-lg flex items-center justify-center">
-                    <span className="text-white text-2xl">📄</span>
+              {[0, 1, 2].map((i) => {
+                const lighterColor = hexToRgba(accentColor, 0.7);
+                const darkerColor = accentColor;
+                return (
+                  <div
+                    key={i}
+                    className="animate-pdf-drop opacity-0"
+                    style={{ animationDelay: `${i * 0.3}s` }}
+                  >
+                    <div
+                      className="w-16 h-20 rounded-lg shadow-lg flex items-center justify-center"
+                      style={{
+                        background: `linear-gradient(to bottom, ${lighterColor}, ${darkerColor})`,
+                      }}
+                    >
+                      <span className="text-white text-2xl">📄</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
@@ -139,6 +165,7 @@ export function ReferenceTable({ step, className = "" }: ReferenceTableProps) {
                   animateIn={showExtractingMetadata}
                   animationDelay={index * 0.4}
                   step={step}
+                  accentColor={accentColor}
                 />
               ))}
             </tbody>
@@ -147,7 +174,12 @@ export function ReferenceTable({ step, className = "" }: ReferenceTableProps) {
 
         {/* Organizing Animation */}
         {step === "organizing" && (
-          <div className="absolute inset-0 bg-gradient-to-b from-green-500/10 to-transparent pointer-events-none animate-pulse" />
+          <div
+            className="absolute inset-0 pointer-events-none animate-pulse"
+            style={{
+              background: `linear-gradient(to bottom, ${hexToRgba(accentColor, 0.1)}, transparent)`,
+            }}
+          />
         )}
       </div>
     </div>
@@ -169,6 +201,7 @@ interface ReferenceRowProps {
   animateIn?: boolean;
   animationDelay?: number;
   step?: OrganizeStep;
+  accentColor?: string;
 }
 
 function ReferenceRow({
@@ -177,19 +210,20 @@ function ReferenceRow({
   animateIn = false,
   animationDelay = 0,
   step,
+  accentColor = "#C3E9D7",
 }: ReferenceRowProps) {
-  const tagColors: Record<string, string> = {
-    green: "bg-green-500/20 text-green-300",
-    blue: "bg-blue-500/20 text-blue-300",
-    purple: "bg-purple-500/20 text-purple-300",
-  };
+  const tagBgColor = hexToRgba(accentColor, 0.2);
+  const tagTextColor = accentColor;
 
   return (
     <tr
       className={`h-11 transition-all cursor-pointer ${
-        selected ? "bg-primary/25 hover:bg-primary/30" : "hover:bg-secondary/40"
-      } ${animateIn ? "animate-fade-in-row" : ""}`}
-      style={animateIn ? { animationDelay: `${animationDelay}s` } : undefined}
+        animateIn ? "animate-fade-in-row" : ""
+      }`}
+      style={{
+        backgroundColor: selected ? hexToRgba(accentColor, 0.25) : undefined,
+        animationDelay: animateIn ? `${animationDelay}s` : undefined,
+      }}
     >
       <td className="px-4 text-foreground font-medium">{reference.title}</td>
       <td className="px-4 text-muted-foreground hidden sm:table-cell text-xs">
@@ -200,7 +234,13 @@ function ReferenceRow({
         {reference.venue}
       </td>
       <td className="px-4 hidden lg:table-cell">
-        <span className={`px-2 py-0.5 text-xs rounded ${tagColors[reference.tag.color] || tagColors.green}`}>
+        <span
+          className="px-2 py-0.5 text-xs rounded"
+          style={{
+            backgroundColor: tagBgColor,
+            color: tagTextColor,
+          }}
+        >
           {reference.tag.name}
         </span>
       </td>

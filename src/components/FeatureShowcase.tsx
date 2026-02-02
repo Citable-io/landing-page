@@ -74,30 +74,41 @@ const features: Feature[] = [
   },
 ];
 
+// Helper to convert hex to rgba
+function hexToRgba(hex: string, opacity: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+
 const moduleStyles = {
   biblio: {
-    accent: "var(--green-9)",
-    tint: "var(--green-a3)",
-    text: "var(--green-11)",
-    border: "var(--green-6)",
-    glow: "var(--green-a4)",
-    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
+    accent: "#C3E9D7",
+    accentDark: "#1B3A32",
+    tint: hexToRgba("#C3E9D7", 0.15),
+    text: "#1B3A32",
+    border: "#C3E9D7",
+    glow: hexToRgba("#C3E9D7", 0.25),
+    gradient: "linear-gradient(135deg, #C3E9D7 0%, #1B3A32 100%)",
   },
   manuscripts: {
-    accent: "var(--green-9)",
-    tint: "var(--green-a3)",
-    text: "var(--green-11)",
-    border: "var(--green-6)",
-    glow: "var(--green-a4)",
-    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
+    accent: "#C2E5FF",
+    accentDark: "#0E3264",
+    tint: hexToRgba("#C2E5FF", 0.15),
+    text: "#0E3264",
+    border: "#C2E5FF",
+    glow: hexToRgba("#C2E5FF", 0.25),
+    gradient: "linear-gradient(135deg, #C2E5FF 0%, #0E3264 100%)",
   },
   discover: {
-    accent: "var(--green-9)",
-    tint: "var(--green-a3)",
-    text: "var(--green-11)",
-    border: "var(--green-6)",
-    glow: "var(--green-a4)",
-    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
+    accent: "#DADcff",
+    accentDark: "#2A2E66",
+    tint: hexToRgba("#DADcff", 0.15),
+    text: "#2A2E66",
+    border: "#DADcff",
+    glow: hexToRgba("#DADcff", 0.25),
+    gradient: "linear-gradient(135deg, #DADcff 0%, #2A2E66 100%)",
   },
 };
 

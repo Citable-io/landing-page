@@ -8,6 +8,15 @@ import type { OrganizeStep } from "../types";
 
 interface CursorGuideProps {
   step: OrganizeStep;
+  color?: string;
+}
+
+// Helper to convert hex to rgba
+function hexToRgba(hex: string, opacity: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 }
 
 // Define cursor positions and actions for each step
@@ -24,7 +33,7 @@ const cursorStates: Record<OrganizeStep, { x: number; y: number; show: boolean; 
   "organized": { x: 0, y: 0, show: false },
 };
 
-export function CursorGuide({ step }: CursorGuideProps) {
+export function CursorGuide({ step, color = "#C3E9D7" }: CursorGuideProps) {
   const state = cursorStates[step];
   const { x, y, show, clicking, tooltipPos = "right" } = state;
 
@@ -60,7 +69,10 @@ export function CursorGuide({ step }: CursorGuideProps) {
       >
         {/* Enhanced glow effect - smaller and cleaner */}
         <motion.div
-          className="absolute top-2 left-2 w-6 h-6 bg-green-400/40 rounded-full blur-md"
+          className="absolute top-2 left-2 w-6 h-6 rounded-full blur-md"
+          style={{
+            backgroundColor: hexToRgba(color, 0.4),
+          }}
           animate={{
             scale: clicking ? [1, 1.4, 1] : [1, 1.2, 1],
           }}
@@ -81,7 +93,7 @@ export function CursorGuide({ step }: CursorGuideProps) {
             xmlns="http://www.w3.org/2000/svg"
             className="drop-shadow-lg"
             style={{
-              filter: "drop-shadow(0 0 8px rgba(255,255,255,0.85)) drop-shadow(0 0 4px rgba(31,208,104,0.7))",
+              filter: `drop-shadow(0 0 8px rgba(255,255,255,0.85)) drop-shadow(0 0 4px ${hexToRgba(color, 0.7)})`,
             }}
           >
             {/* Clean arrow cursor */}
@@ -110,7 +122,11 @@ export function CursorGuide({ step }: CursorGuideProps) {
 
         {/* Smart tooltip with dynamic positioning */}
         <motion.div
-          className={`absolute bg-white text-gray-900 px-3 py-1.5 rounded-md shadow-lg text-xs font-medium pointer-events-auto z-50 border border-green-400 flex items-center gap-1.5 ${getTooltipClass()}`}
+          className={`absolute bg-white text-gray-900 px-3 py-1.5 rounded-md shadow-lg text-xs font-medium pointer-events-auto z-50 flex items-center gap-1.5 ${getTooltipClass()}`}
+          style={{
+            borderColor: color,
+            borderWidth: "1px",
+          }}
           animate={{
             opacity: show ? 1 : 0,
             scale: show ? 1 : 0.8,

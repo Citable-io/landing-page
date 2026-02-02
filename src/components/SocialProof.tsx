@@ -9,6 +9,21 @@ import { useRef, useEffect } from "react";
 import { Star, BookOpen, Users, Award } from "lucide-react";
 import { staggerContainer, staggerItem, viewportOnce } from "@/lib/animations";
 
+// Color palette: 3 light colors + 3 dark colors
+const colorPalette = [
+  { light: "#C3E9D7", dark: "#1B3A32" }, // Mint green
+  { light: "#C2E5FF", dark: "#0E3264" }, // Blue
+  { light: "#DADcff", dark: "#2A2E66" }, // Purple
+];
+
+// Helper to convert hex to rgba
+function hexToRgba(hex: string, opacity: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+
 interface Stat {
   value: number;
   suffix: string;
@@ -99,8 +114,8 @@ export function SocialProof() {
           className="absolute inset-0"
           style={{
             background: `
-              radial-gradient(circle at 20% 50%, rgba(31, 208, 104, 0.1) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, rgba(31, 208, 104, 0.05) 0%, transparent 50%),
+              radial-gradient(circle at 20% 50%, ${hexToRgba("#C3E9D7", 0.1)} 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, ${hexToRgba("#DADcff", 0.1)} 0%, transparent 50%),
               var(--bg-primary)
             `,
           }}
@@ -138,48 +153,51 @@ export function SocialProof() {
           whileInView="visible"
           viewport={viewportOnce}
         >
-          {stats.map((stat, index) => (
-            <motion.div
-              key={index}
-              className="group relative rounded-2xl p-8 overflow-hidden"
-              style={{
-                background: "color-mix(in srgb, var(--green-a2) 50%, transparent)",
-                border: "1px solid var(--green-a5)",
-              }}
-              variants={staggerItem}
-              whileHover={{
-                y: -8,
-                boxShadow: "0 20px 40px rgba(31, 208, 104, 0.15)",
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              {/* Gradient Accent */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          {stats.map((stat, index) => {
+            const colors = colorPalette[index % colorPalette.length];
+            return (
+              <motion.div
+                key={index}
+                className="group relative rounded-2xl p-8 overflow-hidden"
                 style={{
-                  background: "radial-gradient(circle at 0% 50%, rgba(31, 208, 104, 0.1), transparent 70%)",
+                  background: hexToRgba(colors.light, 0.15),
+                  border: `1px solid ${colors.light}`,
                 }}
-              />
-
-              {/* Content */}
-              <div className="relative z-10">
-                <div className="mb-4">
-                  {stat.icon === "book" && <BookOpen className="w-10 h-10" style={{ color: "var(--green-9)" }} />}
-                  {stat.icon === "users" && <Users className="w-10 h-10" style={{ color: "var(--green-9)" }} />}
-                  {stat.icon === "award" && <Award className="w-10 h-10" style={{ color: "var(--green-9)" }} />}
-                </div>
-                <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: "var(--green-9)" }}>
-                  <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                </div>
+                variants={staggerItem}
+                whileHover={{
+                  y: -8,
+                  boxShadow: `0 20px 40px ${hexToRgba(colors.light, 0.25)}`,
+                }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Gradient Accent */}
                 <div
-                  className="text-sm font-medium uppercase tracking-widest"
-                  style={{ color: "var(--text-secondary)" }}
-                >
-                  {stat.label}
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  style={{
+                    background: `radial-gradient(circle at 0% 50%, ${hexToRgba(colors.dark, 0.1)}, transparent 70%)`,
+                  }}
+                />
+
+                {/* Content */}
+                <div className="relative z-10">
+                  <div className="mb-4">
+                    {stat.icon === "book" && <BookOpen className="w-10 h-10" style={{ color: colors.light }} />}
+                    {stat.icon === "users" && <Users className="w-10 h-10" style={{ color: colors.light }} />}
+                    {stat.icon === "award" && <Award className="w-10 h-10" style={{ color: colors.light }} />}
+                  </div>
+                  <div className="text-5xl md:text-6xl font-bold mb-3" style={{ color: colors.dark }}>
+                    <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                  </div>
+                  <div
+                    className="text-sm font-medium uppercase tracking-widest"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    {stat.label}
+                  </div>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </motion.div>
 
         {/* Testimonials Section */}
@@ -203,99 +221,102 @@ export function SocialProof() {
             whileInView="visible"
             viewport={viewportOnce}
           >
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                className="group relative rounded-2xl overflow-hidden backdrop-blur-sm"
-                style={{
-                  background: "color-mix(in srgb, var(--green-a1) 30%, var(--card-bg))",
-                  border: "1px solid var(--green-a4)",
-                }}
-                variants={staggerItem}
-                whileHover={{
-                  y: -8,
-                  boxShadow: "0 25px 50px rgba(31, 208, 104, 0.2)",
-                }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Glow Effect on Hover */}
-                <div
-                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            {testimonials.map((testimonial, index) => {
+              const colors = colorPalette[index % colorPalette.length];
+              return (
+                <motion.div
+                  key={index}
+                  className="group relative rounded-2xl overflow-hidden backdrop-blur-sm"
                   style={{
-                    background: "radial-gradient(circle at top right, rgba(31, 208, 104, 0.15), transparent 70%)",
+                    background: hexToRgba(colors.light, 0.1),
+                    border: `1px solid ${colors.light}`,
                   }}
-                />
-
-                {/* Content */}
-                <div className="relative z-10 p-8 flex flex-col h-full">
-                  {/* Stars */}
-                  <div className="flex gap-1 mb-6">
-                    {Array.from({ length: 5 }).map((_, i) => (
-                      <motion.div
-                        key={i}
-                        initial={{ opacity: 0, scale: 0 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: i * 0.1 + 0.2, duration: 0.4 }}
-                      >
-                        <Star
-                          className="w-5 h-5"
-                          style={{
-                            color: "var(--green-9)",
-                            fill: "var(--green-9)",
-                          }}
-                        />
-                      </motion.div>
-                    ))}
-                  </div>
-
-                  {/* Quote */}
-                  <blockquote
-                    className="text-base mb-8 leading-relaxed flex-1"
-                    style={{ color: "var(--text-primary)" }}
-                  >
-                    "{testimonial.quote}"
-                  </blockquote>
-
-                  {/* Divider */}
+                  variants={staggerItem}
+                  whileHover={{
+                    y: -8,
+                    boxShadow: `0 25px 50px ${hexToRgba(colors.light, 0.2)}`,
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {/* Glow Effect on Hover */}
                   <div
-                    className="h-px mb-6 group-hover:h-1.5 transition-all duration-300"
+                    className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                     style={{
-                      background: "linear-gradient(90deg, var(--green-a4), transparent)",
+                      background: `radial-gradient(circle at top right, ${hexToRgba(colors.light, 0.15)}, transparent 70%)`,
                     }}
                   />
 
-                  {/* Author */}
-                  <div className="flex items-center gap-4">
-                    <motion.div
-                      className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0"
-                      style={{
-                        background: "linear-gradient(135deg, var(--green-9), var(--green-8))",
-                        color: "white",
-                      }}
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.2 }}
+                  {/* Content */}
+                  <div className="relative z-10 p-8 flex flex-col h-full">
+                    {/* Stars */}
+                    <div className="flex gap-1 mb-6">
+                      {Array.from({ length: 5 }).map((_, i) => (
+                        <motion.div
+                          key={i}
+                          initial={{ opacity: 0, scale: 0 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          transition={{ delay: i * 0.1 + 0.2, duration: 0.4 }}
+                        >
+                          <Star
+                            className="w-5 h-5"
+                            style={{
+                              color: colors.light,
+                              fill: colors.light,
+                            }}
+                          />
+                        </motion.div>
+                      ))}
+                    </div>
+
+                    {/* Quote */}
+                    <blockquote
+                      className="text-base mb-8 leading-relaxed flex-1"
+                      style={{ color: "var(--text-primary)" }}
                     >
-                      {testimonial.initials}
-                    </motion.div>
-                    <div>
-                      <div
-                        className="font-semibold text-sm"
-                        style={{ color: "var(--text-primary)" }}
+                      "{testimonial.quote}"
+                    </blockquote>
+
+                    {/* Divider */}
+                    <div
+                      className="h-px mb-6 group-hover:h-1.5 transition-all duration-300"
+                      style={{
+                        background: `linear-gradient(90deg, ${colors.light}, transparent)`,
+                      }}
+                    />
+
+                    {/* Author */}
+                    <div className="flex items-center gap-4">
+                      <motion.div
+                        className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0"
+                        style={{
+                          background: `linear-gradient(135deg, ${colors.light}, ${colors.dark})`,
+                          color: "white",
+                        }}
+                        whileHover={{ scale: 1.1 }}
+                        transition={{ duration: 0.2 }}
                       >
-                        {testimonial.name}
-                      </div>
-                      <div
-                        className="text-xs leading-snug"
-                        style={{ color: "var(--text-secondary)" }}
-                      >
-                        <div>{testimonial.role}</div>
-                        <div>{testimonial.affiliation}</div>
+                        {testimonial.initials}
+                      </motion.div>
+                      <div>
+                        <div
+                          className="font-semibold text-sm"
+                          style={{ color: "var(--text-primary)" }}
+                        >
+                          {testimonial.name}
+                        </div>
+                        <div
+                          className="text-xs leading-snug"
+                          style={{ color: "var(--text-secondary)" }}
+                        >
+                          <div>{testimonial.role}</div>
+                          <div>{testimonial.affiliation}</div>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              );
+            })}
           </motion.div>
         </motion.div>
       </div>

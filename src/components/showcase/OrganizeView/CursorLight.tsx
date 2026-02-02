@@ -9,9 +9,19 @@ import { motion } from "framer-motion";
 interface CursorLightProps {
   // Optional: only show light in certain areas
   showOnHover?: boolean;
+  // Color for the glow effect (hex color)
+  color?: string;
 }
 
-export function CursorLight({ showOnHover = false }: CursorLightProps) {
+// Helper function to convert hex to rgba
+function hexToRgba(hex: string, opacity: number): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+}
+
+export function CursorLight({ showOnHover = false, color = "#1fd068" }: CursorLightProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isOver, setIsOver] = useState(!showOnHover);
@@ -73,7 +83,7 @@ export function CursorLight({ showOnHover = false }: CursorLightProps) {
         <div
           className="w-40 h-40 rounded-full blur-3xl"
           style={{
-            background: "radial-gradient(circle, rgba(31, 208, 104, 0.35) 0%, rgba(31, 208, 104, 0.15) 40%, transparent 70%)",
+            background: `radial-gradient(circle, ${hexToRgba(color, 0.35)} 0%, ${hexToRgba(color, 0.15)} 40%, transparent 70%)`,
           }}
         />
 
@@ -90,7 +100,7 @@ export function CursorLight({ showOnHover = false }: CursorLightProps) {
             ease: "easeInOut",
           }}
           style={{
-            background: "radial-gradient(circle, rgba(31, 208, 104, 0.45) 0%, transparent 70%)",
+            background: `radial-gradient(circle, ${hexToRgba(color, 0.45)} 0%, transparent 70%)`,
           }}
         />
       </motion.div>

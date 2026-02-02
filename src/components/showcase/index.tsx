@@ -25,7 +25,7 @@ const tabs: TabConfig[] = [
     duration: ORGANIZE_DURATION,
     icon: <LibraryIcon className="w-5 h-5" strokeWidth={1.5} />,
     module: "bibliography",
-    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
+    gradient: "linear-gradient(135deg, #C3E9D7 0%, #1B3A32 100%)",
   },
   {
     id: "write",
@@ -34,7 +34,7 @@ const tabs: TabConfig[] = [
     duration: WRITE_DURATION,
     icon: <EditIcon />,
     module: "manuscripts",
-    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
+    gradient: "linear-gradient(135deg, #C2E5FF 0%, #0E3264 100%)",
   },
   {
     id: "cite",
@@ -43,37 +43,40 @@ const tabs: TabConfig[] = [
     duration: WRITE_DURATION,
     icon: <LinkIcon className="w-5 h-5" strokeWidth={1.5} />,
     module: "discover",
-    gradient: "linear-gradient(135deg, var(--green-9) 0%, var(--green-10) 100%)",
+    gradient: "linear-gradient(135deg, #DADcff 0%, #2A2E66 100%)",
   },
 ];
 
 const moduleStyles = {
   bibliography: {
-    accent: "var(--green-9)",
-    accentHover: "var(--green-10)",
-    tint: "var(--green-a3)",
-    light: "var(--green-4)",
-    text: "var(--green-11)",
-    border: "var(--green-a5)",
-    glow: "var(--green-a5)",
+    accent: "#C3E9D7",
+    accentDark: "#1B3A32",
+    accentHover: "#A8DCC0",
+    tint: "#E8F7F2",
+    light: "#D8F0EB",
+    text: "#1B3A32",
+    border: "#C3E9D7",
+    glow: "rgba(195, 233, 215, 0.3)",
   },
   manuscripts: {
-    accent: "var(--green-9)",
-    accentHover: "var(--green-10)",
-    tint: "var(--green-a3)",
-    light: "var(--green-4)",
-    text: "var(--green-11)",
-    border: "var(--green-a5)",
-    glow: "var(--green-a5)",
+    accent: "#C2E5FF",
+    accentDark: "#0E3264",
+    accentHover: "#8FD3FF",
+    tint: "#E8F5FF",
+    light: "#D5EBFF",
+    text: "#0E3264",
+    border: "#C2E5FF",
+    glow: "rgba(194, 229, 255, 0.3)",
   },
   discover: {
-    accent: "var(--green-9)",
-    accentHover: "var(--green-10)",
-    tint: "var(--green-a3)",
-    light: "var(--green-4)",
-    text: "var(--green-11)",
-    border: "var(--green-a5)",
-    glow: "var(--green-a5)",
+    accent: "#DADcff",
+    accentDark: "#2A2E66",
+    accentHover: "#BFBEF0",
+    tint: "#F0F0FF",
+    light: "#E5E5FF",
+    text: "#2A2E66",
+    border: "#DADcff",
+    glow: "rgba(218, 220, 255, 0.3)",
   },
 };
 
@@ -183,11 +186,11 @@ export function TabbedProductShowcase() {
         style={{
           background: "var(--card-bg)",
           border: `1px solid ${currentStyles.border}`,
-          boxShadow: `0 25px 50px -12px var(--mauve-a5), 0 0 0 1px ${currentStyles.border}`,
+          boxShadow: `0 25px 50px -12px ${currentStyles.glow}, 0 0 0 1px ${currentStyles.border}`,
         }}
         layout
       >
-        {/* Top gradient accent */}
+        {/* Top gradient accent with section color */}
         <motion.div
           className="absolute top-0 left-0 right-0 h-1"
           style={{ background: currentTab.gradient }}
@@ -206,6 +209,7 @@ export function TabbedProductShowcase() {
               <OrganizeView
                 isActive={activeTab === "organize"}
                 onComplete={handleAnimationComplete}
+                color="#C3E9D7"
               />
             </motion.div>
           )}
@@ -217,7 +221,7 @@ export function TabbedProductShowcase() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
-              <WriteView isActive={activeTab === "write"} onComplete={handleAnimationComplete} />
+              <WriteView isActive={activeTab === "write"} onComplete={handleAnimationComplete} color="#C2E5FF" />
             </motion.div>
           )}
           {activeTab === "cite" && (
@@ -228,7 +232,7 @@ export function TabbedProductShowcase() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
-              <WriteView showCitation isActive={activeTab === "cite"} onComplete={handleAnimationComplete} />
+              <WriteView showCitation isActive={activeTab === "cite"} onComplete={handleAnimationComplete} color="#DADcff" />
             </motion.div>
           )}
         </AnimatePresence>

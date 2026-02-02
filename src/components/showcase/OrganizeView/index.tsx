@@ -14,7 +14,6 @@
  */
 
 import { useState, useEffect, useCallback } from "react";
-import { ActivityBar } from "../shared/ActivityBar";
 import { CollectionsSidebar } from "./CollectionsSidebar";
 import { ReferenceTable } from "./ReferenceTable";
 import { CursorLight } from "./CursorLight";
@@ -23,6 +22,7 @@ import type { OrganizeStep } from "../types";
 interface OrganizeViewProps {
   isActive: boolean;
   onComplete?: () => void;
+  color?: string;
 }
 
 // Step timing in milliseconds - tells the story of importing and organizing
@@ -50,7 +50,7 @@ const stepOrder: OrganizeStep[] = [
   "organized",
 ];
 
-export function OrganizeView({ isActive, onComplete }: OrganizeViewProps) {
+export function OrganizeView({ isActive, onComplete, color = "#C3E9D7" }: OrganizeViewProps) {
   const [step, setStep] = useState<OrganizeStep>("empty-state");
 
   // Get next step
@@ -86,14 +86,26 @@ export function OrganizeView({ isActive, onComplete }: OrganizeViewProps) {
     return () => clearTimeout(timeout);
   }, [isActive, step, getNextStep]);
 
-  return (
-    <div className="relative flex h-[420px] overflow-hidden">
-      {/* Green light glow effect following real user cursor */}
-      <CursorLight />
+  // Determine layout based on step
+  const showSidebar = ["organizing", "paper-select", "detail-view", "filtering", "organized"].includes(step);
 
-      <ActivityBar variant="library" />
-      <CollectionsSidebar step={step} />
-      <ReferenceTable step={step} />
+  return (
+    <div className="relative h-[420px] overflow-hidden bg-card">
+      {/* Colored light glow effect following real user cursor */}
+      <CursorLight color={color} />
+
+      {showSidebar ? (
+        // Two-column layout: sidebar + table
+        <div className="flex h-full">
+          <CollectionsSidebar step={step} accentColor={color} />
+          <ReferenceTable step={step} accentColor={color} />
+        </div>
+      ) : (
+        // Single column: full-width table
+        <div className="flex h-full">
+          <ReferenceTable step={step} accentColor={color} />
+        </div>
+      )}
     </div>
   );
 }
