@@ -21,7 +21,7 @@ export function CTASection() {
         className="absolute inset-0 pointer-events-none"
         style={{
           background: `
-            radial-gradient(ellipse 60% 40% at 50% 100%, var(--green-a3) 0%, transparent 60%),
+            radial-gradient(ellipse 60% 40% at 50% 100%, rgba(10, 185, 129, 0.1) 0%, rgba(59, 130, 246, 0.05) 30%, rgba(139, 92, 246, 0.1) 60%, transparent 80%),
             transparent
           `,
         }}

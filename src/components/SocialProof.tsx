@@ -9,11 +9,11 @@ import { useRef, useEffect } from "react";
 import { Star, BookOpen, Users, Award } from "lucide-react";
 import { staggerContainer, staggerItem, viewportOnce } from "@/lib/animations";
 
-// Color palette: 3 light colors + 3 dark colors
+// Color palette: 3 colors cycling through stats and testimonials
 const colorPalette = [
-  { light: "#C3E9D7", dark: "#1B3A32" }, // Mint green
-  { light: "#C2E5FF", dark: "#0E3264" }, // Blue
-  { light: "#DADcff", dark: "#2A2E66" }, // Purple
+  { light: "#3B82F6", dark: "#2563EB" }, // Blue
+  { light: "#10B981", dark: "#059669" }, // Green
+  { light: "#8B5CF6", dark: "#7C3AED" }, // Purple
 ];
 
 // Helper to convert hex to rgba
@@ -114,8 +114,8 @@ export function SocialProof() {
           className="absolute inset-0"
           style={{
             background: `
-              radial-gradient(circle at 20% 50%, ${hexToRgba("#C3E9D7", 0.1)} 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, ${hexToRgba("#DADcff", 0.1)} 0%, transparent 50%),
+              radial-gradient(circle at 20% 50%, ${hexToRgba("#3B82F6", 0.1)} 0%, transparent 50%),
+              radial-gradient(circle at 80% 20%, ${hexToRgba("#8B5CF6", 0.1)} 0%, transparent 50%),
               var(--bg-primary)
             `,
           }}

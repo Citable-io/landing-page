@@ -26,7 +26,7 @@ const collections = [
   { id: "toread", name: "To Read", count: 0, indent: 1 },
 ];
 
-export function CollectionsSidebar({ step, className = "", accentColor = "#C3E9D7" }: CollectionsSidebarProps) {
+export function CollectionsSidebar({ step, className = "", accentColor = "#3B82F6" }: CollectionsSidebarProps) {
   // Update counts based on workflow step
   const getCounts = () => {
     if (["organizing", "paper-select", "detail-view", "filtering", "organized"].includes(step)) {
@@ -38,13 +38,22 @@ export function CollectionsSidebar({ step, className = "", accentColor = "#C3E9D
   const counts = getCounts();
   const isOrganizing = step === "organizing";
   return (
-    <div className={`w-64 bg-card flex flex-col border-r border-border/20 ${className}`}>
+    <div
+      className={`w-64 flex flex-col ${className}`}
+      style={{ background: "#FFFFFF", borderRight: "1px solid #E5E7EB" }}
+    >
       {/* Header */}
-      <div className="h-11 flex items-center justify-between px-4 border-b border-border/20">
-        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+      <div
+        className="h-11 flex items-center justify-between px-4 border-b"
+        style={{ borderColor: "#E5E7EB" }}
+      >
+        <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "#6B7280" }}>
           Collections
         </span>
-        <button className="w-6 h-6 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors rounded">
+        <button
+          className="w-6 h-6 flex items-center justify-center transition-colors rounded"
+          style={{ color: "#6B7280" }}
+        >
           <PlusIcon />
         </button>
       </div>
@@ -53,7 +62,7 @@ export function CollectionsSidebar({ step, className = "", accentColor = "#C3E9D
       <div className="flex-1 overflow-y-auto p-3 space-y-1">
         {/* Show empty state or populated collections based on step */}
         {["empty-state", "import-action", "pdf-drop", "metadata-extraction"].includes(step) ? (
-          <div className="flex items-center justify-center h-20 text-muted-foreground text-xs">
+          <div className="flex items-center justify-center h-20 text-xs" style={{ color: "#D1D5DB" }}>
             <div className="text-center">
               <FolderIcon className="w-8 h-8 mx-auto mb-2 opacity-30" />
               <p>No collections yet</p>
@@ -62,7 +71,7 @@ export function CollectionsSidebar({ step, className = "", accentColor = "#C3E9D
         ) : (
           <>
             {/* My Library root */}
-            <div className="flex items-center gap-2 px-2 py-1.5 text-xs font-semibold text-muted-foreground">
+            <div className="flex items-center gap-2 px-2 py-1.5 text-xs font-semibold" style={{ color: "#6B7280" }}>
               <ChevronRightIcon />
               <span>My Library</span>
             </div>
@@ -104,7 +113,7 @@ interface CollectionItemProps {
   accentColor?: string;
 }
 
-function CollectionItem({ name, count = 0, selected = false, isAnimating = false, accentColor = "#C3E9D7" }: CollectionItemProps) {
+function CollectionItem({ name, count = 0, selected = false, isAnimating = false, accentColor = "#3B82F6" }: CollectionItemProps) {
   return (
     <div
       className={`flex items-center gap-2 py-1.5 px-4 rounded text-sm transition-all cursor-pointer ${

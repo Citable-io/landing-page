@@ -25,7 +25,7 @@ const tabs: TabConfig[] = [
     duration: ORGANIZE_DURATION,
     icon: <LibraryIcon className="w-5 h-5" strokeWidth={1.5} />,
     module: "bibliography",
-    gradient: "linear-gradient(135deg, #C3E9D7 0%, #1B3A32 100%)",
+    gradient: "linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)",
   },
   {
     id: "write",
@@ -34,7 +34,7 @@ const tabs: TabConfig[] = [
     duration: WRITE_DURATION,
     icon: <EditIcon />,
     module: "manuscripts",
-    gradient: "linear-gradient(135deg, #C2E5FF 0%, #0E3264 100%)",
+    gradient: "linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)",
   },
   {
     id: "cite",
@@ -43,40 +43,40 @@ const tabs: TabConfig[] = [
     duration: WRITE_DURATION,
     icon: <LinkIcon className="w-5 h-5" strokeWidth={1.5} />,
     module: "discover",
-    gradient: "linear-gradient(135deg, #DADcff 0%, #2A2E66 100%)",
+    gradient: "linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)",
   },
 ];
 
 const moduleStyles = {
   bibliography: {
-    accent: "#C3E9D7",
-    accentDark: "#1B3A32",
-    accentHover: "#A8DCC0",
-    tint: "#E8F7F2",
-    light: "#D8F0EB",
-    text: "#1B3A32",
-    border: "#C3E9D7",
-    glow: "rgba(195, 233, 215, 0.3)",
+    accent: "#3B82F6",
+    accentDark: "#2563EB",
+    accentHover: "#60A5FA",
+    tint: "#EFF6FF",
+    light: "#DBEAFE",
+    text: "#111827",
+    border: "#E5E7EB",
+    glow: "rgba(194, 229, 255, 0.3)",
   },
   manuscripts: {
-    accent: "#C2E5FF",
-    accentDark: "#0E3264",
-    accentHover: "#8FD3FF",
-    tint: "#E8F5FF",
-    light: "#D5EBFF",
-    text: "#0E3264",
-    border: "#C2E5FF",
+    accent: "#3B82F6",
+    accentDark: "#2563EB",
+    accentHover: "#60A5FA",
+    tint: "#EFF6FF",
+    light: "#DBEAFE",
+    text: "#111827",
+    border: "#E5E7EB",
     glow: "rgba(194, 229, 255, 0.3)",
   },
   discover: {
-    accent: "#DADcff",
-    accentDark: "#2A2E66",
-    accentHover: "#BFBEF0",
-    tint: "#F0F0FF",
-    light: "#E5E5FF",
-    text: "#2A2E66",
-    border: "#DADcff",
-    glow: "rgba(218, 220, 255, 0.3)",
+    accent: "#3B82F6",
+    accentDark: "#2563EB",
+    accentHover: "#60A5FA",
+    tint: "#EFF6FF",
+    light: "#DBEAFE",
+    text: "#111827",
+    border: "#E5E7EB",
+    glow: "rgba(194, 229, 255, 0.3)",
   },
 };
 
@@ -123,15 +123,21 @@ export function TabbedProductShowcase() {
   };
 
   return (
-    <div className="space-y-8">
+    <div
+      className="space-y-8 p-8 rounded-3xl"
+      style={{
+        background: "#FFFFFF",
+        border: "1px solid #E5E7EB",
+        boxShadow: "0 0 80px 0 rgba(194, 229, 255, 0.4), 0 0 80px 0 rgba(218, 220, 255, 0.25)",
+      }}
+    >
       {/* Tab buttons */}
       <div className="flex justify-center">
         <div
           className="inline-flex gap-2 p-2 rounded-2xl"
           style={{
-            background: "color-mix(in srgb, var(--bg-tertiary) 80%, transparent)",
-            backdropFilter: "blur(8px)",
-            border: "1px solid var(--border-subtle)",
+            background: "#F5F6FA",
+            border: "1px solid #E5E7EB",
           }}
         >
           {tabs.map((tab) => {
@@ -145,7 +151,7 @@ export function TabbedProductShowcase() {
                 className="relative flex items-center gap-2.5 px-5 py-3 rounded-xl text-sm font-medium transition-colors"
                 style={{
                   background: isActive ? tab.gradient : "transparent",
-                  color: isActive ? "white" : "var(--text-secondary)",
+                  color: isActive ? "white" : "#6B7280",
                   boxShadow: isActive ? `0 4px 15px ${styles.glow}` : "none",
                 }}
                 whileHover={!isActive ? { background: "var(--bg-hover)" } : {}}
@@ -184,9 +190,9 @@ export function TabbedProductShowcase() {
       <motion.div
         className="relative rounded-2xl overflow-hidden"
         style={{
-          background: "var(--card-bg)",
-          border: `1px solid ${currentStyles.border}`,
-          boxShadow: `0 25px 50px -12px ${currentStyles.glow}, 0 0 0 1px ${currentStyles.border}`,
+          background: "#FFFFFF",
+          border: `1px solid #E5E7EB`,
+          boxShadow: `0 10px 30px -10px rgba(194, 229, 255, 0.3)`,
         }}
         layout
       >
@@ -209,7 +215,7 @@ export function TabbedProductShowcase() {
               <OrganizeView
                 isActive={activeTab === "organize"}
                 onComplete={handleAnimationComplete}
-                color="#C3E9D7"
+                color="#3B82F6"
               />
             </motion.div>
           )}
@@ -221,7 +227,7 @@ export function TabbedProductShowcase() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
-              <WriteView isActive={activeTab === "write"} onComplete={handleAnimationComplete} color="#C2E5FF" />
+              <WriteView isActive={activeTab === "write"} onComplete={handleAnimationComplete} color="#3B82F6" />
             </motion.div>
           )}
           {activeTab === "cite" && (
@@ -232,7 +238,7 @@ export function TabbedProductShowcase() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.3 }}
             >
-              <WriteView showCitation isActive={activeTab === "cite"} onComplete={handleAnimationComplete} color="#DADcff" />
+              <WriteView showCitation isActive={activeTab === "cite"} onComplete={handleAnimationComplete} color="#3B82F6" />
             </motion.div>
           )}
         </AnimatePresence>
@@ -242,7 +248,7 @@ export function TabbedProductShowcase() {
       <motion.div className="text-center" key={activeTab} layout>
         <motion.p
           className="text-lg"
-          style={{ color: "var(--text-secondary)" }}
+          style={{ color: "#6B7280" }}
           initial={{ opacity: 0, y: 5 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}

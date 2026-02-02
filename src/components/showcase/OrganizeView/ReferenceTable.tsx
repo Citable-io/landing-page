@@ -48,7 +48,7 @@ function hexToRgba(hex: string, opacity: number): string {
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 }
 
-export function ReferenceTable({ step, className = "", accentColor = "#C3E9D7" }: ReferenceTableProps) {
+export function ReferenceTable({ step, className = "", accentColor = "#3B82F6" }: ReferenceTableProps) {
   // Show references based on workflow step
   const showEmptyState = step === "empty-state" || step === "import-action";
   const showImportAnimation = step === "pdf-drop";
@@ -58,9 +58,15 @@ export function ReferenceTable({ step, className = "", accentColor = "#C3E9D7" }
   const selectedRowId = (step === "paper-select" || step === "detail-view" || step === "filtering" || step === "organized") ? "ref-1" : null;
 
   return (
-    <div className={`flex-1 flex flex-col min-w-0 bg-background ${className}`}>
+    <div
+      className={`flex-1 flex flex-col min-w-0 ${className}`}
+      style={{ background: "#FFFFFF" }}
+    >
       {/* Tab Bar - Shows active collection */}
-      <div className="h-11 flex items-center gap-1 px-2 bg-card border-b border-border/20">
+      <div
+        className="h-11 flex items-center gap-1 px-2 border-b"
+        style={{ borderColor: "#E5E7EB" }}
+      >
         <div
           className="flex items-center gap-2 px-3 py-1.5 transition-colors border-b-2"
           style={{ color: accentColor, borderColor: accentColor }}
@@ -71,7 +77,10 @@ export function ReferenceTable({ step, className = "", accentColor = "#C3E9D7" }
       </div>
 
       {/* Toolbar */}
-      <div className="h-11 flex items-center justify-between px-4 border-b border-border/20">
+      <div
+        className="h-11 flex items-center justify-between px-4 border-b"
+        style={{ borderColor: "#E5E7EB" }}
+      >
         <div className="flex items-center gap-2">
           <button
             className={`h-8 px-3 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 text-white shadow-lg ${
@@ -105,12 +114,12 @@ export function ReferenceTable({ step, className = "", accentColor = "#C3E9D7" }
         {/* Empty State */}
         {showEmptyState && (
           <div className="h-full flex flex-col items-center justify-center text-center p-8">
-            <DocumentIcon className="w-16 h-16 text-muted-foreground/30 mb-4" />
-            <h3 className="text-lg font-semibold text-foreground mb-2">No papers yet</h3>
-            <p className="text-sm text-muted-foreground mb-6">
+            <DocumentIcon className="w-16 h-16 mb-4" style={{ color: "#D1D5DB" }} />
+            <h3 className="text-lg font-semibold mb-2" style={{ color: "#111827" }}>No papers yet</h3>
+            <p className="text-sm mb-6" style={{ color: "#6B7280" }}>
               Click "Import Papers" to get started
             </p>
-            <div className="text-xs text-muted-foreground/50">
+            <div className="text-xs" style={{ color: "#9CA3AF" }}>
               Drag & drop PDFs or click to browse
             </div>
           </div>
@@ -147,8 +156,8 @@ export function ReferenceTable({ step, className = "", accentColor = "#C3E9D7" }
         {/* Data Table - showing extracted papers */}
         {(showExtractingMetadata || showPaperSelected) && (
           <table className="w-full text-sm">
-            <thead className="bg-secondary/30 sticky top-0">
-              <tr className="h-11 text-left text-xs uppercase tracking-wider text-muted-foreground">
+            <thead className="sticky top-0" style={{ background: "#F5F6FA", borderBottom: "1px solid #E5E7EB" }}>
+              <tr className="h-11 text-left text-xs uppercase tracking-wider" style={{ color: "#6B7280" }}>
                 <th className="px-4 font-medium">Title</th>
                 <th className="px-4 font-medium hidden sm:table-cell">Authors</th>
                 <th className="px-4 font-medium">Year</th>
@@ -156,7 +165,7 @@ export function ReferenceTable({ step, className = "", accentColor = "#C3E9D7" }
                 <th className="px-4 font-medium hidden lg:table-cell">Tags</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-border/20">
+            <tbody style={{ borderColor: "#E5E7EB" }}>
               {workflowReferences.map((ref, index) => (
                 <ReferenceRow
                   key={ref.id}
@@ -210,27 +219,28 @@ function ReferenceRow({
   animateIn = false,
   animationDelay = 0,
   step,
-  accentColor = "#C3E9D7",
+  accentColor = "#3B82F6",
 }: ReferenceRowProps) {
-  const tagBgColor = hexToRgba(accentColor, 0.2);
+  const tagBgColor = hexToRgba(accentColor, 0.15);
   const tagTextColor = accentColor;
 
   return (
     <tr
-      className={`h-11 transition-all cursor-pointer ${
+      className={`h-11 transition-all cursor-pointer border-b ${
         animateIn ? "animate-fade-in-row" : ""
       }`}
       style={{
-        backgroundColor: selected ? hexToRgba(accentColor, 0.25) : undefined,
+        backgroundColor: selected ? hexToRgba(accentColor, 0.08) : undefined,
         animationDelay: animateIn ? `${animationDelay}s` : undefined,
+        borderColor: "#E5E7EB",
       }}
     >
-      <td className="px-4 text-foreground font-medium">{reference.title}</td>
-      <td className="px-4 text-muted-foreground hidden sm:table-cell text-xs">
+      <td className="px-4 font-medium" style={{ color: "#111827" }}>{reference.title}</td>
+      <td className="px-4 hidden sm:table-cell text-xs" style={{ color: "#6B7280" }}>
         {reference.authors}
       </td>
-      <td className="px-4 text-muted-foreground">{reference.year}</td>
-      <td className="px-4 text-muted-foreground hidden md:table-cell text-xs">
+      <td className="px-4" style={{ color: "#6B7280" }}>{reference.year}</td>
+      <td className="px-4 hidden md:table-cell text-xs" style={{ color: "#6B7280" }}>
         {reference.venue}
       </td>
       <td className="px-4 hidden lg:table-cell">

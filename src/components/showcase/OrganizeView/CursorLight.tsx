@@ -21,7 +21,7 @@ function hexToRgba(hex: string, opacity: number): string {
   return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 }
 
-export function CursorLight({ showOnHover = false, color = "#1fd068" }: CursorLightProps) {
+export function CursorLight({ showOnHover = false, color = "#C2E5FF" }: CursorLightProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isOver, setIsOver] = useState(!showOnHover);

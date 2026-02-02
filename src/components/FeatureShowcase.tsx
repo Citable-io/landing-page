@@ -84,31 +84,31 @@ function hexToRgba(hex: string, opacity: number): string {
 
 const moduleStyles = {
   biblio: {
-    accent: "#C3E9D7",
-    accentDark: "#1B3A32",
-    tint: hexToRgba("#C3E9D7", 0.15),
-    text: "#1B3A32",
-    border: "#C3E9D7",
-    glow: hexToRgba("#C3E9D7", 0.25),
-    gradient: "linear-gradient(135deg, #C3E9D7 0%, #1B3A32 100%)",
+    accent: "#3B82F6",
+    accentDark: "#2563EB",
+    tint: hexToRgba("#3B82F6", 0.15),
+    text: "#111827",
+    border: "#E5E7EB",
+    glow: hexToRgba("#C2E5FF", 0.25),
+    gradient: "linear-gradient(135deg, #3B82F6 0%, #2563EB 100%)",
   },
   manuscripts: {
-    accent: "#C2E5FF",
-    accentDark: "#0E3264",
-    tint: hexToRgba("#C2E5FF", 0.15),
-    text: "#0E3264",
-    border: "#C2E5FF",
-    glow: hexToRgba("#C2E5FF", 0.25),
-    gradient: "linear-gradient(135deg, #C2E5FF 0%, #0E3264 100%)",
+    accent: "#10B981",
+    accentDark: "#059669",
+    tint: hexToRgba("#10B981", 0.15),
+    text: "#111827",
+    border: "#E5E7EB",
+    glow: hexToRgba("#D1FAE5", 0.25),
+    gradient: "linear-gradient(135deg, #10B981 0%, #059669 100%)",
   },
   discover: {
-    accent: "#DADcff",
-    accentDark: "#2A2E66",
-    tint: hexToRgba("#DADcff", 0.15),
-    text: "#2A2E66",
-    border: "#DADcff",
-    glow: hexToRgba("#DADcff", 0.25),
-    gradient: "linear-gradient(135deg, #DADcff 0%, #2A2E66 100%)",
+    accent: "#8B5CF6",
+    accentDark: "#7C3AED",
+    tint: hexToRgba("#8B5CF6", 0.15),
+    text: "#111827",
+    border: "#E5E7EB",
+    glow: hexToRgba("#E9D5FF", 0.25),
+    gradient: "linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%)",
   },
 };
 
@@ -153,11 +153,11 @@ function FeatureSection({ feature, index }: { feature: Feature; index: number })
   const renderDemo = () => {
     switch (feature.id) {
       case "organize":
-        return <OrganizeView isActive={isInView} />;
+        return <OrganizeView isActive={isInView} color="#3B82F6" />;
       case "write":
-        return <WriteView isActive={isInView} />;
+        return <WriteView isActive={isInView} color="#10B981" />;
       case "discover":
-        return <WriteView showCitation isActive={isInView} />;
+        return <WriteView showCitation isActive={isInView} color="#8B5CF6" />;
       default:
         return null;
     }

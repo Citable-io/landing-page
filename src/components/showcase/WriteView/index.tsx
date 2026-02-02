@@ -59,7 +59,7 @@ const stepTimings: Record<Step, number> = {
   "cite-insert": 1500,
 };
 
-export function WriteView({ showCitation = false, isActive = true, onComplete, color = "#C2E5FF" }: WriteViewProps) {
+export function WriteView({ showCitation = false, isActive = true, onComplete, color = "#3B82F6" }: WriteViewProps) {
   const [step, setStep] = useState<Step>("idle");
   const steps = showCitation ? citeSteps : writeSteps;
 
@@ -333,7 +333,7 @@ function OutlineItem({ label }: { label: string }) {
   );
 }
 
-function EditorPane({ step, showCitation, color = "#C2E5FF" }: { step: Step; showCitation: boolean; color?: string }) {
+function EditorPane({ step, showCitation, color = "#3B82F6" }: { step: Step; showCitation: boolean; color?: string }) {
   const isTyping = step === "typing";
   const showContent = step !== "idle";
   const showCiteDropdown = step === "cite-select" || step === "cite-insert";
@@ -748,13 +748,16 @@ function LinkedBibliographyPanel() {
                 </div>
                 {citation.cited && (
                   <motion.div
-                    className="flex items-center gap-1 px-2 py-1 rounded bg-secondary/50 flex-shrink-0"
+                    className="flex items-center gap-1 px-2 py-1 rounded flex-shrink-0"
+                    style={{
+                      backgroundColor: "rgba(59, 130, 246, 0.15)",
+                    }}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
                     transition={{ type: "spring", stiffness: 200 }}
                   >
-                    <CheckIcon className="w-3.5 h-3.5 text-foreground/70" />
-                    <span className="text-xs font-medium text-foreground/70">Cited</span>
+                    <CheckIcon className="w-3.5 h-3.5" style={{ color: "#3B82F6" }} />
+                    <span className="text-xs font-medium" style={{ color: "#3B82F6" }}>Cited</span>
                   </motion.div>
                 )}
               </div>

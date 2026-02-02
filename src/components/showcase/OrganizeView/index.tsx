@@ -50,7 +50,7 @@ const stepOrder: OrganizeStep[] = [
   "organized",
 ];
 
-export function OrganizeView({ isActive, onComplete, color = "#C3E9D7" }: OrganizeViewProps) {
+export function OrganizeView({ isActive, onComplete, color = "#3B82F6" }: OrganizeViewProps) {
   const [step, setStep] = useState<OrganizeStep>("empty-state");
 
   // Get next step
@@ -90,7 +90,14 @@ export function OrganizeView({ isActive, onComplete, color = "#C3E9D7" }: Organi
   const showSidebar = ["organizing", "paper-select", "detail-view", "filtering", "organized"].includes(step);
 
   return (
-    <div className="relative h-[420px] overflow-hidden bg-card">
+    <div
+      className="relative h-[420px] overflow-hidden rounded-2xl"
+      style={{
+        background: "#FFFFFF",
+        border: "1px solid #E5E7EB",
+        boxShadow: "0 0 40px 0 rgba(194, 229, 255, 0.2), 0 0 40px 0 rgba(218, 220, 255, 0.15)",
+      }}
+    >
       {/* Colored light glow effect following real user cursor */}
       <CursorLight color={color} />
 
