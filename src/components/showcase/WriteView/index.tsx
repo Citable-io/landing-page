@@ -38,14 +38,15 @@ interface WriteViewProps {
 }
 
 const writeSteps: WriteStep[] = ["idle", "typing", "compile", "preview"];
-const citeSteps: CiteStep[] = ["idle", "cite-trigger", "cite-select", "cite-insert"];
+const citeSteps: CiteStep[] = ["idle", "linked-bib", "cite-trigger", "cite-select", "cite-insert"];
 
 const stepTimings: Record<Step, number> = {
   "idle": 800,
   "typing": 3000,
   "compile": 2000,
   "preview": 2500,
-  "cite-trigger": 1000,
+  "linked-bib": 2500,
+  "cite-trigger": 1200,
   "cite-select": 1800,
   "cite-insert": 1500,
 };
@@ -77,10 +78,11 @@ export function WriteView({ showCitation = false, isActive = true, onComplete }:
       }
     } else {
       switch (currentStep) {
-        case "idle": return "📝 Position cursor";
-        case "cite-trigger": return "🔍 Typing \\cite{";
-        case "cite-select": return "📚 Select citation";
-        case "cite-insert": return "✅ Citation inserted";
+        case "idle": return "📚 Linked Bibliography";
+        case "linked-bib": return "📚 Your linked bibliography with citation status";
+        case "cite-trigger": return "🔍 Type \\cite{ to insert citation";
+        case "cite-select": return "📚 Select from citation suggestions";
+        case "cite-insert": return "✅ Citation inserted in PDF";
         default: return "";
       }
     }
@@ -131,51 +133,123 @@ export function WriteView({ showCitation = false, isActive = true, onComplete }:
 
         <ActivityBar variant="editor" />
 
-        {/* Sidebar - File Browser */}
-        <motion.div
-          style={{
-            width: expandedSection === null ? 256 : expandedSection === "editor" ? 100 : 80,
-          }}
-          transition={{ duration: 0.3 }}
-        >
-          <FileBrowserSidebar />
-        </motion.div>
+        {/* Step 1: Show ONLY file browser */}
+        {step === "idle" && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="w-full h-full flex"
+          >
+            <FileBrowserSidebar />
+          </motion.div>
+        )}
 
-        {/* Main content area */}
-        <motion.div className="flex-1 flex flex-col min-w-0 bg-background" layout>
-          {/* Tab bar */}
-          <div className="h-11 flex items-center gap-1 px-2 bg-secondary/50 border-b border-border/20">
-            <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-card text-foreground text-sm">
-              <DocumentIcon />
-              <span>Main.tex</span>
-              <button className="w-4 h-4 flex items-center justify-center text-muted-foreground hover:text-foreground rounded">
-                <CloseIcon />
-              </button>
+        {/* Step 2-3: Show ONLY editor (no file browser) */}
+        {(step === "typing" || step === "compile") && (
+          <motion.div
+            className="w-full flex flex-col bg-background"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Tab bar */}
+            <div className="h-11 flex items-center gap-1 px-2 bg-secondary/50 border-b border-border/20">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-card text-foreground text-sm">
+                <DocumentIcon />
+                <span>Main.tex</span>
+                <button className="w-4 h-4 flex items-center justify-center text-muted-foreground hover:text-foreground rounded">
+                  <CloseIcon />
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Editor + PDF split */}
-          <div className="flex-1 flex min-h-0">
-            <motion.div
-              className="flex-1 min-w-0"
-              style={{
-                flex: expandedSection === "editor" ? 3 : expandedSection === "pdf" ? 1 : 1.5,
-              }}
-              transition={{ duration: 0.3 }}
-            >
+            {/* Editor with compile overlay */}
+            <div className="flex-1 flex min-h-0 relative">
               <EditorPane step={step} showCitation={showCitation} />
-            </motion.div>
-            <motion.div
-              className="hidden sm:flex flex-1 min-w-0"
-              style={{
-                flex: expandedSection === "pdf" ? 3 : expandedSection === "editor" ? 1 : 1.5,
-              }}
-              transition={{ duration: 0.3 }}
-            >
-              <PDFPreviewPane step={step} showCitation={showCitation} />
-            </motion.div>
-          </div>
-        </motion.div>
+
+              {/* Compile animation overlay */}
+              {step === "compile" && (
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center bg-black/20"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <motion.div
+                    className="flex flex-col items-center gap-3"
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 200 }}
+                  >
+                    <motion.div
+                      className="w-12 h-12 rounded-full border-2 border-primary/30 border-t-primary flex items-center justify-center"
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    >
+                      <PlayIcon className="w-6 h-6 text-primary" />
+                    </motion.div>
+                    <span className="text-sm font-medium text-foreground">Compiling PDF...</span>
+                  </motion.div>
+                </motion.div>
+              )}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Step 4: Show ONLY PDF */}
+        {step === "preview" && (
+          <motion.div
+            className="w-full flex flex-col bg-secondary/10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <PDFPreviewPane step={step} showCitation={showCitation} />
+          </motion.div>
+        )}
+
+        {/* Linked bibliography step: Show ONLY bibliography panel */}
+        {showCitation && step === "linked-bib" && (
+          <motion.div
+            className="w-full flex flex-col bg-background"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <LinkedBibliographyPanel />
+          </motion.div>
+        )}
+
+        {/* Citation steps: Show ONLY editor (no file browser) */}
+        {showCitation && (step === "cite-trigger" || step === "cite-select" || step === "cite-insert") && (
+          <motion.div
+            className="w-full flex flex-col bg-background"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="h-11 flex items-center gap-1 px-2 bg-secondary/50 border-b border-border/20">
+              <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-card text-foreground text-sm">
+                <DocumentIcon />
+                <span>Main.tex</span>
+                <button className="w-4 h-4 flex items-center justify-center text-muted-foreground hover:text-foreground rounded">
+                  <CloseIcon />
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 flex min-h-0">
+              <EditorPane step={step} showCitation={showCitation} />
+            </div>
+          </motion.div>
+        )}
       </div>
     </div>
   );
@@ -517,7 +591,7 @@ function PDFPreviewPane({ step, showCitation }: { step: Step; showCitation: bool
   const isCompiling = step === "compile" || step === "cite-select";
   const showPDF = step === "preview" || step === "cite-insert";
   return (
-    <div className="hidden sm:flex flex-1 flex-col bg-secondary/10 min-w-0">
+    <div className="flex flex-1 flex-col bg-secondary/10 min-w-0">
       {/* Toolbar */}
       <div className="h-11 flex items-center justify-between px-3 border-b border-border/10">
         <button className="flex items-center gap-1.5 px-2 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded transition-colors">
@@ -592,5 +666,96 @@ function PDFPreviewPane({ step, showCitation }: { step: Step; showCitation: bool
   );
 }
 
+function LinkedBibliographyPanel() {
+  const citations = [
+    { id: "smith2024", name: "Smith et al. (2024)", title: "Climate Change Impacts on Biodiversity", cited: true },
+    { id: "johnson2023", name: "Johnson (2023)", title: "Ecosystem Response to Climate Stress", cited: true },
+    { id: "williams2023", name: "Williams (2023)", title: "Biodiversity Loss Mechanisms", cited: false },
+    { id: "brown2022", name: "Brown et al. (2022)", title: "Marine Conservation Strategies", cited: false },
+  ];
+
+  return (
+    <div className="flex h-full">
+      {/* Folder Tree */}
+      <motion.div
+        className="w-1/2 border-r border-border/20 bg-secondary/30 p-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4 }}
+      >
+        <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+          Collections
+        </div>
+        <div className="space-y-2">
+          <div className="flex items-center gap-2 px-2 py-1.5 rounded bg-primary/10 text-primary text-sm">
+            <ChevronRightIcon className="w-4 h-4" />
+            <FolderIcon className="w-4 h-4" />
+            <span>Environmental Science</span>
+          </div>
+          <div className="flex items-center gap-2 px-2 py-1.5 rounded text-muted-foreground text-sm ml-4">
+            <FolderIcon className="w-4 h-4" />
+            <span>Climate Studies</span>
+          </div>
+          <div className="flex items-center gap-2 px-2 py-1.5 rounded text-muted-foreground text-sm ml-4">
+            <FolderIcon className="w-4 h-4" />
+            <span>Conservation</span>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* PDF List with Citation Status */}
+      <motion.div
+        className="w-1/2 bg-background p-4 overflow-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
+        <div className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-4">
+          References
+        </div>
+        <div className="space-y-2">
+          {citations.map((citation) => (
+            <motion.div
+              key={citation.id}
+              className={`p-2.5 rounded border transition-all ${
+                citation.cited
+                  ? "border-primary/50 bg-primary/5"
+                  : "border-border/20 bg-secondary/50"
+              }`}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="flex items-start gap-2">
+                <DocumentIcon className="w-4 h-4 flex-shrink-0 mt-0.5 text-primary" />
+                <div className="flex-1 min-w-0">
+                  <div className="text-sm font-medium text-foreground truncate">
+                    {citation.name}
+                  </div>
+                  <div className="text-xs text-muted-foreground truncate">
+                    {citation.title}
+                  </div>
+                </div>
+                {citation.cited && (
+                  <motion.div
+                    className="flex items-center gap-1 px-2 py-1 rounded bg-primary/20 flex-shrink-0"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 200 }}
+                  >
+                    <CheckIcon className="w-3.5 h-3.5 text-primary" />
+                    <span className="text-xs font-medium text-primary">Cited</span>
+                  </motion.div>
+                )}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 // Export duration for tab controller (static for now, will be animated later)
-export const WRITE_DURATION = 5000;
+// Increased from 5000 to 9000 to account for the new linked-bib step in citation workflow
+export const WRITE_DURATION = 9000;

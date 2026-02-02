@@ -32,6 +32,7 @@ export type WriteStep =
 
 export type CiteStep =
   | "idle"
+  | "linked-bib"
   | "cite-trigger"
   | "cite-select"
   | "cite-insert";
