@@ -14,15 +14,10 @@ export interface Tab {
 
 // Animation step types for each view
 export type OrganizeStep =
-  | "empty-state"
-  | "import-action"
-  | "pdf-drop"
-  | "metadata-extraction"
-  | "organizing"
-  | "paper-select"
-  | "detail-view"
-  | "filtering"
-  | "organized";
+  | "upload"
+  | "tagging"
+  | "pdf-open"
+  | "taking-notes";
 
 export type WriteStep =
   | "idle"

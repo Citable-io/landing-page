@@ -15,11 +15,11 @@ interface PDFViewerProps {
 }
 
 export function PDFViewer({ step, className = "" }: PDFViewerProps) {
-  const showSelection = step === "text-select";
-  const showColorPicker = step === "color-pick";
-  const showHighlight = step === "color-pick" || step === "note-popup";
-  const showNotePopup = step === "note-popup";
-  const showMarginNote = step === "note-popup";
+  const showSelection = step === "pdf-open";
+  const showColorPicker = step === "taking-notes";
+  const showHighlight = step === "taking-notes";
+  const showNotePopup = step === "taking-notes";
+  const showMarginNote = step === "taking-notes";
 
   return (
     <div className={`flex-1 flex flex-col min-w-0 bg-background ${className}`}>

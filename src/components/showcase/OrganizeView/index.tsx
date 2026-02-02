@@ -1,21 +1,16 @@
 /**
  * OrganizeView - Animated bibliography management showcase
  *
- * Video-like walkthrough showing the full organize workflow:
- * 1. empty-state (2s) - Clean library ready for papers
- * 2. import-action (1.5s) - User clicks Import button
- * 3. pdf-drop (2.5s) - PDFs being imported with animations
- * 4. metadata-extraction (3s) - Metadata auto-extracting (title, authors, year)
- * 5. organizing (2s) - Papers being organized into collections
- * 6. paper-select (1.5s) - Click on a paper to see details
- * 7. detail-view (2s) - Paper metadata displayed on right panel
- * 8. filtering (2s) - Show search/filter in action
- * 9. organized (1.5s) - Final organized library state
+ * Streamlined 4-step workflow:
+ * 1. upload (3s) - PDFs being imported with animations
+ * 2. tagging (3s) - Metadata auto-extracting and auto-tagging
+ * 3. pdf-open (2.5s) - Opening and viewing the PDF
+ * 4. taking-notes (3.5s) - Writing notes on the PDF
  */
 
 import { useState, useEffect, useCallback } from "react";
-import { CollectionsSidebar } from "./CollectionsSidebar";
 import { ReferenceTable } from "./ReferenceTable";
+import { PDFViewer } from "./PDFViewer";
 import { CursorLight } from "./CursorLight";
 import type { OrganizeStep } from "../types";
 
@@ -25,33 +20,23 @@ interface OrganizeViewProps {
   color?: string;
 }
 
-// Step timing in milliseconds - tells the story of importing and organizing
+// Step timing in milliseconds
 const stepTimings: Record<OrganizeStep, number> = {
-  "empty-state": 1500,
-  "import-action": 1000,
-  "pdf-drop": 2500,
-  "metadata-extraction": 3000,
-  "organizing": 2000,
-  "paper-select": 1500,
-  "detail-view": 2000,
-  "filtering": 2000,
-  "organized": 1500,
+  "upload": 3000,
+  "tagging": 3000,
+  "pdf-open": 2500,
+  "taking-notes": 3500,
 };
 
 const stepOrder: OrganizeStep[] = [
-  "empty-state",
-  "import-action",
-  "pdf-drop",
-  "metadata-extraction",
-  "organizing",
-  "paper-select",
-  "detail-view",
-  "filtering",
-  "organized",
+  "upload",
+  "tagging",
+  "pdf-open",
+  "taking-notes",
 ];
 
 export function OrganizeView({ isActive, onComplete, color = "#3B82F6" }: OrganizeViewProps) {
-  const [step, setStep] = useState<OrganizeStep>("empty-state");
+  const [step, setStep] = useState<OrganizeStep>("upload");
 
   // Get next step
   const getNextStep = useCallback((current: OrganizeStep): OrganizeStep | null => {
@@ -65,7 +50,7 @@ export function OrganizeView({ isActive, onComplete, color = "#3B82F6" }: Organi
   // Reset when becoming active
   useEffect(() => {
     if (isActive) {
-      setStep("empty-state");
+      setStep("upload");
     }
   }, [isActive]);
 
@@ -79,15 +64,15 @@ export function OrganizeView({ isActive, onComplete, color = "#3B82F6" }: Organi
         setStep(nextStep);
       } else {
         // Animation complete - loop back to start
-        setStep("empty-state");
+        setStep("upload");
       }
     }, stepTimings[step]);
 
     return () => clearTimeout(timeout);
   }, [isActive, step, getNextStep]);
 
-  // Determine layout based on step
-  const showSidebar = ["organizing", "paper-select", "detail-view", "filtering", "organized"].includes(step);
+  // Determine layout based on step - show PDF viewer for pdf-open and taking-notes steps
+  const showPDFView = ["pdf-open", "taking-notes"].includes(step);
 
   return (
     <div
@@ -101,15 +86,14 @@ export function OrganizeView({ isActive, onComplete, color = "#3B82F6" }: Organi
       {/* Colored light glow effect following real user cursor */}
       <CursorLight color={color} />
 
-      {showSidebar ? (
-        // Two-column layout: sidebar + table
-        <div className="flex h-full">
-          <CollectionsSidebar step={step} accentColor={color} />
-          <ReferenceTable step={step} accentColor={color} />
+      {showPDFView ? (
+        // PDF view for pdf-open and taking-notes steps
+        <div className="flex h-full w-full">
+          <PDFViewer step={step} />
         </div>
       ) : (
-        // Single column: full-width table
-        <div className="flex h-full">
+        // Table view for upload and tagging steps
+        <div className="flex h-full w-full">
           <ReferenceTable step={step} accentColor={color} />
         </div>
       )}

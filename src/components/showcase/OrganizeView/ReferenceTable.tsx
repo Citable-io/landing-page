@@ -50,12 +50,9 @@ function hexToRgba(hex: string, opacity: number): string {
 
 export function ReferenceTable({ step, className = "", accentColor = "#3B82F6" }: ReferenceTableProps) {
   // Show references based on workflow step
-  const showEmptyState = step === "empty-state" || step === "import-action";
-  const showImportAnimation = step === "pdf-drop";
-  const showExtractingMetadata = step === "metadata-extraction" || step === "organizing";
-  const showPaperSelected = ["paper-select", "detail-view", "filtering", "organized"].includes(step);
-  const showFilterActive = step === "filtering";
-  const selectedRowId = (step === "paper-select" || step === "detail-view" || step === "filtering" || step === "organized") ? "ref-1" : null;
+  const showImportAnimation = step === "upload";
+  const showExtractingMetadata = step === "tagging";
+  const selectedRowId = step === "tagging" ? "ref-1" : null;
 
   return (
     <div
@@ -83,27 +80,21 @@ export function ReferenceTable({ step, className = "", accentColor = "#3B82F6" }
       >
         <div className="flex items-center gap-2">
           <button
-            className={`h-8 px-3 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 text-white shadow-lg ${
-              step === "import-action" ? "scale-105" : ""
-            }`}
+            className="h-8 px-3 text-xs font-medium rounded-md transition-all flex items-center gap-1.5 text-white shadow-lg"
             style={{
-              backgroundColor: step === "import-action" ? accentColor : hexToRgba(accentColor, 0.8),
+              backgroundColor: accentColor,
             }}
           >
             <PlusIcon />
             Import Papers
           </button>
         </div>
-        <div
-          className="relative transition-all"
-          style={showFilterActive ? { boxShadow: `0 0 0 2px ${hexToRgba(accentColor, 0.5)}` } : undefined}
-        >
+        <div className="relative transition-all">
           <SearchIcon className="w-4 h-4 absolute left-2.5 top-1/2 -translate-y-1/2 text-muted-foreground" />
           <input
             type="text"
-            placeholder={showFilterActive ? "Searching..." : "Search papers..."}
+            placeholder="Search papers..."
             className="h-8 w-32 sm:w-40 pl-8 pr-3 text-xs bg-secondary/50 border-0 rounded-md text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1"
-            style={{ focusRing: hexToRgba(accentColor, 0.5) }}
             readOnly
           />
         </div>
@@ -111,20 +102,6 @@ export function ReferenceTable({ step, className = "", accentColor = "#3B82F6" }
 
       {/* Main Content Area */}
       <div className="flex-1 overflow-auto relative">
-        {/* Empty State */}
-        {showEmptyState && (
-          <div className="h-full flex flex-col items-center justify-center text-center p-8">
-            <DocumentIcon className="w-16 h-16 mb-4" style={{ color: "#D1D5DB" }} />
-            <h3 className="text-lg font-semibold mb-2" style={{ color: "#111827" }}>No papers yet</h3>
-            <p className="text-sm mb-6" style={{ color: "#6B7280" }}>
-              Click "Import Papers" to get started
-            </p>
-            <div className="text-xs" style={{ color: "#9CA3AF" }}>
-              Drag & drop PDFs or click to browse
-            </div>
-          </div>
-        )}
-
         {/* PDF Import Animation */}
         {showImportAnimation && (
           <div className="h-full flex items-center justify-center">
@@ -153,8 +130,8 @@ export function ReferenceTable({ step, className = "", accentColor = "#3B82F6" }
           </div>
         )}
 
-        {/* Data Table - showing extracted papers */}
-        {(showExtractingMetadata || showPaperSelected) && (
+        {/* Data Table - showing papers with tags */}
+        {showExtractingMetadata && (
           <table className="w-full text-sm">
             <thead className="sticky top-0" style={{ background: "#F5F6FA", borderBottom: "1px solid #E5E7EB" }}>
               <tr className="h-11 text-left text-xs uppercase tracking-wider" style={{ color: "#6B7280" }}>
@@ -179,16 +156,6 @@ export function ReferenceTable({ step, className = "", accentColor = "#3B82F6" }
               ))}
             </tbody>
           </table>
-        )}
-
-        {/* Organizing Animation */}
-        {step === "organizing" && (
-          <div
-            className="absolute inset-0 pointer-events-none animate-pulse"
-            style={{
-              background: `linear-gradient(to bottom, ${hexToRgba(accentColor, 0.1)}, transparent)`,
-            }}
-          />
         )}
       </div>
     </div>
