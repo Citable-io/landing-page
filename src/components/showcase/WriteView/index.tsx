@@ -43,6 +43,8 @@ interface WriteViewProps {
   isActive?: boolean;
   onComplete?: () => void;
   color?: string;
+  hideStepLabel?: boolean;
+  isCollaborative?: boolean;
 }
 
 const writeSteps: WriteStep[] = ["idle", "typing", "compile", "preview"];
@@ -59,7 +61,7 @@ const stepTimings: Record<Step, number> = {
   "cite-insert": 1500,
 };
 
-export function WriteView({ showCitation = false, isActive = true, onComplete, color = "#3B82F6" }: WriteViewProps) {
+export function WriteView({ showCitation = false, isActive = true, onComplete, color = "#3B82F6", hideStepLabel = false, isCollaborative = false }: WriteViewProps) {
   const [step, setStep] = useState<Step>("idle");
   const steps = showCitation ? citeSteps : writeSteps;
 
@@ -123,17 +125,19 @@ export function WriteView({ showCitation = false, isActive = true, onComplete, c
   return (
     <div className="relative flex flex-col h-[420px] overflow-hidden">
       {/* Step label */}
-      <div className="px-4 py-2 bg-secondary/50 border-b border-border/20">
-        <motion.div
-          key={step}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-          className="text-xs font-medium text-muted-foreground"
-        >
-          {getStepLabel(step)}
-        </motion.div>
-      </div>
+      {!hideStepLabel && (
+        <div className="px-4 py-2 bg-secondary/50 border-b border-border/20">
+          <motion.div
+            key={step}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.2 }}
+            className="text-xs font-medium text-muted-foreground"
+          >
+            {getStepLabel(step)}
+          </motion.div>
+        </div>
+      )}
 
       {/* Demo content */}
       <div className="relative flex flex-1 overflow-hidden">
@@ -170,11 +174,23 @@ export function WriteView({ showCitation = false, isActive = true, onComplete, c
                   <CloseIcon />
                 </button>
               </div>
+              {isCollaborative && (
+                <div className="ml-auto flex items-center gap-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-blue-500"></div>
+                    <span>You</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <div className="w-2 h-2 rounded-full bg-red-500"></div>
+                    <span>Alex</span>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Editor with compile overlay */}
             <div className="flex-1 flex min-h-0 relative">
-              <EditorPane step={step} showCitation={showCitation} color={color} />
+              <EditorPane step={step} showCitation={showCitation} color={color} isCollaborative={isCollaborative} />
 
               {/* Compile animation overlay */}
               {step === "compile" && (
@@ -256,7 +272,7 @@ export function WriteView({ showCitation = false, isActive = true, onComplete, c
             </div>
 
             <div className="flex-1 flex min-h-0">
-              <EditorPane step={step} showCitation={showCitation} color={color} />
+              <EditorPane step={step} showCitation={showCitation} color={color} isCollaborative={isCollaborative} />
             </div>
           </motion.div>
         )}
@@ -333,7 +349,7 @@ function OutlineItem({ label }: { label: string }) {
   );
 }
 
-function EditorPane({ step, showCitation, color = "#3B82F6" }: { step: Step; showCitation: boolean; color?: string }) {
+function EditorPane({ step, showCitation, color = "#3B82F6", isCollaborative = false }: { step: Step; showCitation: boolean; color?: string; isCollaborative?: boolean }) {
   const isTyping = step === "typing";
   const showContent = step !== "idle";
   const showCiteDropdown = step === "cite-select" || step === "cite-insert";
@@ -374,40 +390,69 @@ function EditorPane({ step, showCitation, color = "#3B82F6" }: { step: Step; sho
           {/* Animated content that appears during typing */}
           {showContent && (
             <>
-              <div className="flex gap-4">
-                <span className="w-6 text-right text-muted-foreground/50 select-none">8</span>
-                <span className="font-mono text-xs sm:text-sm">
-                  <span style={{color}}>\section</span>
-                  <span className="text-amber-500">{`{`}</span>
-                  <TypingAnimation
-                    text="Introduction"
-                    speed={30}
-                    isActive={isTyping}
-                    showCursor={false}
-                  />
-                  <span className="text-amber-500">{`}`}</span>
-                </span>
-              </div>
-              <div className="flex gap-4">
-                <span className="w-6 text-right text-muted-foreground/50 select-none">9</span>
-                <span className="font-mono text-xs sm:text-sm text-foreground">
-                  <TypingAnimation
-                    text="Recent studies have shown that climate"
-                    speed={30}
-                    isActive={isTyping}
-                    showCursor={false}
-                  />
-                </span>
-              </div>
-              <div className="flex gap-4 relative">
-                <span className="w-6 text-right text-muted-foreground/50 select-none">10</span>
-                <span className="font-mono text-xs sm:text-sm text-foreground">
-                  {!showCitation ? (
-                    <>
+              {isCollaborative ? (
+                <>
+                  {/* Collaborative editing: Alternating edits with background highlights */}
+                  <motion.div
+                    className="flex gap-4 px-2 py-1 rounded -mx-2"
+                    animate={{ backgroundColor: step === "typing" ? "rgba(59, 130, 246, 0.1)" : "transparent" }}
+                  >
+                    <span className="w-6 text-right text-muted-foreground/50 select-none">8</span>
+                    <span className="font-mono text-xs sm:text-sm">
+                      <span style={{color}}>\section</span>
+                      <span className="text-amber-500">{`{`}</span>
+                      <TypingAnimation
+                        text="Introduction"
+                        speed={30}
+                        isActive={isTyping}
+                        showCursor={false}
+                      />
+                      <span className="text-amber-500">{`}`}</span>
+                      {isTyping && (
+                        <>
+                          <motion.span
+                            className="inline-block w-0.5 h-4 bg-blue-500 ml-0.5"
+                            animate={{ opacity: [1, 0] }}
+                            transition={{ duration: 0.6, repeat: Infinity }}
+                          />
+                          <span className="text-[10px] ml-2 text-blue-500 font-semibold bg-blue-500/20 px-1.5 py-0.5 rounded">You typing</span>
+                        </>
+                      )}
+                    </span>
+                  </motion.div>
+                  <motion.div
+                    className="flex gap-4 px-2 py-1 rounded -mx-2"
+                    animate={{ backgroundColor: step === "typing" ? "rgba(239, 68, 68, 0.1)" : "transparent" }}
+                  >
+                    <span className="w-6 text-right text-muted-foreground/50 select-none">9</span>
+                    <span className="font-mono text-xs sm:text-sm text-foreground">
+                      {step === "typing" ? (
+                        <>
+                          Recent studies have shown that climate
+                          <motion.span
+                            className="inline-block w-0.5 h-4 bg-red-500 ml-0.5"
+                            animate={{ opacity: [1, 0] }}
+                            transition={{ duration: 0.6, repeat: Infinity }}
+                          />
+                          <span className="text-[10px] ml-2 text-red-500 font-semibold bg-red-500/20 px-1.5 py-0.5 rounded">Alex typing</span>
+                        </>
+                      ) : (
+                        <TypingAnimation
+                          text="Recent studies have shown that climate"
+                          speed={30}
+                          isActive={false}
+                          showCursor={false}
+                        />
+                      )}
+                    </span>
+                  </motion.div>
+                  <div className="flex gap-4 relative">
+                    <span className="w-6 text-right text-muted-foreground/50 select-none">10</span>
+                    <span className="font-mono text-xs sm:text-sm text-foreground">
                       <TypingAnimation
                         text="change impacts biodiversity "
                         speed={30}
-                        isActive={isTyping}
+                        isActive={false}
                         showCursor={false}
                       />
                       <motion.span
@@ -421,29 +466,87 @@ function EditorPane({ step, showCitation, color = "#3B82F6" }: { step: Step; sho
                       <TypingAnimation
                         text="."
                         speed={30}
-                        isActive={isTyping}
-                        showCursor={isTyping}
+                        isActive={false}
+                        showCursor={false}
                       />
-                    </>
-                  ) : (
-                    <>
-                      change impacts biodiversity{" "}
-                      <motion.span
-                        className="px-1 rounded font-semibold"
-                        animate={{
-                          backgroundColor: citeSelected ? "rgba(59, 130, 246, 0.4)" : "rgba(59, 130, 246, 0.2)",
-                          color: citeSelected ? "rgb(37, 99, 235)" : "rgb(96, 165, 250)",
-                          scale: citeSelected ? 1.05 : 1,
-                        }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        \cite{`{`}smith2024{`}`}
-                      </motion.span>
-                      .
-                    </>
-                  )}
-                </span>
-              </div>
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  {/* Regular editing: Single user typing */}
+                  <div className="flex gap-4">
+                    <span className="w-6 text-right text-muted-foreground/50 select-none">8</span>
+                    <span className="font-mono text-xs sm:text-sm">
+                      <span style={{color}}>\section</span>
+                      <span className="text-amber-500">{`{`}</span>
+                      <TypingAnimation
+                        text="Introduction"
+                        speed={30}
+                        isActive={isTyping}
+                        showCursor={false}
+                      />
+                      <span className="text-amber-500">{`}`}</span>
+                    </span>
+                  </div>
+                  <div className="flex gap-4">
+                    <span className="w-6 text-right text-muted-foreground/50 select-none">9</span>
+                    <span className="font-mono text-xs sm:text-sm text-foreground">
+                      <TypingAnimation
+                        text="Recent studies have shown that climate"
+                        speed={30}
+                        isActive={isTyping}
+                        showCursor={false}
+                      />
+                    </span>
+                  </div>
+                  <div className="flex gap-4 relative">
+                    <span className="w-6 text-right text-muted-foreground/50 select-none">10</span>
+                    <span className="font-mono text-xs sm:text-sm text-foreground">
+                      {!showCitation ? (
+                        <>
+                          <TypingAnimation
+                            text="change impacts biodiversity "
+                            speed={30}
+                            isActive={isTyping}
+                            showCursor={false}
+                          />
+                          <motion.span
+                            className="px-1 rounded text-violet bg-violet/10"
+                            animate={{
+                              backgroundColor: step === "preview" ? "rgba(167, 139, 250, 0.1)" : "rgba(167, 139, 250, 0.1)",
+                            }}
+                          >
+                            \cite{`{`}smith2024{`}`}
+                          </motion.span>
+                          <TypingAnimation
+                            text="."
+                            speed={30}
+                            isActive={isTyping}
+                            showCursor={isTyping}
+                          />
+                        </>
+                      ) : (
+                        <>
+                          change impacts biodiversity{" "}
+                          <motion.span
+                            className="px-1 rounded font-semibold"
+                            animate={{
+                              backgroundColor: citeSelected ? "rgba(59, 130, 246, 0.4)" : "rgba(59, 130, 246, 0.2)",
+                              color: citeSelected ? "rgb(37, 99, 235)" : "rgb(96, 165, 250)",
+                              scale: citeSelected ? 1.05 : 1,
+                            }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            \cite{`{`}smith2024{`}`}
+                          </motion.span>
+                          .
+                        </>
+                      )}
+                    </span>
+                  </div>
+                </>
+              )}
             </>
           )}
         </div>

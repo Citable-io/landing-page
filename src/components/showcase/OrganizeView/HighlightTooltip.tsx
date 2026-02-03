@@ -10,13 +10,8 @@ interface HighlightTooltipProps {
 
 const highlightColors = [
   { id: "yellow", hex: "#FFD400", name: "Yellow" },
-  { id: "red", hex: "#EF4444", name: "Red" },
-  { id: "green", hex: "#10B981", name: "Green" },
   { id: "blue", hex: "#3B82F6", name: "Blue" },
-  { id: "purple", hex: "#8B5CF6", name: "Purple" },
-  { id: "magenta", hex: "#E56EEE", name: "Magenta" },
-  { id: "orange", hex: "#F59E0B", name: "Orange" },
-  { id: "gray", hex: "#6B7280", name: "Gray" },
+  { id: "green", hex: "#10B981", name: "Green" },
 ];
 
 export function HighlightTooltip({

@@ -155,9 +155,9 @@ function FeatureSection({ feature, index }: { feature: Feature; index: number })
       case "organize":
         return <OrganizeView isActive={isInView} color="#3B82F6" />;
       case "write":
-        return <WriteView isActive={isInView} color="#10B981" />;
+        return <WriteView isActive={isInView} color="#10B981" hideStepLabel isCollaborative />;
       case "discover":
-        return <WriteView showCitation isActive={isInView} color="#8B5CF6" />;
+        return <WriteView showCitation isActive={isInView} color="#8B5CF6" hideStepLabel />;
       default:
         return null;
     }
@@ -294,29 +294,7 @@ function FeatureSection({ feature, index }: { feature: Feature; index: number })
                 border: `1px solid var(--mauve-a4)`,
               }}
             >
-              {/* macOS-style Window Header */}
-              <div
-                className="h-8 flex items-center px-4 gap-2"
-                style={{
-                  background: "var(--mauve-a2)",
-                  borderBottom: "1px solid var(--mauve-a3)",
-                }}
-              >
-                <div
-                  className="w-2.5 h-2.5 rounded-full"
-                  style={{ background: "var(--red-a6)" }}
-                />
-                <div
-                  className="w-2.5 h-2.5 rounded-full"
-                  style={{ background: "var(--amber-a6)" }}
-                />
-                <div
-                  className="w-2.5 h-2.5 rounded-full"
-                  style={{ background: "var(--green-a6)" }}
-                />
-              </div>
-
-              {renderDemo()}
+                {renderDemo()}
             </div>
           </motion.div>
         </div>
