@@ -1,20 +1,31 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
-import TrustedBySection from "@/components/TrustedBySection";
-import DetailedFeaturesSection from "@/components/DetailedFeaturesSection";
-import Workflow from "@/components/Workflow";
+import CitableDifferenceSection from "@/components/CitableDifferenceSection";
+import FeatureShowcase from "@/components/FeatureShowcase";
+import GettingStartedSection from "@/components/GettingStartedSection";
+import FinalCTA from "@/components/FinalCTA";
 import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <HeroSection />
-      {/* <TrustedBySection /> */}
-      <div className="max-h-[3000px]">
-        <DetailedFeaturesSection />
-      </div>
-      <Workflow />
+      <main>
+        {/* Section 1: Hero */}
+        <HeroSection />
+
+        {/* Section 2: The Citable Difference - Unified Workflow */}
+        <CitableDifferenceSection />
+
+        {/* Section 3: Feature Showcase */}
+        <FeatureShowcase />
+
+        {/* Section 4: Getting Started */}
+        <GettingStartedSection />
+
+        {/* Section 5: Final CTA */}
+        <FinalCTA />
+      </main>
       <Footer />
     </div>
   );
